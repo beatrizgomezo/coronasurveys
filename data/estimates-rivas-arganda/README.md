@@ -23,11 +23,11 @@ La estimaciones están en ficheros CSV con las siguientes columnas (entre corche
 - cases_est [cases_low, cases_high]: Número acumulado estimado de casos de COVID-19.
 - fatalities_est [fatalities_low, fatalities_high]: Número acumulado estimado de muertes de COVID-19.
 - recentcases_est [recentcases_low, recentcases_high]: Número estimado de casos que empezaron a mostrar síntomas en los últimos 7 días.
-- hospital_est [hospital_low, hospital_high]: Número estimado de casos que han sido trasladados al hospital por COVID-19.
-- icu_est [icu_low, icu_high]: Número estimado de casos que han estado en la Unidad de Cuidados Intensivos (UCI).
+- hospital_est [hospital_low, hospital_high]: Número acumulado estimado de casos que han sido trasladados al hospital por COVID-19.
+- icu_est [icu_low, icu_high]: Número acumulado estimado de casos que han estado en la Unidad de Cuidados Intensivos (UCI).
 - p_cases [p_cases_low, p_cases_high]: Prevalencia estimada. Se calcula dividiendo los casos reportados por las personas conocidas (reach).
-- p_recovered [p_recovered_low, p_recovered_high]: Estimación de tasa de casos recuperados. Se calcula dividiendo los casos recuperados por los casos reportados.
-- p_fatalities [p_fatalities_low, p_fatalities_high]: Estimación de tasa de fallecimientos sobre casos reportados. Se calcula dividiendo los fallecimientos por los casos reportados.
+- p_recovered [p_recovered_low, p_recovered_high]: Estimación de tasa de casos recuperados. Se calcula dividiendo los casos recuperados reportados por las personas conocidas (reach).
+- p_fatalities [p_fatalities_low, p_fatalities_high]: Estimación de tasa de fallecimientos. Se calcula dividiendo los fallecimientos reportados por las personas conocidas (reach).
 - p_recentcases [p_recentcases_low, p_recentcases_high]: Estimación de tasa de casos que empezaron a mostrar síntomas en los últimos 7 días.
 - p_recentcasesnursing [p_recentcasesnursing_low, p_recentcasesnursing_high]: Estimación de tasa de casos empezaron a mostrar síntomas en los últimos 7 días y son residentes o trabajadores de una residencia de la tercera edad.
 - p_stillsick [p_stillsick_low, p_stillsick_high]: Estimación de tasa de casos que están todavía enfermos.
