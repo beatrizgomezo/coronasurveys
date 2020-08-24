@@ -183,7 +183,7 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
     cases_low <- c(cases_low, pop*est$low)
     cases_high <- c(cases_high, pop*est$upp)
  
-    est <- process_ratio(dt_date, "recentcases", "cases", "cases")
+    est <- process_ratio(dt_date, "recentcases", "reach", "cases")
     p_recentcases <- c(p_recentcases, est$val)
     p_recentcases_low <- c(p_recentcases_low, est$low)
     p_recentcases_high <- c(p_recentcases_high, est$upp)
@@ -195,12 +195,12 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
     recentcases_high <- c(recentcases_high, pop * est$upp)
     
     if (j < as.POSIXct("2020-08-19")) {
-      est <- process_ratio(dt_date, "recovered", "cases", "cases")
+      est <- process_ratio(dt_date, "recovered", "reach", "cases")
       p_recovered <- c(p_recovered, est$val)
       p_recovered_low <- c(p_recovered_low, est$low)
       p_recovered_high <- c(p_recovered_high, est$upp)
       
-      est <- process_ratio(dt_date, "fatalities", "cases", "cases")
+      est <- process_ratio(dt_date, "fatalities", "reach", "cases")
       p_fatalities <- c(p_fatalities, est$val)
       p_fatalities_low <- c(p_fatalities_low, est$low)
       p_fatalities_high <- c(p_fatalities_high, est$upp)
@@ -211,7 +211,7 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
       fatalities_low <- c(fatalities_low, pop * est$low)
       fatalities_high <- c(fatalities_high, pop * est$upp)
       
-      est <- process_ratio(dt_date, "recentcasesnursing", "cases", "recentcases")
+      est <- process_ratio(dt_date, "recentcasesnursing", "reach", "recentcases")
       p_recentcasesnursing <- c(p_recentcasesnursing, est$val)
       p_recentcasesnursing_low <- c(p_recentcasesnursing_low, est$low)
       p_recentcasesnursing_high <- c(p_recentcasesnursing_high, est$upp)
@@ -221,12 +221,12 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
       recentcasesnursing_low <- c(recentcasesnursing_low, pop * est$low)
       recentcasesnursing_high <- c(recentcasesnursing_high, pop * est$upp)
       
-      est <- process_ratio(dt_date, "stillsick", "cases", "cases")
+      est <- process_ratio(dt_date, "stillsick", "reach", "cases")
       p_stillsick <- c(p_stillsick, est$val)
       p_stillsick_low <- c(p_stillsick_low, est$low)
       p_stillsick_high <- c(p_stillsick_high, est$upp)
       
-      est <- process_ratio(dt_date, "hospital", "cases", "cases")
+      est <- process_ratio(dt_date, "hospital", "reach", "cases")
       p_hospital <- c(p_hospital, est$val)
       p_hospital_low <- c(p_hospital_low, est$low)
       p_hospital_high <- c(p_hospital_high, est$upp)
@@ -236,12 +236,12 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
       hospital_low <- c(hospital_low, pop * est$low)
       hospital_high <- c(hospital_high, pop * est$upp)
       
-      est <- process_ratio(dt_date, "severe", "cases", "cases")
+      est <- process_ratio(dt_date, "severe", "reach", "cases")
       p_severe <- c(p_severe, est$val)
       p_severe_low <- c(p_severe_low, est$low)
       p_severe_high <- c(p_severe_high, est$upp)
       
-      est <- process_ratio(dt_date, "icu", "cases", "cases")
+      est <- process_ratio(dt_date, "icu", "reach", "cases")
       p_icu <- c(p_icu, est$val)
       p_icu_low <- c(p_icu_low, est$low)
       p_icu_high <- c(p_icu_high, est$upp)
