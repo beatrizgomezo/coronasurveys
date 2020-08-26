@@ -765,3 +765,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/08/22,Brazil,BR,Paraná,BRPR,en,50,2,,1,0,0,,,,,,,N,,limesurvey-12957,ytivuhfybw7wxuvyy5,
 2020/08/23,Brazil,BR,Paraná,BRPR,en,3,0,,0,0,0,,,,,,,N,,limesurvey-12972,msmvhjysjr0z0i2cmk,
 2020/08/24,Brazil,BR,"São Paulo",BRSP,en,106,7,,1,0,0,,,,,,,Y,,limesurvey-13034,gowc7zx50xx6noogob,
+2020/08/25,Brazil,BR,"Distrito Federal",BRDF,en,10,2,,1,0,0,,,,,,,N,,limesurvey-13126,tokq7jkqg5feovr6uu,
+2020/08/25,Brazil,BR,"São Paulo",BRSP,en,50,4,,0,1,3,,,,,,,N,,limesurvey-13168,f9me4ijpd3kb2su7iy,
