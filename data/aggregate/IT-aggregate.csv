@@ -791,3 +791,4 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/08/17,Italy,IT,Regioni:Emilia-Romagna,IT45,en,50,3,,0,2,2,,,,,,,Y,,limesurvey-12174,9qufwvjdyk80mfbhya,
 2020/08/23,Italy,IT,Regioni:Lombardia,IT25,en,300,0,,0,0,0,,,,,,,Y,,limesurvey-12978,n3pt84hbu076xto3pv,
 2020/08/24,Italy,IT,Regioni:Emilia-Romagna,IT45,en,200,3,,0,0,0,,,,,,,Y,,limesurvey-13053,n6kj1rx14qlbxlrjtp,
+2020/08/26,Italy,IT,Province:Caserta,ITCE,en,100,300,,0,0,10,,,,,,,N,,limesurvey-13224,epkrp7nyg5mwuxqcnv,
