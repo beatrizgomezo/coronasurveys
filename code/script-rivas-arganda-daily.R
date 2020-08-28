@@ -13,7 +13,7 @@ country_iso <- "ES"
 ci_level <- 0.95
 max_ratio <- 1/3
 num_responses = 1000
-age <- 14
+age <- 7
 
 
 remove_outliers <- function(dt, max_ratio = 1/3) {
@@ -46,10 +46,15 @@ remove_outliers <- function(dt, max_ratio = 1/3) {
   return(dt)
 }
 
-process_ratio <- function(dt, numerator, denominator, control){
+process_ratio <- function(dt, numerator, denominator, control, cummulative=TRUE){
   dta <- dt[!is.na(dt[[numerator]]),]
   dta <- dta[!is.na(dta[[denominator]]),]
   dta <- dta[dta[[numerator]] <= dta[[control]],]
+  if (cummulative){
+    #Remove duplicated cookies keeping the most recent response
+    dta <- dta[!duplicated(dta$cookie, fromLast=TRUE, incomparables = c("")),]
+  }
+  
   if (nrow(dta)>0){
     #cat("- Max ", numerator, max(dta[[numerator]]), "\n"  )
     p_est <- sum(dta[[numerator]])/sum(dta[[denominator]])
@@ -132,6 +137,10 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
   hospital_est <- c()
   hospital_low <- c()
   hospital_high <- c()
+
+  p_recenthospital <- c()
+  p_recenthospital_low <- c()
+  p_recenthospital_high <- c()
   
   p_severe <- c()
   p_severe_low <- c()
@@ -158,14 +167,11 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
     subcondition <- (as.Date(dt$timestamp) > (as.Date(j)-age)  & as.Date(dt$timestamp) <= as.Date(j) )
     dt_date <- dt[subcondition, ]
     #Remove duplicated cookies keeping the most recent response
-    dt_date <- dt_date[!duplicated(dt_date$cookie, fromLast=TRUE, incomparables = c("")),]
+    # dt_date <- dt_date[!duplicated(dt_date$cookie, fromLast=TRUE, incomparables = c("")),]
     #Keep all the responses of the day or at most num_responses
     nr <- nrow(dt[as.Date(dt_date$timestamp) == as.Date(j), ])
     dt_date <- tail(dt_date, max(num_responses,nr))
-    # if (reg=="ESM"){
-    #   cat("--Date", j, "working with", nrow(dt_date), "final responses\n"  )
-    # }
-    
+
     region <- c(region, reg)
     regionname <- c(regionname, name)
     population <- c(population, pop)
@@ -183,16 +189,21 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
     cases_low <- c(cases_low, pop*est$low)
     cases_high <- c(cases_high, pop*est$upp)
  
-    est <- process_ratio(dt_date, "recentcases", "reach", "cases")
+    est <- process_ratio(dt_date, "recentcases", "reach", "cases", cummulative=FALSE)
     p_recentcases <- c(p_recentcases, est$val)
     p_recentcases_low <- c(p_recentcases_low, est$low)
     p_recentcases_high <- c(p_recentcases_high, est$upp)
     
-    est <- process_ratio(dt_date, "recentcases", "reach", "cases")
+    est <- process_ratio(dt_date, "recentcases", "reach", "cases", cummulative=FALSE)
     recentcases <- c(recentcases, est$suma)
     recentcases_est <- c(recentcases_est, pop * est$val)
     recentcases_low <- c(recentcases_low, pop * est$low)
     recentcases_high <- c(recentcases_high, pop * est$upp)
+    
+    est <- process_ratio(dt_date, "recenthospital", "reach", "cases", cummulative=FALSE)
+    p_recenthospital <- c(p_recenthospital, est$val)
+    p_recenthospital_low <- c(p_recenthospital_low, est$low)
+    p_recenthospital_high <- c(p_recenthospital_high, est$upp)
     
     if (j < as.POSIXct("2020-08-19")) {
       est <- process_ratio(dt_date, "recovered", "reach", "cases")
@@ -211,12 +222,12 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
       fatalities_low <- c(fatalities_low, pop * est$low)
       fatalities_high <- c(fatalities_high, pop * est$upp)
       
-      est <- process_ratio(dt_date, "recentcasesnursing", "reach", "recentcases")
+      est <- process_ratio(dt_date, "recentcasesnursing", "reach", "recentcases", cummulative=FALSE)
       p_recentcasesnursing <- c(p_recentcasesnursing, est$val)
       p_recentcasesnursing_low <- c(p_recentcasesnursing_low, est$low)
       p_recentcasesnursing_high <- c(p_recentcasesnursing_high, est$upp)
       
-      est <- process_ratio(dt_date, "recentcasesnursing", "reach", "recentcases")
+      est <- process_ratio(dt_date, "recentcasesnursing", "reach", "recentcases", cummulative=FALSE)
       recentcasesnursing_est <- c(recentcasesnursing_est, pop * est$val)
       recentcasesnursing_low <- c(recentcasesnursing_low, pop * est$low)
       recentcasesnursing_high <- c(recentcasesnursing_high, pop * est$upp)
@@ -344,6 +355,10 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
                    p_recentcases_low,
                    p_recentcases_high,
                    
+                   p_recenthospital,
+                   p_recenthospital_low,
+                   p_recenthospital_high,
+                   
                    recentcasesnursing_est,
                    recentcasesnursing_low,
                    recentcasesnursing_high,
@@ -461,6 +476,10 @@ dw <- data.frame(date=c(),
                  p_recentcases=c(),
                  p_recentcases_low=c(),
                  p_recentcases_high=c(),
+                 
+                 p_recenthospital=c(),
+                 p_recenthospital_low=c(),
+                 p_recenthospital_high=c(),
                  
                  recentcasesnursing_est=c(),
                  recentcasesnursing_low=c(),
