@@ -11,7 +11,7 @@ Y uno por día con las 4 áreas
 Las estimaciones se calculan periódicamente (y automáticamente) a partir de las respuestas recogidas con la encuesta accesible en https://survey.coronasurveys.org/RA. Estas respuestas están accesibles en https://github.com/GCGImdea/coronasurveys/tree/master/data/aggregate/rivas-arganda. El programa usado para calcular la estimación está disponible en https://github.com/GCGImdea/coronasurveys/blob/master/code/script-rivas-arganda-daily.R.
 
 Las estimaciones de un área se calculan para cada día. Si hay al menos **1000 respuestas,** se usan todas las respuestas del día. Si no hay 1000 respuestas ese día, se usan
-respuestas de los **13 días anteriores** (14 días en total) hasta completar 1000 (si hay). Si hay varias respuestas con la misma cookie, sólo se usa la más reciente.
+respuestas de los **6 días anteriores** (7 días en total) hasta completar 1000 (si hay). En los valores acumulados (por ejemplo, el número total de casos o de fallecidos), si hay varias respuestas con la misma cookie sólo se usa la más reciente.
 
 La estimaciones están en ficheros CSV con las siguientes columnas (entre corchetes se dan las columnas que dan el intervalo de confianza al 95%):
 - date: Fecha de la estimatión
@@ -29,6 +29,7 @@ La estimaciones están en ficheros CSV con las siguientes columnas (entre corche
 - p_recovered [p_recovered_low, p_recovered_high]: Estimación de tasa de casos recuperados. Se calcula dividiendo los casos recuperados reportados por las personas conocidas (reach).
 - p_fatalities [p_fatalities_low, p_fatalities_high]: Estimación de tasa de fallecimientos. Se calcula dividiendo los fallecimientos reportados por las personas conocidas (reach).
 - p_recentcases [p_recentcases_low, p_recentcases_high]: Estimación de tasa de casos que empezaron a mostrar síntomas en los últimos 7 días.
+- p_recenthospital [p_recenthospital_low, p_recenthospital_high]: Estimación de tasa de hospitalizados en los últimos 7 días.
 - p_recentcasesnursing [p_recentcasesnursing_low, p_recentcasesnursing_high]: Estimación de tasa de casos empezaron a mostrar síntomas en los últimos 7 días y son residentes o trabajadores de una residencia de la tercera edad.
 - p_stillsick [p_stillsick_low, p_stillsick_high]: Estimación de tasa de casos que están todavía enfermos.
 - p_hospital [p_hospital_low, p_hospital_high]: Estimación de tasa de casos que han sido trasladados al hospital por COVID-19.
