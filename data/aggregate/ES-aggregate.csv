@@ -5697,3 +5697,8 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/09/13,Spain,ES,Provincia:Madrid,ESM,en,100,20,,2,0,0,,,4,,,,Y,,limesurvey-13776,7ggtjeju9mkb590sao,
 2020/09/13,Spain,ES,Provincia:Madrid,ESM,en,8,8,,,0,0,,,,,,,N,,limesurvey-13772,7azh6b5guc0gwcf5up,
 2020/09/13,Spain,ES,Provincia:Madrid,ESM,en,50,6,,0,,0,,,0,,,,Y,,limesurvey-13762,ubdrfgbe8l5vlmr5m1,
+2020/09/14,Spain,ES,Provincia:Madrid,ESM,en,50,2,,1,0,0,,,0,,,,N,,limesurvey-13803,4hup5z4l6wvfe8h2sw,
+2020/09/14,Spain,ES,Provincia:Barcelona,ESB,en,100,1,,0,0,0,,,0,,,,N,,limesurvey-13793,krvcucafps1tru4hhc,
+2020/09/14,Spain,ES,Provincia:Madrid,ESM,en,50,0,,0,0,0,,,0,,,,Y,,limesurvey-13796,ewfd9ils93z6rwlj02,
+2020/09/14,Spain,ES,Provincia:Madrid,ESM,en,300,20,,0,0,0,,,1,,,,N,,limesurvey-13794,8re1wuql6vwfa7aqyt,
+2020/09/14,Spain,ES,"Comunidad Autónoma:Madrid, Comunidad de",ESMD,en,35,8,,0,0,0,,,2,,,,Y,,limesurvey-13798,n1vyzaa6x88friku7l,
