@@ -797,3 +797,6 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/09/10,Italy,IT,Regioni:Campania,IT72,en,200,1,,0,1,1,,,,,,,Y,,limesurvey-13647,2mhze026f8va2jaqmh,
 2020/09/10,Italy,IT,Regioni:Lazio,IT62,en,5,0,,0,0,0,,,,,,,Y,,limesurvey-13648,2mhze026f8va2jaqmh,
 2020/09/14,Italy,IT,Regioni:Lazio,IT62,en,60,10,,0,1,0,,,,,,,N,,limesurvey-13823,wms87cat6y2m654rv7,
+2020/09/15,Italy,IT,Regioni:Toscana,IT52,en,50,2,,0,0,0,,,,,,,N,,limesurvey-13842,sq6kg5ct74lunneh24,
+2020/09/15,Italy,IT,Regioni:Lazio,IT62,en,10,0,,0,0,0,,,,,,,N,,limesurvey-13840,6g38dcn5eg8ee88roe,
+2020/09/15,Italy,IT,Regioni:Lombardia,IT25,en,300,0,,0,0,0,,,,,,,Y,,limesurvey-13832,n3pt84hbu076xto3pv,
