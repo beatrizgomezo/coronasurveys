@@ -323,4 +323,6 @@ for (j in 1:length(dates)){
   write.csv(dw[dw$date == dates[j], ], paste0(estimates_path, country_iso, "/", country_iso, "-", dates_dash[j], "-estimate.csv"), row.names = FALSE)
 }
 
+write.csv(dw[dw$date == dates[length(dates)], ], paste0(estimates_path, country_iso, "/", country_iso, "-latest-estimate.csv"), row.names = FALSE)
+
 }
