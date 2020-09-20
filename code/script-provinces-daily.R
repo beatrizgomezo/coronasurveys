@@ -1,5 +1,7 @@
 library(tidyr)
 library(dplyr)
+# install.packages("xtable")
+library("xtable")
 
 responses_path <- "../data/aggregate/"
 data_path <- "../data/common-data/regions-tree-population.csv"
@@ -314,6 +316,9 @@ for (j in 1:length(dates)){
   write.csv(dw[dw$date == dates[j], ], paste0(estimates_path, country_iso, "/", country_iso, "-", dates_dash[j], "-estimate.csv"), row.names = FALSE)
 }
 
-write.csv(dw[dw$date == dates[length(dates)], ], paste0(estimates_path, country_iso, "/", country_iso, "-latest-estimate.csv"), row.names = FALSE)
+dw_latest <- dw[dw$date == dates[length(dates)], ]
+rownames(dw_latest) <- NULL
+write.csv(dw_latest, paste0(estimates_path, country_iso, "/", country_iso, "-latest-estimate.csv"), row.names = FALSE)
+print(xtable(dw_latest), type="html", file=paste0(estimates_path, country_iso, "/", country_iso, "-latest-estimate.html"))
 
 }
