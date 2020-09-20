@@ -14,7 +14,7 @@ ci_level <- 0.95
 ratio_cutoff <- 1/3
 fatalities_cutoff <- 1/10
 
-num_responses = 1000
+num_responses = 100
 age <- 1000
 age_recent <- 7
 
