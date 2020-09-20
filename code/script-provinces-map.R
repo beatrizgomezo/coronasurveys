@@ -40,7 +40,7 @@ carto_base %>%
   labs (title = "Cobertura de la población en personas por 100.000 habitantes", 
         caption = "Coordenadas: arcgis.com. Código adaptado de mpaladino. https://coronasurveys.org") -> reach_plot
 
-jpeg(paste0(estimates_path, "ES/ES-latest-reach-map.jpg"))
+jpeg(paste0(estimates_path, "ES/ES-latest-reach-map.jpg"), width = 800, height = 800)
 print(reach_plot)
 dev.off() 
 
@@ -55,7 +55,7 @@ carto_base %>%
   labs (title = "Incidencia total estimada por 100.000 habitantes", 
         caption = "Coordenadas: arcgis.com. Código adaptado de mpaladino. https://coronasurveys.org") -> cases_plot
 
-jpeg(paste0(estimates_path, "ES/ES-latest-cases-map.jpg"))
+jpeg(paste0(estimates_path, "ES/ES-latest-cases-map.jpg"), width = 800, height = 800)
 print(cases_plot)
 dev.off() 
 
@@ -71,7 +71,7 @@ carto_base %>%
   labs (title = "Cobertura reciente de la población en personas por 100.000 habitantes\n", 
         caption = "Coordenadas: arcgis.com. Código adaptado de mpaladino. https://coronasurveys.org") -> reach_recent_plot
 
-jpeg(paste0(estimates_path, "ES/ES-latest-reach-recent-map.jpg"))
+jpeg(paste0(estimates_path, "ES/ES-latest-reach-recent-map.jpg"), width = 800, height = 800)
 print(reach_recent_plot)
 dev.off() 
 
@@ -86,6 +86,6 @@ carto_base %>%
   labs (title = "Incidencia estimada útimos 14 días por 100.000 habitantes", 
         caption = "Coordenadas: arcgis.com. Código adaptado de mpaladino. https://coronasurveys.org") -> cases_recent_plot
 
-jpeg(paste0(estimates_path, "ES/ES-latest-cases-recent-map.jpg"))
+jpeg(paste0(estimates_path, "ES/ES-latest-cases-recent-map.jpg"), width = 800, height = 800)
 print(cases_recent_plot)
-dev.off() 
+dev.off()
