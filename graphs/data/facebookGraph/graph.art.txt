@@ -1,0 +1,12 @@
+# Articulation points (cut vertices)
+686
+698
+3437
+1912
+1684
+3980
+594
+414
+107
+348
+0
