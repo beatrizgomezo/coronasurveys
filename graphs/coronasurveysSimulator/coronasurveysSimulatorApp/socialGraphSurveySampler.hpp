@@ -20,8 +20,10 @@ using namespace std;
 using namespace TSnap;
 
 class SocialGraphSurveySampler: public AbstractGraphBasedSurveySampler {
-
+private:
+    string topologyFile;
 public:
+    SocialGraphSurveySampler(int fwdFanout, int rndSeed, int reach, double ansProb, double fwdProb, string filename);
     void initializeGraph();
     
 };

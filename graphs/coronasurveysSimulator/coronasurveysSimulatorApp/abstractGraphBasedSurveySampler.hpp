@@ -13,19 +13,19 @@
 #include "Snap.h"
 #include "shash.h"
 #include <list>
+#include <unordered_set>
 
 using namespace TSnap;
 using namespace std;
 
 class AbstractGraphBasedSurveySampler{
 protected:
-    TSparseSet<int> responders;
+    unordered_set<int> responders;
     list<int> recipients;
     
     PUNGraph graph;
     TRnd rnd;
     int fwdFanout;
-    int numSeeds;
     int reach;
     double ansProb;
     double fwdProb;
@@ -33,11 +33,11 @@ protected:
 public:
     AbstractGraphBasedSurveySampler(int fwdFanout, int rndSeed, int reach, double ansProb, double fwdProb);
 
-    virtual TSparseSet<int>& selectRandomSeedResponders (TSparseSet<int>& seeds, int num) final;
-    virtual void forwardToFriends(int myId) final;
-    virtual TSparseSet<int>& samplePositions(TSparseSet<int>& samples, int numSamples, int min, int max) final;
+    virtual unordered_set<int>& selectRandomSeedResponders (unordered_set<int>& seeds, int num) final;
+    //virtual void forwardToFriends(int myId) final;
+    virtual unordered_set<int>& samplePositions(unordered_set<int>& samples, int numSamples, int min, int max) final;
     virtual list<int>& forwardToFriends(list<int> &samples, int myId, int numSamples) final;
-    virtual void correlatedSampling(int requiredSize) final;
+    virtual list<int> correlatedSampling(int requiredSize, int numSeeds) final;
     virtual void initializeGraph()=0;
 };
 #endif /* abstractGraphBasedSurveySampler_hpp */
