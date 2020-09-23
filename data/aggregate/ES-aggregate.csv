@@ -5839,3 +5839,6 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/09/22,Spain,ES,"Comunidad Autónoma:Madrid, Comunidad de",ESMD,en,20,6,,0,4,4,,,1,,,,N,,limesurvey-14315,y513ycl4cke2m7x3o,
 2020/09/22,Spain,ES,"Comunidad Autónoma:Madrid, Comunidad de",ESMD,en,42,7,,3,2,1,,,6,,,,Y,,limesurvey-14313,n2bn7xnzl9u8tysnpf,
 2020/09/22,Spain,ES,Provincia:Burgos,ESBU,en,50000,4,,0,0,0,,,2,,,,Y,,limesurvey-14318,l8zrib6hjfzynond8v,
+2020/09/22,Spain,ES,"Provincia:Las Palmas",ESGC,en,1000,10,,2,0,0,,,4,,,,Y,,limesurvey-14307,w7agsfhypw4ie1kidv,
+2020/09/23,Spain,ES,Provincia:Madrid,ESM,en,100,20,,0,0,0,,,5,,,,Y,,limesurvey-14336,uxc490knazsdqyzc22,
+2020/09/23,Spain,ES,Provincia:Madrid,ESM,en,50,23,,4,5,2,,,3,,,,Y,,limesurvey-14334,vsuk1inaelcaci2h0j,
