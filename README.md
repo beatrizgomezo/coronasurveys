@@ -16,20 +16,7 @@ Please complete one of our surveys!! Choose your country of residence and tell u
 
 Because we are tracking the evolution of this epidemic over time, once you have completed the survey, please remember to come back and update the survey every day. And finally, you can help us by asking your friends, colleagues and relatives to complete the survey as well! Thank you!
 
-You can find our results and links to our surveys in [http://coronasurveys.org](http://coronasurveys.org)
-
-## Reports
-
-**First report with the estimates of COVID-19 cases in Spain and Portugal**
-
-[Measuring Icebergs: Using Different Methods to Estimate the Number of COVID-19 Cases in Portugal and Spain](reports/2020-03-29-CaseEstimation.pdf)
-
-Case estimates for Portugal and Spain. Solid line is official confirmed cases. Dashed lines and solid dots are the number of cases as estimated from deaths (times 400) and from corrected case fatality ratios, respectively. Diamonds and triangles show the results from @CoronaSurveys, Twitter and Google Forms, respectively.
-
-![Estimates for Portugal](doc/EstPTMar29.jpg)
-
-![Estimates for Spain](doc/EstSPMar30.png)
-
+You can find the latest information, results, and links to the surveys in [http://coronasurveys.org](http://coronasurveys.org)
 
 ## Methodology
 
@@ -66,7 +53,7 @@ https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowsh
 
 ## Research Team
 
-See https://coronasurveys.org/info/team/
+See https://coronasurveys.org/team/
 
 ## Data Availability and License
 
