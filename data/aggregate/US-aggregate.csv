@@ -802,3 +802,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/09/23,"United States",US,Vermont,USVT,en,10,0,,,,,,,,,,,N,,limesurvey-14325,cbj368x04yy6c2az7h,
 2020/09/23,"United States",US,Massachusetts,USMA,en,11,1,,0,0,0,,,,,,,N,,limesurvey-14330,uozirs82ypkb86698d,
 2020/09/24,"United States",US,"New Jersey",USNJ,en,2,0,,0,0,0,,,,,,,,,limesurvey-14377,fnv5yui6pdnz3lccd2,
+2020/09/25,"United States",US,Massachusetts,USMA,en,11,1,,0,0,0,,,,,,,N,,limesurvey-14444,uozirs82ypkb86698d,
+2020/09/25,"United States",US,Florida,USFL,en,120,2,,0,1,1,,,,,,,N,,limesurvey-14448,k6gy8pt1vckb2sb0oa,
