@@ -543,9 +543,9 @@ for (i in 1:length(regions)){
   
   # smoothed p_cases and CI:
   source("smooth_column.R")
-  dd <- smooth_column(dd, "p_cases", 15)
-  dd <- smooth_column(dd, "p_cases_low", 15)
-  dd <- smooth_column(dd, "p_cases_high", 15)
+  dd <- smooth_column(dd, "p_cases", 25)
+  dd <- smooth_column(dd, "p_cases_low", 25)
+  dd <- smooth_column(dd, "p_cases_high", 25)
   
   cat("- Writing estimates for:", reg, "\n")
   write.csv(dd, paste0(estimates_path, reg, "-estimate.csv"), row.names = FALSE)
