@@ -348,6 +348,11 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                       # p_m_country = p_m_country,
                                       # recent_p_m_country = recent_p_m_country
                                       )
+  
+  # smoothed p_cases and CI:
+  source("smooth_column.R")
+  region_based_estimate <- smooth_column(region_based_estimate, "p_cases", 15)
+  
   if(write_summary_file == T){
     dir.create(estimates_path, "PlotData/", showWarnings = F)
     cat(paste0("::- script-W: Writing the region based estimate summary for ", countrycode, "..\n"))
