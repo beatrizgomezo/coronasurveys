@@ -8,11 +8,11 @@ smooth_param <- 25
 
 # responses_path <- "../data/aggregate/"
 # data_path <- "../data/common-data/regions-tree-population.csv"
-# estimates_path <- "../data/estimates-W/"
+estimates_path <- "../data/estimates-W/"
 
 responses_path <- "https://raw.githubusercontent.com/GCGImdea/coronasurveys/master/data/aggregate/"
 data_path <- "https://raw.githubusercontent.com/GCGImdea/coronasurveys/master/data/common-data/regions-tree-population.csv"
-estimates_path <- "./estimates-W/"
+# estimates_path <- "./estimates-W/"
 
 ci_level <- 0.95
 max_ratio <- 1/3
