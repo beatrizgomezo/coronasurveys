@@ -1,18 +1,12 @@
-library(dplyr) 
-
-# smoothed p_cases and CI:
-source("smooth_column.R")
-smooth_param <- 25
-
 #######
 
-# responses_path <- "../data/aggregate/"
-# data_path <- "../data/common-data/regions-tree-population.csv"
-# estimates_path <- "../data/estimates-W/"
+responses_path <- "../data/aggregate/"
+data_path <- "../data/common-data/regions-tree-population.csv"
+estimates_path <- "../data/estimates-W/"
 
-responses_path <- "https://raw.githubusercontent.com/GCGImdea/coronasurveys/master/data/aggregate/"
-data_path <- "https://raw.githubusercontent.com/GCGImdea/coronasurveys/master/data/common-data/regions-tree-population.csv"
-estimates_path <- "./estimates-W/"
+# responses_path <- "../coronasurveys/data/aggregate/"
+# data_path <- "../coronasurveys/data/common-data/regions-tree-population.csv"
+# estimates_path <- "./estimates-W/"
 
 ci_level <- 0.95
 max_ratio <- 1/3
@@ -28,7 +22,6 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                                 provinces_and_codes = read.csv(data_path),
                                                 write_summary_file = T,
                                                 write_daily_file = T){
-  
   cat(paste0("::- script-W: Generating region based estimates for ", countrycode, "\n"))
   dt <- read.csv(paste0(responses_path, countrycode, "-aggregate.csv"), as.is = T)
   dt_region <- provinces_and_codes[provinces_and_codes$countrycode == countrycode, ]
@@ -66,33 +59,27 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
   r_c <- r_r <- r_r_recent <-  I_c_p_w_country <- I_c_p_m_country <- I_c_recent_p_w_country <- I_c_recent_p_m_country <- c()
   I_r_p_w_country <- I_r_p_m_country <- I_r_recent_p_w_country <- I_r_recent_p_m_country <- c()
   p_w_country <- p_m_country <- recent_p_w_country <- recent_p_m_country <- c()
-
-  #--------------------------------
-  
-  dwhole <- data.frame(date=c(),
-                       country=c(),
-                       region=c(),
-                       population=c(),
-                       p_cases=c(),
-                       p_cases_recent=c())
-                   
-  #----------------------------------
   
   for (j in dates){
+    # cat("working on date: ", j, "\n"  )
     # get data from the past up to W days earlier
     subcondition <- (as.Date(dt$date) >= (as.Date(j)-W)  & as.Date(dt$date) <= as.Date(j) )
     dt_date <- dt[subcondition, ]
     
     #Remove duplicated cookies keeping the most recent response
     dt_date <- dt_date[!duplicated(dt_date$cookie, fromLast=TRUE, incomparables = c("")),]
+    # #Keep all the responses of the day or at most num_responses
+    # nr <- nrow(dt_date[as.Date(dt_date$date) == as.Date(j), ])
+    # dt_date <- tail(dt_date, max(num_responses,nr))
     
-    #cat("working on date: ", j, " using ", nrow(dt_date), " rows\n")
+    # cat("working on date: ", j, " using ", nrow(dt_date), " rows\n")
     
     # compute provincia provinces
     if (province == T){
       dtprovs <- na.omit(dt_region2)
       provs <- unique(dtprovs$provincecode)
-      p_w_provs <- p_m_provs <- recent_p_w_provs <- recent_p_m_provs <- sumreach_provs <- n_obs_provs <- rep(0, length(provs))
+      p_w_provs <- p_m_provs <- recent_p_w_provs <- recent_p_m_provs <- sumreach_provs <- 
+        n_obs_provs <- rep(0, length(provs))
       for (i in seq_along(provs)) {
         provpop <- dtprovs$population[dtprovs$provincecode == provs[i]]
         dt_prov <- dt_date[dt_date$iso.3166.2 == provs[i], ]
@@ -104,14 +91,15 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
           p_w_provs[i] <- sum(dt_prov$cases)/sum(dt_prov$reach)
           p_m_provs[i]  <- mean(dt_prov$cases/dt_prov$reach)
           recent_p_w_provs[i] <- ifelse(all(is.na(dt_prov$recentcases)), 
-                                        0, sum(dt_prov$recentcases, na.rm = T)/sum(dt_prov$reach[!is.na(dt_prov$recentcases)]))  #should we use the whole sum or partial sum
+                                        NA, sum(dt_prov$recentcases, na.rm = T)/sum(dt_prov$reach[!is.na(dt_prov$recentcases)]))  #should we use the whole sum or partial sum
           recent_p_m_provs[i] <- ifelse(all(is.na(dt_prov$recentcases)), 
-                                        0, mean(dt_prov$recentcases/dt_prov$reach, na.rm = T))
+                                        NA, mean(dt_prov$recentcases/dt_prov$reach, na.rm = T))
           sumreach_provs[i] <- sum(dt_prov$reach)
           n_obs_provs[i] <- nrow(dt_prov)
         }
         # else{
-        #   p_w_provs[i] <- p_m_provs[i]  <- recent_p_w_provs[i] <- recent_p_m_provs[i] <- sumreach_provs[i] <- n_obs_provs[i] <- 0
+        #   sumreach_provs[i] <- sum(dt_prov$reach)
+        #   n_obs_provs[i] <- 0
         # }
         
       }
@@ -157,8 +145,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
         n_obs_regs[k] <- nrow(dt_reg)
       }
       # else{
-      #   p_w_regs_only[k] <- p_m_regs_only[k] <- recent_p_w_regs_only[k] <- 
-      #     recent_p_m_regs_only[k] <- sumreach_regs[k] <- n_obs_regs[k] <- 0
+      #   sumreach_regs[k] <- sum(dt_reg$reach)
+      #   n_obs_regs[k] <- 0
       # }
       
     }
@@ -231,6 +219,7 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
       
     }
     
+    
     ## aggregate regional estimates into provinvial estimates
     dt_country <- dt_date[dt_date$iso.3166.2 == countrycode, ]
     #Keep all the responses of the day or at most num_responses
@@ -250,9 +239,10 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
       n_obs_country <- nrow(dt_country)
     }
     # else{
-    #   p_w_country_only <- p_m_country_only <- recent_p_w_country_only <- recent_p_m_country_only <-
-    #     sumreach_country <- n_obs_country <- 0
+    #   sumreach_country <- sum(dt_country$reach)
+    #   n_obs_country <- 0
     # }
+    
     
     dt_est_reg_count <- by(dt_est_prov_reg,
                            list(dt_est_prov_reg$countrycode, dt_est_prov_reg$regioncode), # groupby country and region and compute population
@@ -279,8 +269,6 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     sumreach_country_rhs1<-  sum(dt_est_reg_count1$sumreach_regs)
     sumreach_country_rhs2 <-  sum(dt_est_reg_count2$sumreach_regs)
     
-    
-    
     p_w_counts <- sum(((sumreach_country/(sumreach_country + sumreach_country_rhs1)) * p_w_country_only),  
       ((sumreach_country_rhs1/(sumreach_country + sumreach_country_rhs1)) * p_w_country_rhs), na.rm = T)
     
@@ -293,10 +281,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     recent_p_m_counts <- sum(((sumreach_country/(sumreach_country + sumreach_country_rhs2)) * recent_p_m_country_only),  
       ((sumreach_country_rhs2/(sumreach_country + sumreach_country_rhs2)) * recent_p_m_country_rhs), na.rm = T)
     
-    
     if (write_daily_file == T){
-      dt_est_count <- data.frame(date=j,
-                                 countrycode = countrycode,
+      dt_est_count <- data.frame(countrycode = countrycode,
                                  population_country = sum(dtregs$population_region),
                                  p_w_country_only = p_w_country_only,
                                  # p_m_country_only = p_m_country_only,
@@ -317,29 +303,16 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                  )
       dir.create(paste0(estimates_path, countrycode), showWarnings = F)
       # cat(paste0("::- script-W: Writing the region based daily estimate for ", countrycode, "..\n")) 
-      dt_est_prov_reg_country <- merge(dt_est_count, dt_est_prov_reg, all = T, by = "countrycode")
-      
-      #----------------------------------------------
+      dt_est_prov_reg_country <- merge(dt_est_prov_reg, dt_est_count, all = T, by = "countrycode")
       write.csv(x = dt_est_prov_reg_country, file = paste0(estimates_path, countrycode, "/", countrycode,
-                                                           "-", gsub("/", "_", j), "-estimate.csv"), row.names = FALSE)
-      
+                                                           "-province-region-country-based-estimate-", gsub("/", "_", j), ".csv"))
       if (j == dates[length(dates)]){
         write.csv(x = dt_est_prov_reg_country, file = paste0(estimates_path, countrycode, "/", countrycode,
-                                                           "-latest-estimate.csv"), row.names = FALSE)
+                                                             "-latest-estimate.csv"))
       }
-      
-    }
-
-    # Concatenate to dwhole the regional estimates for date j
-    dt_est_prov_reg$date <- j
-    df_aux <- dt_est_prov_reg[, c("date", "countrycode", "regioncode", "population_region", "p_w_regs", "recent_p_w_regs")]
     
-    df_aux %>% rename(country = countrycode, region = regioncode, 
-                      population=population_region, p_cases=p_w_regs, 
-                      p_cases_recent=recent_p_w_regs) -> df_aux
-    df_aux <- unique(df_aux)
     
-    dwhole <- rbind(dwhole, df_aux)
+    
     
     r_c <-  c(r_c, sumreach_country)
     r_r <-  c(r_r, sumreach_country_rhs1)
@@ -348,6 +321,7 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     I_c_p_m_country <- c(I_c_p_m_country, p_m_country_only)
     I_c_recent_p_w_country <- c(I_c_recent_p_w_country, recent_p_w_country_only)
     I_c_recent_p_m_country <- c(I_c_recent_p_m_country, recent_p_m_country_only)
+    
     
     I_r_p_w_country <- c(I_r_p_w_country, p_w_country_rhs)
     I_r_p_m_country <- c(I_r_p_m_country, p_m_country_rhs)
@@ -359,24 +333,6 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     recent_p_w_country <- c(recent_p_w_country, recent_p_w_counts)
     recent_p_m_country <- c(recent_p_m_country, recent_p_m_counts)
   }
-
-  dir.create(paste0(estimates_path, countrycode), showWarnings = F)
-  write.csv(x = dwhole, file = paste0(estimates_path, countrycode, "/", countrycode,
-                                      "-region-estimate.csv"), row.names = FALSE)
-  
-  # for (j in regions){
-  #   df_aux <- dwhole[dwhole$region == j,]
-  #   df_aux[["p_cases"]][is.na(df_aux[["p_cases"]])] <- 0
-  #   if (sum(df_aux$p_cases != 0) > smooth_param) {
-  #     df_aux <- smooth_column(df_aux, "p_cases", smooth_param)
-  #   }
-  #   df_aux[["p_cases_recent"]][is.na(df_aux[["p_cases_recent"]])] <- 0
-  #   if (sum(df_aux$p_cases_recent != 0) > smooth_param) {
-  #     df_aux <- smooth_column(df_aux, "p_cases_recent", smooth_param)
-  #   }
-  #   write.csv(x = df_aux, file = paste0(estimates_path, countrycode, "/", j,
-  #                                       "-region-estimate.csv"), row.names = FALSE)
-  # }
   
   region_based_estimate <- data.frame(date = dates,
                                       #r_c = r_c,
@@ -396,36 +352,26 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                       # recent_p_m_country = recent_p_m_country
                                       )
   
-#---------------------------------------
-  
-  region_based_estimate[["p_cases"]][is.na(region_based_estimate[["p_cases"]])] <- 0
-  if (sum(region_based_estimate$p_cases != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases", smooth_param)
-  }
-  region_based_estimate[["p_cases_recent"]][is.na(region_based_estimate[["p_cases_recent"]])] <- 0
-  if (sum(region_based_estimate$p_cases_recent != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent", smooth_param)
-  }
-  
-
-#-------------------------------------------
+  # smoothed p_cases and CI:
+  source("smooth_column.R")
+  region_based_estimate <- smooth_column(region_based_estimate, "p_cases", 25)
   
   if(write_summary_file == T){
-    dir.create(paste0(estimates_path, "PlotData/"), showWarnings = F)
+    dir.create(estimates_path, "PlotData/", showWarnings = F)
     cat(paste0("::- script-W: Writing the region based estimate summary for ", countrycode, "..\n"))
     write.csv(region_based_estimate, paste0(estimates_path, "PlotData/",
                                             countrycode, "-estimate.csv"))
-  } else{
+  }
+  else{
     return(region_based_estimate)
-    }
-
+  }
+  
 }
 
 
 interest <- c("BR", "CL", "CY", "DE", "EC", "FR", "GB", "PT", "UA", "US")
-#interest <- c("BR", "US")
-dd <- sapply(interest, provincial_regional_estimate_w_only, province = F, write_daily_file = T)
+dd <- sapply(interest, provincial_regional_estimate_w_only, province = F)
 
 interest2 <- c("ES", "IT")
-dd2 <- sapply(interest2, provincial_regional_estimate_w_only, province = T, write_daily_file = T)
+dd2 <- sapply(interest2, provincial_regional_estimate_w_only, province = T)
 
