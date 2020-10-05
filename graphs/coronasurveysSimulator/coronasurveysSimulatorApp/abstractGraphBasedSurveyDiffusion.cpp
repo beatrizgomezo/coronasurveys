@@ -6,14 +6,14 @@
 //  Copyright © 2020 Davide Frey. All rights reserved.
 //
 
-#include "abstractGraphBasedSurveySampler.hpp"
+#include "abstractGraphBasedSurveyDiffusion.hpp"
 #include <algorithm>
 #include <iostream>
 #include <unordered_set>
-
+#include "util.hpp"
 using namespace std;
 // selects random node ids from the graph and returns them
-unordered_set<int>& AbstractGraphBasedSurveySampler::selectRandomSeedResponders(unordered_set<int>& seeds, int num){
+unordered_set<int>& AbstractGraphBasedSurveyDiffusion::selectRandomSeedResponders(unordered_set<int>& seeds, int num){
     if (!seeds.empty()){
         cout<<"seeds is not empty in selectRandomSeedResponders"<<endl;
         seeds.clear();
@@ -26,7 +26,8 @@ unordered_set<int>& AbstractGraphBasedSurveySampler::selectRandomSeedResponders(
 }
 
 //retuns numSamples integers between min and max (both included) This is used by forwardToFriends to select a set of random neighbors.
-unordered_set<int>& AbstractGraphBasedSurveySampler::samplePositions(unordered_set<int>& samples, int numSamples, int min, int max){
+/*
+ unordered_set<int>& AbstractGraphBasedSurveyDiffusion::samplePositions(unordered_set<int>& samples, int numSamples, int min, int max){
     int numToAdd=std::min(numSamples, max - min + 1);
     while(samples.size() < numToAdd){
         int sampleCan=rnd.GetUniDevInt(min, max);
@@ -37,14 +38,15 @@ unordered_set<int>& AbstractGraphBasedSurveySampler::samplePositions(unordered_s
     }
     return samples;
 }
+ */
 
 // returns the identifiers of numSamples random friends. returned value is in appended to samples
-list<int> & AbstractGraphBasedSurveySampler::forwardToFriends(list<int> &samples, int myId, int numSamples) {
+list<int> & AbstractGraphBasedSurveyDiffusion::forwardToFriends(list<int> &samples, int myId, int numSamples) {
     
     TUNGraph::TNodeI myNode=graph->GetNI(myId);
     int toSample=min(numSamples, myNode.GetDeg());
     unordered_set<int> sampledPositions;
-    samplePositions(sampledPositions, toSample, 0, toSample -1 );
+    samplePositions(rnd, sampledPositions, toSample, 0, toSample -1 );
    
     for (unordered_set<int>::iterator pos=sampledPositions.begin(); pos!=sampledPositions.end(); pos++){
         samples.push_back(myNode.GetNbrNId(*pos));
@@ -52,7 +54,7 @@ list<int> & AbstractGraphBasedSurveySampler::forwardToFriends(list<int> &samples
     return samples;
 }
 
-AbstractGraphBasedSurveySampler::AbstractGraphBasedSurveySampler(int fwdFanout, int rndSeed, int reach, double ansProb, double fwdProb){
+AbstractGraphBasedSurveyDiffusion::AbstractGraphBasedSurveyDiffusion(int fwdFanout, int rndSeed, int reach, double ansProb, double fwdProb){
     this->fwdFanout=fwdFanout;
     rnd.PutSeed(rndSeed);
     this->reach=reach;
@@ -63,7 +65,7 @@ AbstractGraphBasedSurveySampler::AbstractGraphBasedSurveySampler(int fwdFanout, 
 
 
 
-list<int>  AbstractGraphBasedSurveySampler::correlatedSampling(int requiredSize, int numSeeds){//} <- function(popSize, requiredSize, reach, numSeeds, ansProb, fwdProb, fwdFanout){
+unordered_set<int> AbstractGraphBasedSurveyDiffusion::correlatedSampling(int requiredSize, int numSeeds){//} <- function(popSize, requiredSize, reach, numSeeds, ansProb, fwdProb, fwdFanout){
   // select seeds randomly
     if (!recipients.empty()){
         cout<<"recipients is not empty, emptying it"<<endl;
@@ -88,17 +90,21 @@ list<int>  AbstractGraphBasedSurveySampler::correlatedSampling(int requiredSize,
    */
     list<int>::iterator myId=recipients.begin();
     while (myId!=recipients.end() && responders.size() < requiredSize){
-        if (rnd.GetUniDev()<ansProb){// if the recipiens answers the survey
-            responders.insert(*myId); // we count its answer
-            if (reach >1 && rnd.GetUniDev()< fwdProb){// this reach>1 condition is not necessary because we will never get here if reach=1 because of line 71. Check if condition on reach is right.
-                //here we forward
-                forwardToFriends(recipients, *myId, fwdFanout);
+        if (responders.find(*myId)==responders.end()){//if the recipient has not yet answered
+            if (rnd.GetUniDev()<ansProb){// if the recipiens answers the survey
+                responders.insert(*myId); // we count its answer
+                if (reach >1 && rnd.GetUniDev()< fwdProb){// this reach>1 condition is not necessary because we will never get here if reach=1 because of line 71. Check if condition on reach is right.
+                    //here we forward
+                    forwardToFriends(recipients, *myId, fwdFanout);
+                }
             }
         }
         myId++;
     }
     
-    // now recipients contains the ids of everyone who received the survey
-    return recipients;
+    // now recipients contains the ids of everyone who received the survey possibly several times since they may have received it several times
+    //responders contains the set of users that responded
+    //return recipients;
+    return responders;
 }
 

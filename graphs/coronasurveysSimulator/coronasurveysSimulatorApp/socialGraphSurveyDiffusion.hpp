@@ -6,8 +6,8 @@
 //  Copyright © 2020 Davide Frey. All rights reserved.
 //
 
-#ifndef socialNetworkSimulator_hpp
-#define socialNetworkSimulator_hpp
+#ifndef socialGraphSurveyDiffusion_hpp
+#define socialGraphSurveyDiffusion_hpp
 
 #include <stdio.h>
 
@@ -15,15 +15,15 @@
 #include <filesystem>
 #include "Snap.h"
 #include "shash.h"
-#include "abstractGraphBasedSurveySampler.hpp"
+#include "abstractGraphBasedSurveyDiffusion.hpp"
 using namespace std;
 using namespace TSnap;
 
-class SocialGraphSurveySampler: public AbstractGraphBasedSurveySampler {
+class SocialGraphSurveyDiffusion: public AbstractGraphBasedSurveyDiffusion {
 private:
     string topologyFile;
 public:
-    SocialGraphSurveySampler(int fwdFanout, int rndSeed, int reach, double ansProb, double fwdProb, string filename);
+    SocialGraphSurveyDiffusion(int fwdFanout, int rndSeed, int reach, double ansProb, double fwdProb, string filename);
     void initializeGraph();
     
 };

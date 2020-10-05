@@ -6,12 +6,12 @@
 //  Copyright © 2020 Davide Frey. All rights reserved.
 //
 
-#include "socialGraphSurveySampler.hpp"
+#include "socialGraphSurveyDiffusion.hpp"
 
 
 
 
-void SocialGraphSurveySampler::initializeGraph(){
+void SocialGraphSurveyDiffusion::initializeGraph(){
     //string topologyFile="/Users/frey/work/COVID19/coronasurveys/graphs/coronasurveysSimulator/facebook_combined.txt";
   
     cout << "reading topology file "<<topologyFile<<endl;
@@ -21,7 +21,7 @@ void SocialGraphSurveySampler::initializeGraph(){
       
 }
 
-SocialGraphSurveySampler::SocialGraphSurveySampler(int fwdFanout, int rndSeed, int reach, double ansProb, double fwdProb, std::string filename):AbstractGraphBasedSurveySampler(fwdFanout,rndSeed, reach,  ansProb,  fwdProb), topologyFile(filename) {
+SocialGraphSurveyDiffusion::SocialGraphSurveyDiffusion(int fwdFanout, int rndSeed, int reach, double ansProb, double fwdProb, std::string filename):AbstractGraphBasedSurveyDiffusion(fwdFanout,rndSeed, reach,  ansProb,  fwdProb), topologyFile(filename) {
 }
 
 
