@@ -17,6 +17,7 @@
 #include "CLI11.hpp"
 #include <fstream>
 #include <math.h>
+#include <string>
 using namespace std;
 using namespace TSnap;
 
@@ -28,13 +29,15 @@ class SimulationParameters{
 public:
    
     float error=0;
-    string topologyFile;
+    string topologyFile="";
+    string graphModel="";
     int prescribedReach=150;
     float infectedFraction=0.02;
     int numToSample=100;
     int spreaderSeed=0;
     int surveySeed=0;
     int perturbationSeed=0;
+    int graphgenSeed=0;
     int runId=0;
     
 };
@@ -134,7 +137,25 @@ void readSeedsFromFile(vector<int>& seeds, const string& filename){
 
 void doSimulationRun(const SimulationParameters& p){
     UniformRandomSpreader spreader(p.spreaderSeed);
-    PUNGraph graph=LoadEdgeList<PUNGraph>(p.topologyFile.c_str());
+    TRnd rndGen(p.graphgenSeed);
+    PUNGraph graph;
+    if (!p.topologyFile.empty()){
+        graph=LoadEdgeList<PUNGraph>(p.topologyFile.c_str());
+    } else {
+        if (p.graphModel.find("PrefA")!=string::npos){
+            string parameters=p.graphModel.substr(5);
+            int commaPos=parameters.find(",");
+            int nodes=stoi(parameters.substr(0, commaPos));
+            int degree=stoi(parameters.substr(commaPos+1));
+            graph=GenPrefAttach (nodes,degree, rndGen );
+        } else if (p.graphModel.find("RndG")!=string::npos){
+            string parameters=p.graphModel.substr(4);
+            int commaPos=parameters.find(",");
+            int nodes=stoi(parameters.substr(0, commaPos));
+            int edges=stoi(parameters.substr(commaPos+1));
+            graph=GenRndGnm<PUNGraph>(nodes,edges,false,rndGen);
+        }
+    }
     cout<<"loaded graph with "<<graph->GetNodes()<<" nodes and "<<graph->GetEdges()<<" edges."<<endl;
     int numToInfect=(int)(p.infectedFraction*graph->GetNodes());
     cout<<"numToInfect="<<numToInfect<<endl;
@@ -226,7 +247,8 @@ int main (int argc, char *argv[]) {
         // Define options
       
     
-    app.add_option("-g,--graph", p.topologyFile, "name of the file containing the network topology")->required()->check(CLI::ExistingFile);
+    app.add_option("-g,--graph", p.topologyFile, "name of the file containing the network topology")->check(CLI::ExistingFile);
+    app.add_option("-G,--generate", p.graphModel, "generate graph instead of loading it");
     app.add_option("-s,--seeds", seedFileName, "name of the file containing the seeds for the random number generator. The simulator needs 3 seeds per run. It will run as many runs as there are seeds.")->required()->check(CLI::ExistingFile);
     app.add_option("-f,--fracInfected", p.infectedFraction, "fraction of infected individuals in the social network")->required();
     app.add_option("-S,--sampleSize", p.numToSample, "number of survey respondents")->required();
@@ -234,6 +256,10 @@ int main (int argc, char *argv[]) {
     app.add_option("-r,--reach", p.prescribedReach, "prescribed reach for scale up. The simulator takes the minimmum between this value and the actual number of friends a user has. Default value: 150");
     CLI11_PARSE(app, argc, argv);
   
+    if (p.graphModel=="" && p.topologyFile==""){
+        cerr<<"At least one between -g and -G is required"<<endl;
+        exit(-1);
+    }
     
   
     vector<int> seeds;
@@ -246,10 +272,11 @@ int main (int argc, char *argv[]) {
     
     cout<<"doing runs with "<<p.topologyFile<<" and "<<seeds.size()<<" seeds"<<endl;
     int doneRuns=0;
-    while (doneRuns <=seeds.size()-3){//we need three seeds per run
+    while (doneRuns <=seeds.size()-4){//we need three seeds per run
         p.spreaderSeed=seeds[doneRuns++];
         p.surveySeed=seeds[doneRuns++];
         p.perturbationSeed=seeds[doneRuns++];
+        p.graphgenSeed=seeds[doneRuns++];
         doSimulationRun(p);
         p.runId++;
     }
