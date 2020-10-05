@@ -1,4 +1,4 @@
-SNAPDIR=../snap-git/snap
+SNAPDIR=snap
 #../../../../snap
 
 CC=g++
@@ -9,7 +9,7 @@ TARGET   = scaleUpDirectSurveyComparator
 
 # compiling flags here
 CFLAGS=-c -O3 -std=c++14
-LFLAGS   = # -Wall -I. -lm
+LFLAGS   = -Wall -I. -lm -fopenmp
 
 SRCDIR   = src
 OBJDIR   = obj
@@ -30,7 +30,7 @@ rm       = rm -f
 all:	$(SNAPLIB) $(SOURCES) $(BINDIR)/$(TARGET)
 
 $(SNAPLIB):	
-	$(MAKE) -C $(SNAPDIR)
+	$(MAKE) -C $(SNAPDIR) all
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
 	mkdir -p bin
