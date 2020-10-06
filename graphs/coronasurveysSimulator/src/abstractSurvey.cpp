@@ -21,11 +21,11 @@ void AbstractSurvey::setInfectedIds(const unordered_set<int> &infSet){
 
 void AbstractSurvey::resetSurvey(){
     positiveSamples=0;
-    surveyTotalReach.clear();
+    surveyTotalReach=0;
     sampled.clear();
 }
 long AbstractSurvey::getNumActuallySampled(){
-    return surveyTotalReach.size();
+    return surveyTotalReach;
 }
 
 long AbstractSurvey::getNumPositiveSamples(){
@@ -57,9 +57,10 @@ SurveyResponse AbstractSurvey::getOneSurveyResponse(){
 
 void AbstractSurvey::recordSampleFromResponse(SurveyResponse &r, int idToRecord){
     //this is called for each user inthe reach so we must not update sampled
-    surveyTotalReach.insert(idToRecord);
+    surveyTotalReach++;
     r.reach.insert(idToRecord);
         if (infected!=NULL && infected->find(idToRecord)!=infected->end()){
+            //if this guy is infected
             positiveSamples++;
             r.infected.insert(idToRecord);
         }

@@ -26,7 +26,7 @@ private:
     virtual SurveyResponse getOneSurveyResponse(int responderId)=0; // this should only be called by getOneSurveyResponse() which adds the element to sampled
 protected:
     const unordered_set<int>* infected=NULL;
-    unordered_set<int> surveyTotalReach;//this is the set number of sampled individuals including reach in scale-up
+    int surveyTotalReach;//this is the number of sampled individuals including reach in scale-up
     unordered_set<int> sampled;//this is the set of sampled individuals excluding scaleup reach
     long positiveSamples;
     PUNGraph graph;
