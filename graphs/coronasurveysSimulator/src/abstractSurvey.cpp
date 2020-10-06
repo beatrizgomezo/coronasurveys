@@ -22,6 +22,7 @@ void AbstractSurvey::setInfectedIds(const unordered_set<int> &infSet){
 void AbstractSurvey::resetSurvey(){
     positiveSamples=0;
     surveyTotalReach.clear();
+    sampled.clear();
 }
 long AbstractSurvey::getNumActuallySampled(){
     return surveyTotalReach.size();
@@ -49,12 +50,13 @@ SurveyResponse AbstractSurvey::getOneSurveyResponse(){
     int responderId;
     do {
         responderId=graph->GetRndNId(rnd);
-    } while (surveyTotalReach.find(responderId)!=surveyTotalReach.end());
-    
+    } while (sampled.find(responderId)!=sampled.end());
+    sampled.insert(responderId);
     return getOneSurveyResponse(responderId);
 }
 
 void AbstractSurvey::recordSampleFromResponse(SurveyResponse &r, int idToRecord){
+    //this is called for each user inthe reach so we must not update sampled
     surveyTotalReach.insert(idToRecord);
     r.reach.insert(idToRecord);
         if (infected!=NULL && infected->find(idToRecord)!=infected->end()){

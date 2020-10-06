@@ -22,19 +22,22 @@ public:
     unordered_set<int> infected;// this is an infected subset of reach
 };
 class AbstractSurvey{
+private:
+    virtual SurveyResponse getOneSurveyResponse(int responderId)=0; // this should only be called by getOneSurveyResponse() which adds the element to sampled
 protected:
     const unordered_set<int>* infected=NULL;
     unordered_set<int> surveyTotalReach;//this is the set number of sampled individuals including reach in scale-up
+    unordered_set<int> sampled;//this is the set of sampled individuals excluding scaleup reach
     long positiveSamples;
     PUNGraph graph;
     TRnd rnd;
+    
 public:
     AbstractSurvey(int randomseed):rnd(randomseed){};
     virtual void setGraph(PUNGraph g) final;
     virtual void setInfectedIds(const unordered_set<int>& infected) final;
     //virtual void getSurveyResponses(int numResponders) final;
     virtual SurveyResponse getOneSurveyResponse() final;
-    virtual SurveyResponse getOneSurveyResponse(int responderId)=0;
     virtual long getNumActuallySampled();
     virtual long getNumSampled()=0;
     virtual long getNumPositiveSamples();
