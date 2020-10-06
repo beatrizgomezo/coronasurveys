@@ -144,13 +144,13 @@ void doSimulationRun(const SimulationParameters& p){
     } else {
         if (p.graphModel.find("PrefA")!=string::npos){
             string parameters=p.graphModel.substr(5);
-            int commaPos=parameters.find(",");
+            int commaPos=parameters.find("-");
             int nodes=stoi(parameters.substr(0, commaPos));
             int degree=stoi(parameters.substr(commaPos+1));
             graph=GenPrefAttach (nodes,degree, rndGen );
         } else if (p.graphModel.find("RndG")!=string::npos){
             string parameters=p.graphModel.substr(4);
-            int commaPos=parameters.find(",");
+            int commaPos=parameters.find("-");
             int nodes=stoi(parameters.substr(0, commaPos));
             int edges=stoi(parameters.substr(commaPos+1));
             graph=GenRndGnm<PUNGraph>(nodes,edges,false,rndGen);
