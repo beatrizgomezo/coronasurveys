@@ -5953,3 +5953,7 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/05,Spain,ES,Provincia:Toledo,ESTO,en,300,100,,18,2,351,,,60,,,,Y,,limesurvey-14882,bwe64hr9xb60sl4rhn,
 2020/10/05,Spain,ES,"Provincia:Las Palmas",ESGC,en,200,5,,0,0,1,,,2,,,,Y,,limesurvey-14877,ssi4c2p62wzua7jnna,
 2020/10/05,Spain,ES,Provincia:Toledo,ESTO,en,300,100,,18,2,351,,,60,,,,Y,,limesurvey-14881,bwe64hr9xb60sl4rhn,
+2020/10/06,Spain,ES,Provincia:Granada,ESGR,en,30,10,,,3,5,,,,,,,N,,limesurvey-14908,v0e6p7op2tztp9hwut,
+2020/10/06,Spain,ES,Provincia:Granada,ESGR,en,30,10,,,3,5,,,,,,,N,,limesurvey-14907,v0e6p7op2tztp9hwut,
+2020/10/06,Spain,ES,Provincia:Madrid,ESM,en,600,65,,6,4,5,,,15,,,,Y,,limesurvey-14904,vchx7le9tv11swe9nl,
+2020/10/06,Spain,ES,Provincia:Granada,ESGR,en,30,10,,,3,5,,,,,,,N,,limesurvey-14906,v0e6p7op2tztp9hwut,
