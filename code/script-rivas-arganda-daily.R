@@ -14,6 +14,7 @@ ci_level <- 0.95
 max_ratio <- 1/3
 num_responses = 1000
 age <- 7
+smooth_param <- 25
 
 
 remove_outliers <- function(dt, max_ratio = 1/3) {
@@ -45,6 +46,98 @@ remove_outliers <- function(dt, max_ratio = 1/3) {
 
   return(dt)
 }
+
+#######
+
+smooth_column_cum <- function(df_in, col_s, basis_dim = 15){
+  
+  ## List of packages
+  packages = c("scam")
+  ## Install&load all
+  package.check <- lapply(
+    packages,
+    FUN = function(x) {
+      if (!require(x, character.only = TRUE)) {
+        install.packages(x, dependencies = TRUE)
+        library(x, character.only = TRUE)
+      }
+    }
+  )
+  
+  # add a number of "day" column:
+  to.smooth <- df_in
+  to.smooth$day <- 1:nrow(to.smooth)
+  
+  # change the name of column to be smoothed:
+  colnames(to.smooth)[colnames(to.smooth) == col_s] = "y"
+  
+  # first non zero element to be smoothed:
+  frst_n_zero <- head(to.smooth[to.smooth$y!=0, "day"], 1)
+  
+  cat("Smoothing starting at row ", frst_n_zero, "..\n")
+  
+  # data to be smoothed:
+  to.smooth <- to.smooth[frst_n_zero:nrow(df_in), ]
+  
+  # Mono-smoothing with scam ----
+  b1 <- scam(y ~ s(day, k = basis_dim, bs="mpi",m=2),
+             family=gaussian(link="identity"), data=to.smooth)
+  
+  # save to column "xxx_smooth":
+  df_in$y_smooth <- NA
+  df_in[frst_n_zero:nrow(df_in) , "y_smooth"] <- b1$fitted.values
+  colnames(df_in)[colnames(df_in) == "y_smooth"] <- paste0(col_s, 
+                                                           "_smooth")
+  return(df_in)
+}
+
+smooth_column <- function(df_in, col_s, basis_dim = 15){
+  
+  ## List of packages
+  packages = c("scam")
+  ## Install&load all
+  package.check <- lapply(
+    packages,
+    FUN = function(x) {
+      if (!require(x, character.only = TRUE)) {
+        install.packages(x, dependencies = TRUE)
+        library(x, character.only = TRUE)
+      }
+    }
+  )
+  
+  # add a number of "day" column:
+  to.smooth <- df_in
+  to.smooth$day <- 1:nrow(to.smooth)
+  
+  # change the name of column to be smoothed:
+  colnames(to.smooth)[colnames(to.smooth) == col_s] = "y"
+  
+  # first non zero element to be smoothed:
+  frst_n_zero <- head(to.smooth[to.smooth$y!=0, "day"], 1)
+  
+  cat("Smoothing starting at row ", frst_n_zero, "..\n")
+  
+  # data to be smoothed:
+  to.smooth <- to.smooth[frst_n_zero:nrow(df_in), ]
+  
+  # Mono-smoothing with scam ----
+  # b1 <- scam(y ~ s(day, k = basis_dim, bs="mpi",m=2),
+  #            family=gaussian(link="identity"), data=to.smooth)
+  b1 <- gam(y ~ s(day, k = basis_dim, bs="ps"),
+            data=to.smooth)
+  
+  # save to column "xxx_smooth":
+  df_in$y_smooth <- NA
+  df_in[frst_n_zero:nrow(df_in) , "y_smooth"] <- b1$fitted.values
+  colnames(df_in)[colnames(df_in) == "y_smooth"] <- paste0(col_s, 
+                                                           "_smooth")
+  return(df_in)
+}
+
+############################
+
+
 
 process_ratio <- function(dt, numerator, denominator, control, cummulative=TRUE){
   dta <- dt[!is.na(dt[[numerator]]),]
@@ -542,10 +635,15 @@ for (i in 1:length(regions)){
   dd <- process_region(dt[dt$iso.3166.2 == reg, ], reg, name, pop=populations[i], dates, num_responses, age)
   
   # smoothed p_cases and CI:
-  source("smooth_column.R")
-  dd <- smooth_column(dd, "p_cases", 25)
-  dd <- smooth_column(dd, "p_cases_low", 25)
-  dd <- smooth_column(dd, "p_cases_high", 25)
+  dd <- smooth_column_cum(dd, "p_cases", smooth_param)
+  dd <- smooth_column_cum(dd, "p_cases_low", smooth_param)
+  dd <- smooth_column_cum(dd, "p_cases_high", smooth_param)
+  
+  # smoothed p_cases and CI:
+  dd <- smooth_column(dd, "p_recentcases", smooth_param)
+  dd <- smooth_column(dd, "p_recentcases_low", smooth_param)
+  dd <- smooth_column(dd, "p_recentcases_high", smooth_param)
+  
   
   cat("- Writing estimates for:", reg, "\n")
   write.csv(dd, paste0(estimates_path, reg, "-estimate.csv"), row.names = FALSE)
