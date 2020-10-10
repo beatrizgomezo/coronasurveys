@@ -643,9 +643,12 @@ for (i in 1:length(regions)){
   dd <- smooth_column(dd, "p_recentcases", smooth_param)
   dd$p_recentcases_smooth <- ifelse(dd$p_recentcases_smooth < 0, 0, dd$p_recentcases_smooth)
   dd <- smooth_column(dd, "p_recentcases_low", smooth_param)
+  dd$p_recentcases_low_smooth <- ifelse(dd$p_recentcases_low_smooth > dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_smooth, dd$p_recentcases_low_smooth)
   dd$p_recentcases_low_smooth <- ifelse(dd$p_recentcases_low_smooth < 0, 0, dd$p_recentcases_low_smooth)
   dd <- smooth_column(dd, "p_recentcases_high", smooth_param)
-  dd$p_recentcases_high_smooth <- ifelse(dd$p_recentcases_high_smooth < 0, 0, dd$p_recentcases_high_smooth)
+  dd$p_recentcases_high_smooth <- ifelse(dd$p_recentcases_high_smooth < dd$p_recentcases_smooth, 
+                                         dd$p_recentcases_smooth, dd$p_recentcases_high_smooth)
   
   
   cat("- Writing estimates for:", reg, "\n")
