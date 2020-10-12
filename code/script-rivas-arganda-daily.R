@@ -582,9 +582,14 @@ for (i in 1:length(regions)){
                       basis_dim = smooth_param, link_in = "log")
   dd <- smooth_column(df_in = dd, col_s = "p_recentcases_low", 
                       basis_dim = smooth_param, link_in = "log")
+  dd$p_recentcases_low_smooth <- ifelse(dd$p_recentcases_low_smooth > dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_low_smooth)
   dd <- smooth_column(df_in = dd, col_s = "p_recentcases_high", 
                       basis_dim = smooth_param, link_in = "log")
-  # dd$p_recentcases_high_smooth <- ifelse(dd$p_recentcases_high_smooth < 0, 0, dd$p_recentcases_high_smooth)
+  dd$p_recentcases_high_smooth <- ifelse(dd$p_recentcases_high_smooth < dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_high_smooth)
   
   
   cat("- Writing estimates for:", reg, "\n")
