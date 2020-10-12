@@ -1,6 +1,5 @@
 ## Libraries
 library(dplyr)
-library(ggplot2)
 
 ## Functions ----
 smooth_column <- function(df_in, col_s,  basis_dim = 15, link_in = "identity", monotone = F){
