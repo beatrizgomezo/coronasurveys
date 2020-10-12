@@ -5969,3 +5969,7 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/09,Spain,ES,Provincia:Madrid,ESM,en,110,22,,0,0,1,,,3,,,,Y,,limesurvey-15038,4umvar1o48a3a3mr84,
 2020/10/10,Spain,ES,"Comunidad Autónoma:Madrid, Comunidad de",ESMD,en,1,1,,0,0,0,,,0,,,,Y,,limesurvey-15069,hn0yzow19pydw58ta5,
 2020/10/10,Spain,ES,Provincia:Madrid,ESM,en,270,25,,3,0,1,,,4,,,,Y,,limesurvey-15075,kuotb4ejplkcvvzib5,
+2020/10/12,Spain,ES,Provincia:Madrid,ESM,en,100,11,,0,0,0,,,2,,,,Y,,limesurvey-15110,8hqhi98agokc29bylg,
+2020/10/12,Spain,ES,Provincia:Toledo,ESTO,en,100,2,,1,0,0,,,0,,,,Y,,limesurvey-15109,8hqhi98agokc29bylg,
+2020/10/12,Spain,ES,Provincia:Madrid,ESM,en,10012,122,,2,,0,,,2,,,,Y,,limesurvey-15112,rjtfq7wq1h88cki9o9,
+2020/10/12,Spain,ES,Provincia:Madrid,ESM,en,150,16,,1,2,3,,,1,,,,N,,limesurvey-15107,tgrjeuife9kg6dso3j,
