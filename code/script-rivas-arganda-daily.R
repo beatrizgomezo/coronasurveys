@@ -576,6 +576,13 @@ for (i in 1:length(regions)){
                       basis_dim = smooth_param, link_in = "log", monotone = T)
   dd <- smooth_column(df_in = dd, col_s = "p_cases_high", 
                       basis_dim = smooth_param, link_in = "log", monotone = T)
+  dd$p_cases_low_smooth <- ifelse(dd$p_cases_low_smooth > dd$p_cases_smooth, 
+                                        dd$p_cases_smooth, 
+                                        dd$p_cases_low_smooth)
+  dd$p_cases_high_smooth <- ifelse(dd$p_cases_high_smooth < dd$p_cases_smooth, 
+                                         dd$p_cases_smooth, 
+                                         dd$p_cases_high_smooth)
+  
 
   # smoothed p_cases and CI:
   dd <- smooth_column(df_in = dd, col_s = "p_recentcases", 
@@ -584,7 +591,12 @@ for (i in 1:length(regions)){
                       basis_dim = smooth_param, link_in = "log")
   dd <- smooth_column(df_in = dd, col_s = "p_recentcases_high", 
                       basis_dim = smooth_param, link_in = "log")
-  # dd$p_recentcases_high_smooth <- ifelse(dd$p_recentcases_high_smooth < 0, 0, dd$p_recentcases_high_smooth)
+  dd$p_recentcases_low_smooth <- ifelse(dd$p_recentcases_low_smooth > dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_low_smooth)
+  dd$p_recentcases_high_smooth <- ifelse(dd$p_recentcases_high_smooth < dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_high_smooth)
   
   
   cat("- Writing estimates for:", reg, "\n")
@@ -593,7 +605,11 @@ for (i in 1:length(regions)){
 }
 
 for (j in 1:length(dates)){
-  write.csv(dw[dw$date == dates[j], ], paste0(estimates_path, country_iso, "-", dates_dash[j], "-estimate.csv"), row.names = FALSE)
+  write.csv(dw[dw$date == dates[j], ], 
+            paste0(estimates_path, country_iso, "-", dates_dash[j], "-estimate.csv"), 
+            row.names = FALSE)
 }
-
+write.csv(dw[dw$date == dates[length(dates)], ], 
+          paste0(estimates_path, country_iso, "-latest-estimate.csv"), 
+          row.names = FALSE)
 
