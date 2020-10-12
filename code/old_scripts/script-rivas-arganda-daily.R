@@ -1,10 +1,6 @@
 library(tidyr)
 library(dplyr)
 
-# smoothed p_cases and CI:
-source("smooth_column-v2.R")
-
-
 responses_path <- "../data/aggregate/rivas-arganda/"
 data_path <- "../data/common-data/rivas-arganda/regions-tree-population.csv"
 estimates_path <- "../data/estimates-rivas-arganda/"
@@ -14,12 +10,11 @@ estimates_path <- "../data/estimates-rivas-arganda/"
 # estimates_path <- "./estimates-rivas-arganda/"
 
 country_iso <- "ES"
-ci_level <- 0.95 # Confident interval
-max_ratio <- 1/3 # Maximum allowed ratio of cases/reach
-num_responses = 1000 # Maximum number of responses used for one estimate
-age <- 7 # Number of days that are aggregated 
-smooth_param <- 25 # Parameter of the smoothing function
-sampling <- 500 # If the reach is < population/sampling the estimate is NA
+ci_level <- 0.95
+max_ratio <- 1/3
+num_responses = 1000
+age <- 7
+smooth_param <- 25
 
 
 remove_outliers <- function(dt, max_ratio = 1/3) {
@@ -51,6 +46,98 @@ remove_outliers <- function(dt, max_ratio = 1/3) {
 
   return(dt)
 }
+
+#######
+
+smooth_column_cum <- function(df_in, col_s, basis_dim = 15){
+  
+  ## List of packages
+  packages = c("scam")
+  ## Install&load all
+  package.check <- lapply(
+    packages,
+    FUN = function(x) {
+      if (!require(x, character.only = TRUE)) {
+        install.packages(x, dependencies = TRUE)
+        library(x, character.only = TRUE)
+      }
+    }
+  )
+  
+  # add a number of "day" column:
+  to.smooth <- df_in
+  to.smooth$day <- 1:nrow(to.smooth)
+  
+  # change the name of column to be smoothed:
+  colnames(to.smooth)[colnames(to.smooth) == col_s] = "y"
+  
+  # first non zero element to be smoothed:
+  frst_n_zero <- head(to.smooth[to.smooth$y!=0, "day"], 1)
+  
+  cat("Smoothing starting at row ", frst_n_zero, "..\n")
+  
+  # data to be smoothed:
+  to.smooth <- to.smooth[frst_n_zero:nrow(df_in), ]
+  
+  # Mono-smoothing with scam ----
+  b1 <- scam(y ~ s(day, k = basis_dim, bs="mpi",m=2),
+             family=gaussian(link="identity"), data=to.smooth)
+  
+  # save to column "xxx_smooth":
+  df_in$y_smooth <- NA
+  df_in[frst_n_zero:nrow(df_in) , "y_smooth"] <- b1$fitted.values
+  colnames(df_in)[colnames(df_in) == "y_smooth"] <- paste0(col_s, 
+                                                           "_smooth")
+  return(df_in)
+}
+
+smooth_column <- function(df_in, col_s, basis_dim = 15){
+  
+  ## List of packages
+  packages = c("scam")
+  ## Install&load all
+  package.check <- lapply(
+    packages,
+    FUN = function(x) {
+      if (!require(x, character.only = TRUE)) {
+        install.packages(x, dependencies = TRUE)
+        library(x, character.only = TRUE)
+      }
+    }
+  )
+  
+  # add a number of "day" column:
+  to.smooth <- df_in
+  to.smooth$day <- 1:nrow(to.smooth)
+  
+  # change the name of column to be smoothed:
+  colnames(to.smooth)[colnames(to.smooth) == col_s] = "y"
+  
+  # first non zero element to be smoothed:
+  frst_n_zero <- head(to.smooth[to.smooth$y!=0, "day"], 1)
+  
+  cat("Smoothing starting at row ", frst_n_zero, "..\n")
+  
+  # data to be smoothed:
+  to.smooth <- to.smooth[frst_n_zero:nrow(df_in), ]
+  
+  # Mono-smoothing with scam ----
+  # b1 <- scam(y ~ s(day, k = basis_dim, bs="mpi",m=2),
+  #            family=gaussian(link="identity"), data=to.smooth)
+  b1 <- gam(y ~ s(day, k = basis_dim, bs="ps"),
+            data=to.smooth)
+  
+  # save to column "xxx_smooth":
+  df_in$y_smooth <- NA
+  df_in[frst_n_zero:nrow(df_in) , "y_smooth"] <- b1$fitted.values
+  colnames(df_in)[colnames(df_in) == "y_smooth"] <- paste0(col_s, 
+                                                           "_smooth")
+  return(df_in)
+}
+
+############################
+
+
 
 process_ratio <- function(dt, numerator, denominator, control, cummulative=TRUE){
   dta <- dt[!is.na(dt[[numerator]]),]
@@ -185,55 +272,33 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
     sample_size <- c(sample_size, nrow(dt_date))
     reach <- c(reach, sum(dt_date$reach))
     
-    if (sum(dt_date$reach) >= pop/sampling){
-      est <- process_ratio(dt_date, "cases", "reach", "reach")
-      p_cases <- c(p_cases, est$val)
-      p_cases_low <- c(p_cases_low, est$low)
-      p_cases_high <- c(p_cases_high, est$upp)
-      
-      cases  <- c(cases, est$suma)
-      cases_est <- c(cases_est, pop*est$val)
-      cases_low <- c(cases_low, pop*est$low)
-      cases_high <- c(cases_high, pop*est$upp)
-      
-      est <- process_ratio(dt_date, "recentcases", "reach", "cases", cummulative=FALSE)
-      p_recentcases <- c(p_recentcases, est$val)
-      p_recentcases_low <- c(p_recentcases_low, est$low)
-      p_recentcases_high <- c(p_recentcases_high, est$upp)
-      
-      est <- process_ratio(dt_date, "recentcases", "reach", "cases", cummulative=FALSE)
-      recentcases <- c(recentcases, est$suma)
-      recentcases_est <- c(recentcases_est, pop * est$val)
-      recentcases_low <- c(recentcases_low, pop * est$low)
-      recentcases_high <- c(recentcases_high, pop * est$upp)
-      
-      est <- process_ratio(dt_date, "recenthospital", "reach", "cases", cummulative=FALSE)
-      p_recenthospital <- c(p_recenthospital, est$val)
-      p_recenthospital_low <- c(p_recenthospital_low, est$low)
-      p_recenthospital_high <- c(p_recenthospital_high, est$upp)
-    }
-    else {
-      p_cases <- c(p_cases, NA)
-      p_cases_low <- c(p_cases_low, NA)
-      p_cases_high <- c(p_cases_high, NA)
-      cases  <- c(cases, NA)
-      cases_est <- c(cases_est, NA)
-      cases_low <- c(cases_low, NA)
-      cases_high <- c(cases_high, NA)
-      p_recentcases <- c(p_recentcases, NA)
-      p_recentcases_low <- c(p_recentcases_low, NA)
-      p_recentcases_high <- c(p_recentcases_high, NA)
-      recentcases <- c(recentcases, NA)
-      recentcases_est <- c(recentcases_est, NA)
-      recentcases_low <- c(recentcases_low, NA)
-      recentcases_high <- c(recentcases_high, NA)
-      p_recenthospital <- c(p_recenthospital, NA)
-      p_recenthospital_low <- c(p_recenthospital_low, NA)
-      p_recenthospital_high <- c(p_recenthospital_high, NA)
-    }
+    est <- process_ratio(dt_date, "cases", "reach", "reach")
+    p_cases <- c(p_cases, est$val)
+    p_cases_low <- c(p_cases_low, est$low)
+    p_cases_high <- c(p_cases_high, est$upp)
     
+    cases  <- c(cases, est$suma)
+    cases_est <- c(cases_est, pop*est$val)
+    cases_low <- c(cases_low, pop*est$low)
+    cases_high <- c(cases_high, pop*est$upp)
+ 
+    est <- process_ratio(dt_date, "recentcases", "reach", "cases", cummulative=FALSE)
+    p_recentcases <- c(p_recentcases, est$val)
+    p_recentcases_low <- c(p_recentcases_low, est$low)
+    p_recentcases_high <- c(p_recentcases_high, est$upp)
     
-    if ( (sum(dt_date$reach) >= pop/sampling) && (j < as.POSIXct("2020-08-19"))) {
+    est <- process_ratio(dt_date, "recentcases", "reach", "cases", cummulative=FALSE)
+    recentcases <- c(recentcases, est$suma)
+    recentcases_est <- c(recentcases_est, pop * est$val)
+    recentcases_low <- c(recentcases_low, pop * est$low)
+    recentcases_high <- c(recentcases_high, pop * est$upp)
+    
+    est <- process_ratio(dt_date, "recenthospital", "reach", "cases", cummulative=FALSE)
+    p_recenthospital <- c(p_recenthospital, est$val)
+    p_recenthospital_low <- c(p_recenthospital_low, est$low)
+    p_recenthospital_high <- c(p_recenthospital_high, est$upp)
+    
+    if (j < as.POSIXct("2020-08-19")) {
       est <- process_ratio(dt_date, "recovered", "reach", "cases")
       p_recovered <- c(p_recovered, est$val)
       p_recovered_low <- c(p_recovered_low, est$low)
@@ -570,21 +635,20 @@ for (i in 1:length(regions)){
   dd <- process_region(dt[dt$iso.3166.2 == reg, ], reg, name, pop=populations[i], dates, num_responses, age)
   
   # smoothed p_cases and CI:
-  dd <- smooth_column(df_in = dd, col_s = "p_cases", 
-                      basis_dim = smooth_param, link_in = "log", monotone = T)
-  dd <- smooth_column(df_in = dd, col_s = "p_cases_low", 
-                      basis_dim = smooth_param, link_in = "log", monotone = T)
-  dd <- smooth_column(df_in = dd, col_s = "p_cases_high", 
-                      basis_dim = smooth_param, link_in = "log", monotone = T)
-
+  dd <- smooth_column_cum(dd, "p_cases", smooth_param)
+  dd <- smooth_column_cum(dd, "p_cases_low", smooth_param)
+  dd <- smooth_column_cum(dd, "p_cases_high", smooth_param)
+  
   # smoothed p_cases and CI:
-  dd <- smooth_column(df_in = dd, col_s = "p_recentcases", 
-                      basis_dim = smooth_param, link_in = "log")
-  dd <- smooth_column(df_in = dd, col_s = "p_recentcases_low", 
-                      basis_dim = smooth_param, link_in = "log")
-  dd <- smooth_column(df_in = dd, col_s = "p_recentcases_high", 
-                      basis_dim = smooth_param, link_in = "log")
-  # dd$p_recentcases_high_smooth <- ifelse(dd$p_recentcases_high_smooth < 0, 0, dd$p_recentcases_high_smooth)
+  dd <- smooth_column(dd, "p_recentcases", smooth_param)
+  dd$p_recentcases_smooth <- ifelse(dd$p_recentcases_smooth < 0, 0, dd$p_recentcases_smooth)
+  dd <- smooth_column(dd, "p_recentcases_low", smooth_param)
+  dd$p_recentcases_low_smooth <- ifelse(dd$p_recentcases_low_smooth > dd$p_recentcases_smooth, 
+                                        dd$p_recentcases_smooth, dd$p_recentcases_low_smooth)
+  dd$p_recentcases_low_smooth <- ifelse(dd$p_recentcases_low_smooth < 0, 0, dd$p_recentcases_low_smooth)
+  dd <- smooth_column(dd, "p_recentcases_high", smooth_param)
+  dd$p_recentcases_high_smooth <- ifelse(dd$p_recentcases_high_smooth < dd$p_recentcases_smooth, 
+                                         dd$p_recentcases_smooth, dd$p_recentcases_high_smooth)
   
   
   cat("- Writing estimates for:", reg, "\n")
