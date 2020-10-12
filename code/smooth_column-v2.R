@@ -65,8 +65,7 @@ smooth_column <- function(df_in, col_s,  basis_dim = 15, link_in = "identity", m
   # predict during the whole period:
   newd <- data.frame(day = 1:nrow(df_in))
   y_smooth <- predict(b1, newd, type = "response")
-  df_predicted <- data.frame(day = newd, 
-                             date = df_in$date,
+  df_predicted <- data.frame(date = df_in$date,
                              y_smooth = y_smooth)
   
   # introduce new data into input-data frame:
