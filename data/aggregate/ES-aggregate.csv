@@ -5981,3 +5981,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/12,Spain,ES,Provincia:Madrid,ESM,en,200,11,,2,0,0,,,3,,,,Y,,limesurvey-15121,7ir7fw353skzvekcoo,
 2020/10/12,Spain,ES,Provincia:Madrid,ESM,en,200,11,,2,0,0,,,3,,,,Y,,limesurvey-15120,7ir7fw353skzvekcoo,
 2020/10/12,Spain,ES,Provincia:Madrid,ESM,en,24,21,,25,2,3,,,5,,,,,,limesurvey-15117,qetrwnwlssk9zp773b,
+2020/10/13,Spain,ES,Provincia:Madrid,ESM,en,500,55,,8,6,10,,,25,,,,Y,,limesurvey-15141,vchx7le9tv11swe9nl,
+2020/10/13,Spain,ES,"Comunidad Autónoma:País Vasco / Euskal Herria",ESPV,en,3,3,,0,2,3,,,0,,,,Y,,limesurvey-15142,vchx7le9tv11swe9nl,
