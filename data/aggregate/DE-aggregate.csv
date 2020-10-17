@@ -358,3 +358,4 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/12,Germany,DE,Bayern,DEBY,en,15,1,,0,0,0,,,,,,,Y,,limesurvey-15126,zh61vzghszkc8226l2,
 2020/10/15,Germany,DE,Hessen,DEHE,en,6,1,,0,0,1,,,,,,,N,,limesurvey-15377,i9731ihs7lkbqrqshw,
 2020/10/15,Germany,DE,Schleswig-Holstein,DESH,en,5,0,,0,0,0,,,,,,,N,,limesurvey-15378,i9731ihs7lkbqrqshw,
+2020/10/17,Germany,DE,,,en,24,0,,0,0,0,,,,,,,Y,,limesurvey-15557,kuotb4ejplkcvvzib5,

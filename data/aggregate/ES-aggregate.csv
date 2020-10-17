@@ -6043,3 +6043,16 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/16,Spain,ES,,,en,500,40,,2,0,100,,,8,,,,N,,limesurvey-15524,ptd34ob82u3pep8uux,
 2020/10/16,Spain,ES,Provincia:Madrid,ESM,en,300,4,,0,0,0,,,2,,,,N,,limesurvey-15507,sjvfr6vuj744klyrlo,
 2020/10/16,Spain,ES,,,en,500,40,,2,0,100,,,8,,,,N,,limesurvey-15523,ptd34ob82u3pep8uux,
+2020/10/17,Spain,ES,Provincia:Sevilla,ESSE,en,50,1,,1,0,0,,,0,,,,Y,,limesurvey-15621,bxalxet9e1pu3ijsce,
+2020/10/17,Spain,ES,,,en,20,2,,0,0,0,,,2,,,,N,,limesurvey-15568,ft6ww0po948m6r7gfj,FBESM
+2020/10/17,Spain,ES,Provincia:Madrid,ESM,en,270,35,,3,0,1,,,4,,,,Y,,limesurvey-15549,kuotb4ejplkcvvzib5,
+2020/10/17,Spain,ES,,,en,20,2,,0,0,0,,,2,,,,N,,limesurvey-15570,ft6ww0po948m6r7gfj,FBESM
+2020/10/17,Spain,ES,Provincia:Sevilla,ESSE,en,50,1,,1,0,0,,,0,,,,Y,,limesurvey-15618,bxalxet9e1pu3ijsce,
+2020/10/17,Spain,ES,Provincia:Cáceres,ESCC,en,4,2,,0,0,1,,,1,,,,Y,,limesurvey-15551,kuotb4ejplkcvvzib5,
+2020/10/17,Spain,ES,Provincia:Sevilla,ESSE,en,50,1,,1,0,0,,,0,,,,Y,,limesurvey-15619,bxalxet9e1pu3ijsce,
+2020/10/17,Spain,ES,,,en,20,2,,0,0,0,,,2,,,,N,,limesurvey-15569,ft6ww0po948m6r7gfj,FBESM
+2020/10/17,Spain,ES,Provincia:Madrid,ESM,en,100,27,,3,0,3,,,9,,,,Y,,limesurvey-15602,7ggtjeju9mkb590sao,FBESM
+2020/10/17,Spain,ES,Provincia:Sevilla,ESSE,en,50,1,,1,0,0,,,0,,,,Y,,limesurvey-15620,bxalxet9e1pu3ijsce,
+2020/10/17,Spain,ES,Provincia:Madrid,ESM,en,50,0,,0,0,0,,,0,,,,N,,limesurvey-15604,igb50ttmyplsm5yh37,FBESM
+2020/10/17,Spain,ES,Provincia:Sevilla,ESSE,en,50,0,,,1,1,,,,,,,Y,,limesurvey-15610,rcrhhb2qaeukxz1o6l,
+2020/10/17,Spain,ES,Provincia:Toledo,ESTO,en,65,4,,0,0,0,,,0,,,,Y,,limesurvey-15550,kuotb4ejplkcvvzib5,
