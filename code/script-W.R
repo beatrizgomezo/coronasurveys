@@ -2,7 +2,7 @@ library(dplyr)
 
 # smoothed p_cases and CI:
 source("smooth_column-v2.R")
-smooth_param <- 25
+smooth_param <- 15
 
 #######
 
@@ -476,15 +476,15 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                            smooth_param, link_in = "log", monotone = T)
   }
   # region_based_estimate[["p_cases_recent"]][is.na(region_based_estimate[["p_cases_recent"]])] <- 0
-  if (sum(region_based_estimate$p_cases_recent != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent", 
-                                           smooth_param, link_in = "log", monotone = F)
-  }
+  # if (sum(region_based_estimate$p_cases_recent != 0) > smooth_param) {
+  #   region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent", 
+  #                                          smooth_param, link_in = "log", monotone = F)
+  # }
   # region_based_estimate[["p_cases_stillsick"]][is.na(region_based_estimate[["p_cases_stillsick"]])] <- 0
-  if (sum(region_based_estimate$p_cases_stillsick != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_stillsick", 
-                                           smooth_param, link_in = "log", monotone = F)
-  }
+  # if (sum(region_based_estimate$p_cases_stillsick != 0) > smooth_param) {
+  #   region_based_estimate <- smooth_column(region_based_estimate, "p_cases_stillsick", 
+  #                                          smooth_param, link_in = "log", monotone = F)
+  # }
   
 
 #-------------------------------------------
