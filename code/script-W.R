@@ -1,7 +1,7 @@
 library(dplyr) 
 
 # smoothed p_cases and CI:
-source("smooth_column.R")
+source("smooth_column-v2.R")
 smooth_param <- 25
 
 #######
@@ -33,7 +33,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
   dt <- read.csv(paste0(responses_path, countrycode, "-aggregate.csv"), as.is = T)
   dt_region <- provinces_and_codes[provinces_and_codes$countrycode == countrycode, ]
   names(dt) <- tolower(names(dt))
-  dt <- dt[, c("timestamp","region","reach","cases", "recentcases", "iso.3166.1.a2", "iso.3166.2", "cookie")]
+  dt <- dt[, c("timestamp","region","reach","cases", "recentcases", "stillsick", 
+               "iso.3166.1.a2", "iso.3166.2", "cookie")]
   dt$date <- substr(dt$timestamp, 1, 10)
   
   # outlier detection
@@ -63,9 +64,16 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
   
   dt_region2 <- dt_region[, c("countrycode",  "regioncode",   "provincecode", "population")] ## bring autonomous cities code to lowest level
   
-  r_c <- r_r <- r_r_recent <-  I_c_p_w_country <- I_c_p_m_country <- I_c_recent_p_w_country <- I_c_recent_p_m_country <- c()
-  I_r_p_w_country <- I_r_p_m_country <- I_r_recent_p_w_country <- I_r_recent_p_m_country <- c()
-  p_w_country <- p_m_country <- recent_p_w_country <- recent_p_m_country <- c()
+  r_c <- r_r <- r_r_recent <-  
+    I_c_p_w_country <- I_c_p_m_country <- 
+    I_c_recent_p_w_country <- I_c_recent_p_m_country <-
+    I_c_stillsick_p_w_country <- I_c_stillsick_p_m_country <-
+    I_r_p_w_country <- I_r_p_m_country <- 
+    I_r_recent_p_w_country <- I_r_recent_p_m_country <- 
+    I_r_stillsick_p_w_country <- I_r_stillsick_p_m_country <- 
+    p_w_country <- p_m_country <- 
+    recent_p_w_country <- recent_p_m_country <- 
+    stillsick_p_w_country <- stillsick_p_m_country <- c()
 
   #--------------------------------
   
@@ -74,7 +82,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                        region=c(),
                        population=c(),
                        p_cases=c(),
-                       p_cases_recent=c())
+                       p_cases_recent=c(),
+                       p_cases_stillsick=c())
                    
   #----------------------------------
   
@@ -92,7 +101,10 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     if (province == T){
       dtprovs <- na.omit(dt_region2)
       provs <- unique(dtprovs$provincecode)
-      p_w_provs <- p_m_provs <- recent_p_w_provs <- recent_p_m_provs <- sumreach_provs <- n_obs_provs <- rep(0, length(provs))
+      p_w_provs <- p_m_provs <- 
+        recent_p_w_provs <- recent_p_m_provs <- 
+        stillsick_p_w_provs <- stillsick_p_m_provs <- 
+        sumreach_provs <- n_obs_provs <- rep(0, length(provs))
       for (i in seq_along(provs)) {
         provpop <- dtprovs$population[dtprovs$provincecode == provs[i]]
         dt_prov <- dt_date[dt_date$iso.3166.2 == provs[i], ]
@@ -107,6 +119,10 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                         0, sum(dt_prov$recentcases, na.rm = T)/sum(dt_prov$reach[!is.na(dt_prov$recentcases)]))  #should we use the whole sum or partial sum
           recent_p_m_provs[i] <- ifelse(all(is.na(dt_prov$recentcases)), 
                                         0, mean(dt_prov$recentcases/dt_prov$reach, na.rm = T))
+          stillsick_p_w_provs[i] <- ifelse(all(is.na(dt_prov$stillsick)), 
+                                        0, sum(dt_prov$stillsick, na.rm = T)/sum(dt_prov$reach[!is.na(dt_prov$stillsick)]))  #should we use the whole sum or partial sum
+          stillsick_p_m_provs[i] <- ifelse(all(is.na(dt_prov$stillsick)), 
+                                        0, mean(dt_prov$stillsick/dt_prov$reach, na.rm = T))
           sumreach_provs[i] <- sum(dt_prov$reach)
           n_obs_provs[i] <- nrow(dt_prov)
         }
@@ -120,6 +136,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                    p_m_provs = p_m_provs,
                                    recent_p_w_provs = recent_p_w_provs,
                                    recent_p_m_provs = recent_p_m_provs,
+                                   stillsick_p_w_provs = stillsick_p_w_provs,
+                                   stillsick_p_m_provs = stillsick_p_m_provs,
                                    sumreach_provs  = sumreach_provs,
                                    n_obs_provs = n_obs_provs)
       
@@ -137,7 +155,9 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                  })
     dtregs <- do.call(rbind, dtregs)
     regions <- unique(dtregs$regioncode)
-    p_w_regs_only <- p_m_regs_only <- recent_p_w_regs_only <- recent_p_m_regs_only <- 
+    p_w_regs_only <- p_m_regs_only <- 
+      recent_p_w_regs_only <- recent_p_m_regs_only <- 
+      stillsick_p_w_regs_only <- stillsick_p_m_regs_only <- 
       sumreach_regs <- n_obs_regs <-  rep(0, length(regions))
     for (k in seq_along(regions)) {
       regpop <- dtregs$population_region[dtregs$regioncode == regions[k]]
@@ -153,6 +173,10 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                           NA, sum(dt_reg$recentcases, na.rm = T)/sum(dt_reg$reach[!is.na(dt_reg$recentcases)]))  # should we use partial sum?
         recent_p_m_regs_only[k] <- ifelse(all(is.na(dt_reg$recentcases)),
                                           NA, mean(dt_reg$recentcases/dt_reg$reach, na.rm = T))
+        stillsick_p_w_regs_only[k] <- ifelse(all(is.na(dt_reg$stillsick)),
+                                          NA, sum(dt_reg$stillsick, na.rm = T)/sum(dt_reg$reach[!is.na(dt_reg$stillsick)]))  # should we use partial sum?
+        stillsick_p_m_regs_only[k] <- ifelse(all(is.na(dt_reg$stillsick)),
+                                          NA, mean(dt_reg$stillsick/dt_reg$reach, na.rm = T))
         sumreach_regs[k] <- sum(dt_reg$reach)
         n_obs_regs[k] <- nrow(dt_reg)
       }
@@ -168,6 +192,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                 p_m_regs_only = p_m_regs_only,
                                 recent_p_w_regs_only = recent_p_w_regs_only,
                                 recent_p_m_regs_only = recent_p_m_regs_only,
+                                stillsick_p_w_regs_only = stillsick_p_w_regs_only,
+                                stillsick_p_m_regs_only = stillsick_p_m_regs_only,
                                 sumreach_regs = sumreach_regs,
                                 n_obs_regs = n_obs_regs)
     
@@ -179,7 +205,9 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
       dt_est_prov_reg <- merge(dtprovs, dtregs, all = T, by = c("countrycode", "regioncode")) 
       # go over regions and computed aggregated means
       uregions <- unique(dt_est_prov_reg$regioncode)
-      p_w_regs_rhs <-  p_m_regs_rhs <- recent_p_w_regs_rhs <- recent_p_m_regs_rhs <- 
+      p_w_regs_rhs <-  p_m_regs_rhs <- 
+        recent_p_w_regs_rhs <- recent_p_m_regs_rhs <- 
+        stillsick_p_w_regs_rhs <- stillsick_p_m_regs_rhs <- 
         sumreach_regs_rhs1 <- sumreach_regs_rhs2 <- rep(0, length(uregions))
       for (l in seq_along(uregions)) {
         dt_est_reg <- dt_est_prov_reg[dt_est_prov_reg$regioncode == uregions[l], ]
@@ -192,6 +220,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
         weightreg2 <- dt_est_reg2$population/sum(dt_est_reg2$population)
         recent_p_w_regs_rhs[l] <- sum(weightreg2 * dt_est_reg2$recent_p_w_provs)
         recent_p_m_regs_rhs[l] <- sum(weightreg2 * dt_est_reg2$recent_p_m_provs)
+        stillsick_p_w_regs_rhs[l] <- sum(weightreg2 * dt_est_reg2$stillsick_p_w_provs)
+        stillsick_p_m_regs_rhs[l] <- sum(weightreg2 * dt_est_reg2$stillsick_p_m_provs)
         sumreach_regs_rhs2[l] <- sum(dt_est_reg2$sumreach_provs)
       }
       
@@ -200,6 +230,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                 p_m_regs_rhs = p_m_regs_rhs,
                                 recent_p_w_regs_rhs = recent_p_w_regs_rhs,
                                 recent_p_m_regs_rhs = recent_p_m_regs_rhs,
+                                stillsick_p_w_regs_rhs = stillsick_p_w_regs_rhs,
+                                stillsick_p_m_regs_rhs = stillsick_p_m_regs_rhs,
                                 sumreach_regs_rhs1 = sumreach_regs_rhs1,
                                 sumreach_regs_rhs2 = sumreach_regs_rhs2)
       
@@ -221,6 +253,14 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                             dt_est_prov_reg$recent_p_m_regs_only) + ((dt_est_prov_reg$sumreach_regs_rhs2/(dt_est_prov_reg$sumreach_regs+dt_est_prov_reg$sumreach_regs_rhs2)) *
                                                                                        dt_est_prov_reg$recent_p_m_regs_rhs)
       
+      dt_est_prov_reg$stillsick_p_w_regs <- ((dt_est_prov_reg$sumreach_regs/(dt_est_prov_reg$sumreach_regs+dt_est_prov_reg$sumreach_regs_rhs2)) *
+                                            dt_est_prov_reg$stillsick_p_w_regs_only) + ((dt_est_prov_reg$sumreach_regs_rhs2/(dt_est_prov_reg$sumreach_regs+dt_est_prov_reg$sumreach_regs_rhs2)) *
+                                                                                       dt_est_prov_reg$stillsick_p_w_regs_rhs)
+      
+      dt_est_prov_reg$stillsick_p_m_regs <- ((dt_est_prov_reg$sumreach_regs/(dt_est_prov_reg$sumreach_regs + dt_est_prov_reg$sumreach_regs_rhs2)) *
+                                            dt_est_prov_reg$stillsick_p_m_regs_only) + ((dt_est_prov_reg$sumreach_regs_rhs2/(dt_est_prov_reg$sumreach_regs+dt_est_prov_reg$sumreach_regs_rhs2)) *
+                                                                                       dt_est_prov_reg$stillsick_p_m_regs_rhs)
+      
       
     }else{
       dt_est_prov_reg <- dtregs
@@ -228,6 +268,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
       dt_est_prov_reg$p_m_regs <- dt_est_prov_reg$p_m_regs_only
       dt_est_prov_reg$recent_p_w_regs <- dt_est_prov_reg$recent_p_w_regs_only
       dt_est_prov_reg$recent_p_m_regs <- dt_est_prov_reg$recent_p_m_regs_only
+      dt_est_prov_reg$stillsick_p_w_regs <- dt_est_prov_reg$stillsick_p_w_regs_only
+      dt_est_prov_reg$stillsick_p_m_regs <- dt_est_prov_reg$stillsick_p_m_regs_only
       
     }
     
@@ -237,7 +279,9 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     nr <- nrow(dt_country[as.Date(dt_country$date) == as.Date(j), ])
     dt_country <- tail(dt_country, max(num_responses,nr))
     
-    p_w_country_only <- p_m_country_only <- recent_p_w_country_only <- recent_p_m_country_only <- 
+    p_w_country_only <- p_m_country_only <- 
+      recent_p_w_country_only <- recent_p_m_country_only <- 
+      stillsick_p_w_country_only <- stillsick_p_m_country_only <- 
       sumreach_country <- n_obs_country <- 0
     if(nrow(dt_country) != 0){
       p_w_country_only <- sum(dt_country$cases)/sum(dt_country$reach)
@@ -246,6 +290,10 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                         NA, sum(dt_country$recentcases, na.rm = T)/sum(dt_country$reach[!is.na(dt_country$recentcases)]))
       recent_p_m_country_only <- ifelse(all(is.na(dt_country$recentcases)),
                                         NA, mean(dt_country$recentcases/dt_country$reach, na.rm = T))
+      stillsick_p_w_country_only <- ifelse(all(is.na(dt_country$stillsick)),
+                                        NA, sum(dt_country$stillsick, na.rm = T)/sum(dt_country$reach[!is.na(dt_country$stillsick)]))
+      stillsick_p_m_country_only <- ifelse(all(is.na(dt_country$stillsick)),
+                                        NA, mean(dt_country$stillsick/dt_country$reach, na.rm = T))
       sumreach_country <- sum(dt_country$reach) 
       n_obs_country <- nrow(dt_country)
     }
@@ -264,6 +312,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                         p_m_regs = unique(x$p_m_regs),
                                         recent_p_w_regs = unique(x$recent_p_w_regs),
                                         recent_p_m_regs = unique(x$recent_p_m_regs),
+                                        stillsick_p_w_regs = unique(x$stillsick_p_w_regs),
+                                        stillsick_p_m_regs = unique(x$stillsick_p_m_regs),
                                         sumreach_regs = unique(x$sumreach_regs),
                                         stringsAsFactors = F)
                            })
@@ -276,6 +326,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     weightcountry2 <- dt_est_reg_count2$population_region/sum(dt_est_reg_count2$population_region)
     recent_p_w_country_rhs <- sum(weightcountry2 * dt_est_reg_count2$recent_p_w_regs)
     recent_p_m_country_rhs <- sum(weightcountry2 * dt_est_reg_count2$recent_p_m_regs)
+    stillsick_p_w_country_rhs <- sum(weightcountry2 * dt_est_reg_count2$stillsick_p_w_regs)
+    stillsick_p_m_country_rhs <- sum(weightcountry2 * dt_est_reg_count2$stillsick_p_m_regs)
     sumreach_country_rhs1<-  sum(dt_est_reg_count1$sumreach_regs)
     sumreach_country_rhs2 <-  sum(dt_est_reg_count2$sumreach_regs)
     
@@ -293,6 +345,11 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     recent_p_m_counts <- sum(((sumreach_country/(sumreach_country + sumreach_country_rhs2)) * recent_p_m_country_only),  
       ((sumreach_country_rhs2/(sumreach_country + sumreach_country_rhs2)) * recent_p_m_country_rhs), na.rm = T)
     
+    stillsick_p_w_counts <- sum(((sumreach_country/(sumreach_country + sumreach_country_rhs2)) * stillsick_p_w_country_only), 
+                             ((sumreach_country_rhs2/(sumreach_country + sumreach_country_rhs2)) * stillsick_p_w_country_rhs), na.rm = T)
+    
+    stillsick_p_m_counts <- sum(((sumreach_country/(sumreach_country + sumreach_country_rhs2)) * stillsick_p_m_country_only),  
+                             ((sumreach_country_rhs2/(sumreach_country + sumreach_country_rhs2)) * stillsick_p_m_country_rhs), na.rm = T)
     
     if (write_daily_file == T){
       dt_est_count <- data.frame(date=j,
@@ -302,6 +359,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                  # p_m_country_only = p_m_country_only,
                                  recent_p_w_country_only = recent_p_w_country_only,
                                  # recent_p_m_country_only = recent_p_m_country_only,
+                                 stillsick_p_w_country_only = stillsick_p_w_country_only,
+                                 # stillsick_p_m_country_only = stillsick_p_m_country_only,
                                  sumreach_country = sumreach_country,
                                  n_obs_country = n_obs_country,
                                  p_w_country_rhs = p_w_country_rhs,
@@ -309,12 +368,16 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                  sumreach_country_rhs = sumreach_country_rhs1,
                                  recent_p_w_country_rhs = recent_p_w_country_rhs,
                                  # recent_p_m_country_rhs = recent_p_m_country_rhs, 
+                                 stillsick_p_w_country_rhs = stillsick_p_w_country_rhs,
+                                 # stillsick_p_m_country_rhs = stillsick_p_m_country_rhs, 
                                  recent_sumreach_country_rhs = sumreach_country_rhs2, 
                                  p_w_country =  p_w_counts,
                                  # p_m_country =  p_m_counts,
-                                 recent_p_w_country =  recent_p_w_counts
-                                 # recent_p_m_country =  recent_p_m_counts
-                                 )
+                                 recent_p_w_country =  recent_p_w_counts,
+                                 # recent_p_m_country =  recent_p_m_counts,
+                                 stillsick_p_w_country =  recent_p_w_counts
+                                 # stillsick_p_m_country =  recent_p_m_counts
+      )
       dir.create(paste0(estimates_path, countrycode), showWarnings = F)
       # cat(paste0("::- script-W: Writing the region based daily estimate for ", countrycode, "..\n")) 
       dt_est_prov_reg_country <- merge(dt_est_count, dt_est_prov_reg, all = T, by = "countrycode")
@@ -332,11 +395,13 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
 
     # Concatenate to dwhole the regional estimates for date j
     dt_est_prov_reg$date <- j
-    df_aux <- dt_est_prov_reg[, c("date", "countrycode", "regioncode", "population_region", "p_w_regs", "recent_p_w_regs")]
+    df_aux <- dt_est_prov_reg[, c("date", "countrycode", "regioncode", "population_region", "p_w_regs", "recent_p_w_regs",
+                                  "stillsick_p_w_regs")]
     
     df_aux %>% rename(country = countrycode, region = regioncode, 
                       population=population_region, p_cases=p_w_regs, 
-                      p_cases_recent=recent_p_w_regs) -> df_aux
+                      p_cases_recent=recent_p_w_regs,
+                      p_cases_stillsick=stillsick_p_w_regs) -> df_aux
     df_aux <- unique(df_aux)
     
     dwhole <- rbind(dwhole, df_aux)
@@ -348,16 +413,22 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     I_c_p_m_country <- c(I_c_p_m_country, p_m_country_only)
     I_c_recent_p_w_country <- c(I_c_recent_p_w_country, recent_p_w_country_only)
     I_c_recent_p_m_country <- c(I_c_recent_p_m_country, recent_p_m_country_only)
+    I_c_stillsick_p_w_country <- c(I_c_stillsick_p_w_country, stillsick_p_w_country_only)
+    I_c_stillsick_p_m_country <- c(I_c_stillsick_p_m_country, stillsick_p_m_country_only)
     
     I_r_p_w_country <- c(I_r_p_w_country, p_w_country_rhs)
     I_r_p_m_country <- c(I_r_p_m_country, p_m_country_rhs)
     I_r_recent_p_w_country <- c(I_r_recent_p_w_country, recent_p_w_country_rhs)
     I_r_recent_p_m_country <- c(I_r_recent_p_m_country , recent_p_m_country_rhs)
+    I_r_stillsick_p_w_country <- c(I_r_stillsick_p_w_country, stillsick_p_w_country_rhs)
+    I_r_stillsick_p_m_country <- c(I_r_stillsick_p_m_country , stillsick_p_m_country_rhs)
     
     p_w_country <- c(p_w_country, p_w_counts)
     p_m_country <- c(p_m_country, p_m_counts)
     recent_p_w_country <- c(recent_p_w_country, recent_p_w_counts)
     recent_p_m_country <- c(recent_p_m_country, recent_p_m_counts)
+    stillsick_p_w_country <- c(stillsick_p_w_country, stillsick_p_w_counts)
+    stillsick_p_m_country <- c(stillsick_p_m_country, stillsick_p_m_counts)
   }
 
   dir.create(paste0(estimates_path, countrycode), showWarnings = F)
@@ -391,20 +462,28 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                       #I_r_recent_p_w_country = I_r_recent_p_w_country, 
                                       #I_r_recent_p_m_country = I_r_recent_p_m_country,
                                       p_cases = p_w_country,
-                                      p_cases_recent = recent_p_w_country
+                                      p_cases_recent = recent_p_w_country,
+                                      p_cases_stillsick = stillsick_p_w_country
                                       # p_m_country = p_m_country,
                                       # recent_p_m_country = recent_p_m_country
                                       )
   
 #---------------------------------------
   
-  region_based_estimate[["p_cases"]][is.na(region_based_estimate[["p_cases"]])] <- 0
+  # region_based_estimate[["p_cases"]][is.na(region_based_estimate[["p_cases"]])] <- 0
   if (sum(region_based_estimate$p_cases != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases", smooth_param)
+    region_based_estimate <- smooth_column(region_based_estimate, "p_cases", 
+                                           smooth_param, link_in = "log", monotone = T)
   }
-  region_based_estimate[["p_cases_recent"]][is.na(region_based_estimate[["p_cases_recent"]])] <- 0
+  # region_based_estimate[["p_cases_recent"]][is.na(region_based_estimate[["p_cases_recent"]])] <- 0
   if (sum(region_based_estimate$p_cases_recent != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent", smooth_param)
+    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent", 
+                                           smooth_param, link_in = "log", monotone = F)
+  }
+  # region_based_estimate[["p_cases_stillsick"]][is.na(region_based_estimate[["p_cases_stillsick"]])] <- 0
+  if (sum(region_based_estimate$p_cases_stillsick != 0) > smooth_param) {
+    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_stillsick", 
+                                           smooth_param, link_in = "log", monotone = F)
   }
   
 
