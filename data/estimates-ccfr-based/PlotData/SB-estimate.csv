@@ -1,0 +1,5 @@
+"date","cases","deaths","cum_cases","cum_deaths","cases_daily","cases_active","cases_active_undected","cases_infect","cases_symptom","p_cases","p_cases_low","p_cases_high","p_cases_daily","p_cases_active","p_cases_active_undetected","p_infect","p_symptom","population"
+"2020/10/16",2,0,2,0,2,NA,NA,NA,NA,NA,NA,NA,2.98587234499963e-06,NA,NA,NA,NA,669821
+"2020/10/17",1,0,3,0,1,NA,NA,NA,NA,0,NA,NA,1.49293617249982e-06,NA,NA,NA,NA,669821
+"2020/10/18",0,0,3,0,0,NA,NA,NA,NA,0,NA,NA,0,NA,NA,NA,NA,669821
+"2020/10/19",0,0,3,0,0,NA,NA,NA,NA,0,NA,NA,0,NA,NA,NA,NA,669821
