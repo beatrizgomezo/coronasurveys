@@ -137,9 +137,11 @@ plot_estimates <- function(country_geoid = "ES",
       #infectious
       dt$cases_infect <- cumsum(c(dt$cases_daily[1:ac_window],
                                   diff(dt$cases_daily, lag = ac_window)))
+      dt$cases_infect_undected <- cumsum(c(undetected_daily_estimate[1:ac_window],
+                                           diff(undetected_daily_estimate, lag = ac_window)))
     }
     else {
-      dt$cases_active <- dt$cases_active_undected <- dt$cases_infect <- NA
+      dt$cases_active <- dt$cases_active_undected <- dt$cases_infect <- dt$cases_infect_undected <- NA
     }
     
     #symptomatic
@@ -155,14 +157,16 @@ plot_estimates <- function(country_geoid = "ES",
     dt$p_cases_active <- dt$cases_active/dt$population
     dt$p_cases_active_undetected <- dt$cases_active_undected/dt$population
     dt$p_infect <- dt$cases_infect/dt$population
+    dt$p_infect_undected <- dt$cases_infect_undected/dt$population
     dt$p_symptom <- dt$cases_symptom/dt$population
     
     dt_w <- dt %>% 
       select("date", "cases", "deaths", "cum_cases", "cum_deaths", 
-             "cases_daily", "cases_active", "cases_active_undected", "cases_infect", "cases_symptom",
+             "cases_daily", "cases_active", "cases_active_undected", 
+             "cases_infect", "cases_infect_undected", "cases_symptom",
              "p_cases", "p_cases_low", "p_cases_high", 
              "p_cases_daily", "p_cases_active", "p_cases_active_undetected", 
-             "p_infect", "p_symptom", "population")
+             "p_infect", "p_infect_undected", "p_symptom", "population")
     
     dir.create(estimates_path, showWarnings = F)
     cat("::- script-ccfr-based: Writing data for", country_geoid, "::\n")
