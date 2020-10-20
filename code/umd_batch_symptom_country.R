@@ -1,0 +1,264 @@
+## Libraries
+library(dplyr)
+library(ggplot2)
+library(httr)
+library(jsonlite)
+library(stringr)
+
+## Load smoothing function ----
+source("smooth_column-v2.R")
+
+## Function to extract updated data from UMD api: ----
+UMD_api <- function(country, type = "daily", date_start = NA, date_end = NA){
+  
+  country <- str_replace_all(country, " ", "%")
+  
+  # first date available:
+  if (is.na(date_start)) {
+    request <- GET(url = paste0("https://covidmap.umd.edu/api/datesavail?country=",
+                                country,"%"))
+    
+    # make sure the content is encoded with 'UTF-8'
+    response <- content(request, as = "text", encoding = "UTF-8")
+    
+    # now we can have a dataframe for use!
+    date_start <- fromJSON(response, flatten = TRUE) %>% data.frame() 
+    
+    date_start = min(date_start$data.survey_date)
+  }
+  
+  # today:
+  if (is.na(date_end)) {
+    date_end = format(Sys.time(), "%Y%m%d")
+  }
+  
+  # adding url
+  path <- paste0("https://covidmap.umd.edu/api/resources?indicator=covid",
+                 "&type=", type, 
+                 "&country=", country, 
+                 "&daterange=", date_start, "-", date_end) 
+  
+  # request data from api
+  request <- GET(url = path)
+  
+  # make sure the content is encoded with 'UTF-8'
+  response <- content(request, as = "text", encoding = "UTF-8")
+  
+  # now we can have a dataframe for use!
+  coviddata <- fromJSON(response, flatten = TRUE) %>% data.frame()
+  
+  return(coviddata)
+}
+
+## Batched-estimated-cases Function ----
+batch_effect <- function(df_batch_in, denom2try){
+  df_out <- data.frame()
+  for (denom in denom2try) { # different denominators for batch size
+    
+    df_temp <- df_batch_in
+    
+    b_size <- df_temp[1, "population"]/denom
+    
+    df_temp$batched_pct_cli <- NA
+    
+    # df_temp <- df_temp %>%  arrange(desc(date) )
+    
+    df_temp$cum_responses <- cumsum(df_temp$total_responses)
+    df_temp$cum_number_cli <- cumsum(df_temp$number_cli)
+    
+    i_past = 1 # where last batch size was reached
+    for (i in 1:(nrow(df_temp)-1)) {
+      if (df_temp[i, "cum_responses"] >= b_size) {
+        
+        df_temp[ceiling((i+i_past)/2), "batched_pct_cli"] <- df_temp[i, "cum_number_cli"]/df_temp[i, "cum_responses"]*100
+        
+        i_past = i
+        
+        df_temp[(i+1):nrow(df_temp), "cum_responses"] <- df_temp[(i+1):nrow(df_temp), "cum_responses"] - df_temp[i, "cum_responses"]
+        df_temp[(i+1):nrow(df_temp), "cum_number_cli"] <- df_temp[(i+1):nrow(df_temp), "cum_number_cli"] - df_temp[i, "cum_number_cli"]
+        
+      } # if-cum_responses-greater-b_size
+    } # for-rows-df_temp
+    
+    df_temp <- smooth_column(df_in = df_temp, 
+                             col_s = "batched_pct_cli", 
+                             link_in = "log",
+                             basis_dim = min(sum(!is.na(df_temp$batched_pct_cli)), 25), 
+                             monotone = F)
+    
+    df_temp <- smooth_column(df_in = df_temp, 
+                             col_s = "pct_cli", 
+                             link_in = "log",
+                             basis_dim = min(sum(!is.na(df_temp$batched_pct_cli)), 40),
+                             monotone = F)
+    
+    df_temp <- df_temp %>% 
+      select(date, population, total_responses, pct_cli, pct_cli_smooth,
+             number_cli, batched_pct_cli, batched_pct_cli_smooth) %>% 
+      mutate(estimate_cli = population*(batched_pct_cli_smooth/100),
+             cum_estimate_cli = cumsum(estimate_cli),
+             number_cli_smooth = population*(pct_cli_smooth/100),
+             cum_number_cli_smooth = cumsum(number_cli_smooth))
+    
+    df_temp$b_size_denom <- denom 
+    
+    df_out <- rbind(df_out, df_temp)
+  }
+  
+  return(df_out)
+}
+
+## List of countries: ----
+
+## Function to create csv with available countries ---
+## It adds populations and iso codes (alpha 2 and 3)
+create_countries_pop_iso <- function(){
+  request <- GET(url = "https://covidmap.umd.edu/api/country")
+  
+  response <- content(GET(url = "https://covidmap.umd.edu/api/country"),
+                      as = "text", encoding = "UTF-8")
+  
+  # available countries:
+  countries <- fromJSON(response, flatten = TRUE) %>% data.frame() 
+  
+  # country data: iso codes and population:
+  countries_pop <- read.csv("../data/common-data/country_population_ecdc.csv", 
+                            header = T) %>% 
+    select(country_territory, countryterritoryCode, geo_id, population)
+  
+  colnames(countries_pop) <- c("country", "iso_alpha3", "iso_alpha2", "population")
+  
+  countries_pop$country <- str_replace_all(countries_pop$country, "_", " ")
+  
+  countries <- left_join(countries, countries_pop, by = "country")
+  
+  countries[countries$country == "Côte d'Ivoire", 2:4] <- 
+    countries_pop[countries_pop$country == "Cote dIvoire", 2:4]
+  
+  countries[countries$country == "Czech Republic", 2:4] <- 
+    countries_pop[countries_pop$country == "Czechia", 2:4]
+  
+  levels(countries$iso_alpha2) <- c(levels(countries$iso_alpha2), "HK")
+  levels(countries$iso_alpha3) <- c(levels(countries$iso_alpha3), "HKG")
+  countries[countries$country == "Hong Kong", "iso_alpha3"] <- "HKG"
+  countries[countries$country == "Hong Kong", "iso_alpha2"] <- "HK"
+  countries[countries$country == "Hong Kong", "population"] <- 7496981
+  
+  countries[countries$country == "Puerto Rico, U.S.", 2:4] <- 
+    countries_pop[countries_pop$country == "Puerto Rico", 2:4]
+  
+  levels(countries$iso_alpha2) <- c(levels(countries$iso_alpha2), "TW")
+  levels(countries$iso_alpha3) <- c(levels(countries$iso_alpha3), "TWN")
+  countries[countries$country == "Taiwan", "iso_alpha3"] <- "TWN"
+  countries[countries$country == "Taiwan", "iso_alpha2"] <- "TW"
+  countries[countries$country == "Taiwan", "population"] <- 23568378
+  
+  countries[countries$country == "Tanzania", 2:4] <- 
+    countries_pop[countries_pop$country == "United Republic of Tanzania", 2:4]
+  
+  write.csv(countries, file = "../data/common-data/country_population_umd.csv")
+}
+
+## The csv is already created, uncomment if needed again:
+# create_countries_pop_iso()
+
+
+## Available countries ----
+countries <- read.csv("../data/common-data/country_population_umd.csv", 
+                      header = T)
+
+umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
+  for (country in countries_2_try) {
+    
+    print(paste0("Batching and smoothing: ", country, "'s UMD data"))
+    
+    ## Load data 
+    dt <- UMD_api(country)
+    
+    # remove "data." from column names:
+    colnames(dt) <- str_replace_all(colnames(dt), "data.", "")
+    
+    # set dates:
+    dt <- dt %>% mutate(date = paste0( str_sub(survey_date, 1, 4), "-",
+                                       str_sub(survey_date, 5, 6), "-",
+                                       str_sub(survey_date, 7, 8))) %>% 
+      mutate(date = as.Date(date)) %>% 
+      select(date, percent_cli, percent_cli_unw, sample_size)
+    
+    # rename columns to use Fb. Challenge scripts:
+    colnames(dt) <- c("date", "pct_cli_weighted", "pct_cli", "total_responses")
+    
+    # I THINK pct_cli IS NOW A RATIO IN [0,1] NOT A %:
+    summary(dt$pct_cli)
+    summary(dt$pct_cli_weighted)
+    # transform it to emulate Fb Challenge analysis:
+    dt$pct_cli <- dt$pct_cli*100
+    dt$pct_cli_weighted <- dt$pct_cli_weighted*100
+    
+    # number of infected:
+    dt$number_cli <- dt$total_responses*dt$pct_cli/100
+    
+    # add population:
+    dt$population <- countries[countries$country==country, "population"]
+    
+    
+    
+    df_out <- batch_effect(df_batch_in = dt, 
+                           denom2try = denom_2_try) # denom2try = seq(1000, 5000, by = 500)
+    
+    df_out$p_symptom <- df_out$batched_pct_cli_smooth
+    
+    # select a single batch size:
+    df_save <- df_out %>% filter(b_size_denom == d_to_save)
+    
+    country_code <- countries[countries$country==country, "iso_alpha2"]
+    
+    write.csv(df_save,
+              paste0("../data/estimates-umd-batches/PlotData/", country_code , "-estimates.csv"),
+              row.names = FALSE)
+    
+    
+    ## Some plots
+    df_out$d = paste0("d = ", df_out$b_size_denom)
+    
+    p1 <- ggplot(data = df_out, aes(x = date, group = d, colour = Legend)) +
+      geom_point(aes(y = pct_cli, colour = "CSDC CLI"), alpha = 0.2, size = 2) +
+      geom_line(aes(y = pct_cli_smooth, colour = "CSDC CLI (smooth)"), linetype = "solid", size = 1, alpha = 0.6) + 
+      geom_point(aes(y = batched_pct_cli, colour = "Batched CSDC CLI"), alpha = 0.5, size = 2) +
+      geom_line(aes(y = batched_pct_cli_smooth, colour = "Batched CSDC CLI (smooth)"), linetype = "solid", size =1, alpha = 0.6) +
+      geom_point(aes(y = pct_cli, colour = "d = population / batch size"), alpha = 0) +
+      facet_wrap( ~ d ) +
+      theme_bw() + 
+      scale_colour_manual(values = c("blue", "blue", "red", "red", "black"),
+                          guide = guide_legend(override.aes = list(
+                            linetype = c("blank", "solid", "blank", "solid", "blank"),
+                            shape = c(1, NA, 1, NA, NA)))) + 
+      xlab("Date") + ylab("% symptomatic cases") + ggtitle(country) +
+      theme(legend.position = "bottom")
+    # p1
+    
+    ggsave(plot = p1, 
+           filename =  paste0("../data/estimates-umd-batches/plots/", country_code , "-plots-by-batch.png"), 
+           width = 9, height = 6)
+    
+  } # end-for-countries_2_try
+} #end-function: umd_batch_symptom_country
+
+umd_batch_symptom_country(countries_2_try = c( 
+                            "Brazil", 
+                            "Ecuador", 
+                            "France",
+                            "United States of America",
+                            "Portugal",
+                            "Spain",
+                            "Austria",
+                            "Belgium",
+                            "Mexico",
+                            "United Kingdom",
+                            "Ukraine"), 
+                          denom_2_try = c(1000, 1500, 2000), 
+                          d_to_save = 1000)
+
+# umd_batch_symptom_country(as.character(countries$country), 
+#                           denom_2_try = 5000, 
+#                           d_to_save = 5000)
