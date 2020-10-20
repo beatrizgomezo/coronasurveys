@@ -4,8 +4,11 @@ library(readxl)
 library(httr)
 
 infectious_window_cases <- 12
+symptomatic_window_cases <- 18
 
-plot_estimates <- function(country_geoid = "AF", dts, ac_window){
+plot_estimates <- function(country_geoid = "AF", dts, 
+                           ac_window,
+                           symptom_window){
   cat("::- script-confirmed: Working on", country_geoid, "::\n")
   data <- dts %>% 
     select(dateRep:popData2019, "Alpha.2.code" )
@@ -30,21 +33,31 @@ plot_estimates <- function(country_geoid = "AF", dts, ac_window){
     dt$cases_active <- dt$cases_infect <- NA
   }
   
+  #symptomatic
+  if (nrow(dt) >= symptom_window){
+    dt$cases_symptom <- cumsum(c(dt$cases[1:symptom_window], diff(dt$cases, lag = symptom_window)))
+  }
+  else {
+    dt$cases_symptom <- NA
+  }
+  
   dt <- dt %>% 
-    select(date, cases, deaths, cum_cases, cum_deaths, cases_active, cases_infect, popData2019, ) %>% 
+    select(date, cases, deaths, cum_cases, cum_deaths, cases_active, cases_infect, cases_symptom, popData2019, ) %>% 
     rename(population = popData2019) %>% 
     mutate(p_cases = cum_cases/population,
            p_cases_daily = cases/population,
            p_cases_active = abs(cases_active/population),
-           p_infect = abs(cases_infect/population)) %>% 
-    select(date, cases, deaths, cum_cases, cum_deaths, cases_active, p_cases, p_cases_daily, p_cases_active, p_infect, population)
+           p_infect = abs(cases_infect/population),
+           p_symptom = abs(cases_symptom/population)) %>% 
+    select(date, cases, deaths, cum_cases, cum_deaths, cases_active, cases_infect, cases_symptom, p_cases, p_cases_daily, p_cases_active, p_infect, p_symptom, population)
   
   dir.create("../data/estimates-confirmed/PlotData/", showWarnings = F)
   cat("::- script-confirmed: Writing data for", country_geoid, "::\n")
   write.csv(dt, paste0("../data/estimates-confirmed/PlotData/", country_geoid, "-estimate.csv"))
 }
 
-generate_estimates <- function(active_cases_window = 12){
+generate_estimates <- function(active_window_cases,
+                               symptom_window_cases){
     url <- paste("https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-",
                  Sys.Date(), ".xlsx", sep = "")
     GET(url, authenticate(":", ":", type="ntlm"), write_disk(tf <- tempfile(fileext = ".xlsx")))
@@ -72,7 +85,9 @@ generate_estimates <- function(active_cases_window = 12){
         data_ecdc <- inner_join(data_ecdc, data_country_code, by = c("countryterritoryCode" = "Alpha.3.code"))
         
         all_geo_ids <- unique(data_ecdc$Alpha.2.code)
-        sapply(all_geo_ids, plot_estimates, dts = data_ecdc)
+        sapply(all_geo_ids, plot_estimates, dts = data_ecdc,
+               ac_window = active_window_cases, 
+               symptom_window = symptom_window_cases)
       }
     } else{
       cat("::- script-confirmed: ECDC data for the day available! ::\n")
@@ -82,8 +97,11 @@ generate_estimates <- function(active_cases_window = 12){
                                     "Alpha.3.code", "Numeric.code", "ISO.3166.2")
       data_ecdc <- inner_join(data_ecdc, data_country_code, by = c("countryterritoryCode" = "Alpha.3.code"))
       all_geo_ids <- unique(data_ecdc$Alpha.2.code) 
-      go <- sapply(all_geo_ids, plot_estimates, dts =  data_ecdc, ac_window = active_cases_window)
+      go <- sapply(all_geo_ids, plot_estimates, dts =  data_ecdc, 
+                   ac_window = active_window_cases, 
+                   symptom_window = symptom_window_cases)
     }
   
 }
-generate_estimates(active_cases_window = infectious_window_cases)
+generate_estimates(active_window_cases = infectious_window_cases,
+                   symptom_window_cases = symptomatic_window_cases)
