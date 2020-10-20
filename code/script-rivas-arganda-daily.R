@@ -207,6 +207,11 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
       recentcases_low <- c(recentcases_low, pop * est$low)
       recentcases_high <- c(recentcases_high, pop * est$upp)
       
+      est <- process_ratio(dt_date, "stillsick", "reach", "cases")
+      p_stillsick <- c(p_stillsick, est$val)
+      p_stillsick_low <- c(p_stillsick_low, est$low)
+      p_stillsick_high <- c(p_stillsick_high, est$upp)
+      
       est <- process_ratio(dt_date, "recenthospital", "reach", "cases", cummulative=FALSE)
       p_recenthospital <- c(p_recenthospital, est$val)
       p_recenthospital_low <- c(p_recenthospital_low, est$low)
@@ -227,6 +232,9 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
       recentcases_est <- c(recentcases_est, NA)
       recentcases_low <- c(recentcases_low, NA)
       recentcases_high <- c(recentcases_high, NA)
+      p_stillsick <- c(p_stillsick, NA)
+      p_stillsick_low <- c(p_stillsick_low, NA)
+      p_stillsick_high <- c(p_stillsick_high, NA)
       p_recenthospital <- c(p_recenthospital, NA)
       p_recenthospital_low <- c(p_recenthospital_low, NA)
       p_recenthospital_high <- c(p_recenthospital_high, NA)
@@ -259,11 +267,6 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
       recentcasesnursing_est <- c(recentcasesnursing_est, pop * est$val)
       recentcasesnursing_low <- c(recentcasesnursing_low, pop * est$low)
       recentcasesnursing_high <- c(recentcasesnursing_high, pop * est$upp)
-      
-      est <- process_ratio(dt_date, "stillsick", "reach", "cases")
-      p_stillsick <- c(p_stillsick, est$val)
-      p_stillsick_low <- c(p_stillsick_low, est$low)
-      p_stillsick_high <- c(p_stillsick_high, est$upp)
       
       est <- process_ratio(dt_date, "hospital", "reach", "cases")
       p_hospital <- c(p_hospital, est$val)
@@ -321,10 +324,6 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 100, age =
       recentcasesnursing_est <- c(recentcasesnursing_est, NA)
       recentcasesnursing_low <- c(recentcasesnursing_low, NA)
       recentcasesnursing_high <- c(recentcasesnursing_high, NA)
-      
-      p_stillsick <- c(p_stillsick, NA)
-      p_stillsick_low <- c(p_stillsick_low, NA)
-      p_stillsick_high <- c(p_stillsick_high, NA)
       
       p_hospital <- c(p_hospital, NA)
       p_hospital_low <- c(p_hospital_low, NA)
