@@ -13,12 +13,15 @@ estimates_path <- "../data/estimates-provinces/"
 
 countries <- c("ES")
 ci_level <- 0.95
-ratio_cutoff <- 1/3
-fatalities_cutoff <- 1/10
+cases_cutoff <- 1/2
+fatalities_cutoff <- 1/2
+recent_cutoff <- 1/2
 
-num_responses = 100
-age <- 1000
-age_recent <- 7
+max_responses = 100
+max_age <- 1000
+max_age_recent <- 5
+sampling <- 100000 # If the reach is < population/sampling the estimate is NA
+sampling_recent <- 100000 # If the reach is < population/sampling_recent the estimate is NA
 
 
 remove_outliers <- function(dt, ratio_cutoff=1/3, fatalities_cutoff=1/10) {
@@ -29,21 +32,34 @@ remove_outliers <- function(dt, ratio_cutoff=1/3, fatalities_cutoff=1/10) {
   dt <- dt[!is.na(dt$cases),]
   cat("Responses after removing reach=NA or cases=NA or reach=0 :", nrow(dt), "\n")
   
+  #Compute cutoffs
   reach_cutoff <- boxplot.stats(dt$reach, coef=1.5)$stats[5] # changed cutoff to upper fence
+
+  # dt$ratio <- dt$cases/dt$reach
+  # cases_cutoff <- boxplot.stats(dt$ratio, coef=1.5)$stats[5] # changed cutoff to upper fence
+  # 
+  # dt$ratio <- dt$fatalities/dt$reach
+  # fatalities_cutoff <- boxplot.stats(dt$ratio, coef=1.5)$stats[5] # changed cutoff to upper fence
+  # 
+  # dt$ratio <- dt$recentcases/dt$reach
+  # recent_cutoff <- boxplot.stats(dt$ratio, coef=1.5)$stats[5] # changed cutoff to upper fence
+  
+  # remove outliers based on ratios
   dt <- dt[dt$reach <= reach_cutoff, ]
-  cat("Responses after removing ouliers with reach cutoff", reach_cutoff, ":", nrow(dt), "\n")
+  cat("Responses after removing ouliers with reach cutoff", 
+      reach_cutoff, ":", nrow(dt), "\n")
   
-  # remove outliers based on max cases/reach ratio
-  dt$ratio <- dt$cases/dt$reach
-  #ratio_cutoff <- boxplot.stats(dt$ratio, coef=1.5)$stats[5] # changed cutoff to upper fence
-  dt <- dt[dt$ratio<ratio_cutoff, ]
-  cat("Responses after removing ouliers with cases/reach cutoff", ratio_cutoff, ":", nrow(dt), "\n")
+  dt <- dt[(dt$cases/dt$reach) <= cases_cutoff, ]
+  cat("Responses after removing ouliers with cases/reach cutoff", 
+      cases_cutoff, ":", nrow(dt), "\n")
   
-  # remove outliers based on max fatalities/reach ratio
-  #dt <- dt[!is.na(dt$fatalities),]
-  dt$ratio <- dt$fatalities/dt$reach
-  dt <- dt %>% filter(is.na(dt$ratio) | dt$ratio<fatalities_cutoff)
-  cat("Responses after removing ouliers with fatalities/reach cutoff", fatalities_cutoff, ":", nrow(dt), "\n")
+  dt <- dt %>% filter(is.na(dt$fatalities) | (dt$fatalities/dt$reach) <= fatalities_cutoff)
+  cat("Responses after removing ouliers with fatalities/reach cutoff", 
+      fatalities_cutoff, ":", nrow(dt), "\n")
+
+  dt <- dt %>% filter(is.na(dt$recentcases) | (dt$recentcases/dt$reach) <= recent_cutoff)
+  cat("Responses after removing ouliers with recent/reach cutoff", 
+      recent_cutoff, ":", nrow(dt), "\n")
   
   cat("\n")
   return(dt)
@@ -66,7 +82,7 @@ process_ratio <- function(dt, numerator, denominator, control){
 }
 
 
-process_region <- function(dt, reg, name, pop, dates, num_responses = 1000, age = 1000, recent_age=7){
+process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_age = 1000, recent_max_age=7){
   cat("Working with", nrow(dt), "responses\n"  )
 
   region <- c()
@@ -77,52 +93,37 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 1000, age 
   reach_recent <- c()
   
   p_cases <- c()
-  p_cases_low <- c()
-  p_cases_high <- c()
-  
-  cases_est <- c()
-  cases_low <- c()
-  cases_high <- c()
-  
+  p_cases_error <- c()
+
   p_fatalities <- c()
-  p_fatalities_low <- c()
-  p_fatalities_high <- c()
-  
-  fatalities_est <- c()
-  fatalities_low <- c()
-  fatalities_high <- c()
-  
+  p_fatalities_error <- c()
+
   p_recentcases <- c()
-  p_recentcases_low <- c()
-  p_recentcases_high <- c()
-  
-  recentcases_est <- c()
-  recentcases_low <- c()
-  recentcases_high <- c()
-  
+  p_recentcases_error <- c()
+
   p_stillsick <- c()
-  p_stillsick_low <- c()
-  p_stillsick_high <- c()
+  p_stillsick_error <- c()
   
   population <- c()
   
   for (j in dates){
-    #Keep responses at most "age" old
-    subcondition <- (as.Date(dt$timestamp) > (as.Date(j)-age) & as.Date(dt$timestamp) <= as.Date(j) )
+    #Keep responses at most "max_age" old
+    subcondition <- (as.Date(dt$timestamp) > (as.Date(j)-max_age) & as.Date(dt$timestamp) <= as.Date(j))
     dt_date <- dt[subcondition, ]
+    
     #Remove duplicated cookies keeping the most recent response
     dt_date <- dt_date[!duplicated(dt_date$cookie, fromLast=TRUE, incomparables = c("")),]
-    #Keep all the responses of the day or at most num_responses
+    
+    #Keep all the responses of the day or at most max_responses
     nr <- nrow(dt[as.Date(dt_date$timestamp) == as.Date(j), ])
-    dt_date <- tail(dt_date, max(num_responses,nr))
-    #Keep responses at most "age_recent" old for recent computations
+    dt_date <- tail(dt_date, max(max_responses,nr))
+    
+    #Keep responses at most "max_age_recent" old for recent computations
     dt_recent <- dt_date
-    subcondition <- (as.Date(dt_recent$timestamp) > (as.Date(j)-age_recent) & as.Date(dt_recent$timestamp) <= as.Date(j) )
+    subcondition <- (as.Date(dt_recent$timestamp) > (as.Date(j)-max_age_recent) & as.Date(dt_recent$timestamp) <= as.Date(j) )
     dt_recent <- dt_recent[subcondition, ]
     
-    
     # cat("Responses for the date", nrow(dt_date), "recent:", nrow(dt_recent), "\n")
-    
     
     region <- c(region, reg)
     regionname <- c(regionname, name)
@@ -131,43 +132,40 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 1000, age 
     
     sample_size_recent <- c(sample_size_recent, nrow(dt_recent))
     reach_recent <- c(reach_recent, sum(dt_recent$reach))
-    if (is.na(sum(dt_recent$reach)) && (nrow(dt_recent) == 1)){
-      cat("dt_recent$reach)", dt_recent$reach, "\n")
+
+    if (sum(dt_date$reach) >= pop/sampling){
+      est <- process_ratio(dt_date, "cases", "reach", "reach")
+      p_cases <- c(p_cases, est$val)
+      p_cases_error <- c(p_cases_error, est$error)
+      
+      est <- process_ratio(dt_date, "fatalities", "reach", "cases")
+      p_fatalities <- c(p_fatalities, est$val)
+      p_fatalities_error <- c(p_fatalities_error, est$error)
     }
-    
-    est <- process_ratio(dt_date, "cases", "reach", "reach")
-    p_cases <- c(p_cases, est$val)
-    p_cases_low <- c(p_cases_low, est$low)
-    p_cases_high <- c(p_cases_high, est$upp)
-    
-    cases_est <- c(cases_est, pop*est$val)
-    cases_low <- c(cases_low, pop*est$low)
-    cases_high <- c(cases_high, pop*est$upp)
-    
-    est <- process_ratio(dt_date, "fatalities", "cases", "cases")
-    p_fatalities <- c(p_fatalities, est$val)
-    p_fatalities_low <- c(p_fatalities_low, est$low)
-    p_fatalities_high <- c(p_fatalities_high, est$upp)
-    
-    est <- process_ratio(dt_date, "fatalities", "reach", "cases")
-    fatalities_est <- c(fatalities_est, pop * est$val)
-    fatalities_low <- c(fatalities_low, pop * est$low)
-    fatalities_high <- c(fatalities_high, pop * est$upp)
-    
-    est <- process_ratio(dt_recent, "recentcases", "cases", "cases")
-    p_recentcases <- c(p_recentcases, est$val)
-    p_recentcases_low <- c(p_recentcases_low, est$low)
-    p_recentcases_high <- c(p_recentcases_high, est$upp)
-    
-    est <- process_ratio(dt_recent, "recentcases", "reach", "cases")
-    recentcases_est <- c(recentcases_est, pop * est$val)
-    recentcases_low <- c(recentcases_low, pop * est$low)
-    recentcases_high <- c(recentcases_high, pop * est$upp)
-    
-    est <- process_ratio(dt_date, "stillsick", "cases", "cases")
-    p_stillsick <- c(p_stillsick, est$val)
-    p_stillsick_low <- c(p_stillsick_low, est$low)
-    p_stillsick_high <- c(p_stillsick_high, est$upp)
+    else {
+      # cat("Low reach\n"  )
+      p_cases <- c(p_cases, NA)
+      p_cases_error <- c(p_cases_error, NA)
+      p_fatalities <- c(p_fatalities, NA)
+      p_fatalities_error <- c(p_fatalities_error, NA)
+    }
+
+    if (sum(dt_recent$reach) >= pop/sampling_recent){
+      est <- process_ratio(dt_recent, "recentcases", "reach", "cases")
+      p_recentcases <- c(p_recentcases, est$val)
+      p_recentcases_error <- c(p_recentcases_error, est$error)
+      
+      est <- process_ratio(dt_recent, "stillsick", "reach", "cases")
+      p_stillsick <- c(p_stillsick, est$val)
+      p_stillsick_error <- c(p_stillsick_error, est$error)
+    }
+    else {
+      # cat("Low reach_recent\n"  )
+      p_recentcases <- c(p_recentcases, NA)
+      p_recentcases_error <- c(p_recentcases_error, NA)
+      p_stillsick <- c(p_stillsick, NA)
+      p_stillsick_error <- c(p_stillsick_error, NA)
+    }
     
     population <- c(population, pop)
   }
@@ -181,34 +179,18 @@ process_region <- function(dt, reg, name, pop, dates, num_responses = 1000, age 
                    sample_size_recent,
                    reach_recent,
                    
-                   cases_est,
-                   cases_low,
-                   cases_high,
-                   
-                   recentcases_est,
-                   recentcases_low,
-                   recentcases_high,
-                   
-                   fatalities_est,
-                   fatalities_low,
-                   fatalities_high,
-                   
                    p_cases,
-                   p_cases_low,
-                   p_cases_high,
-                   
+                   p_cases_error,
+
                    p_fatalities,
-                   p_fatalities_low,
-                   p_fatalities_high,
-                   
+                   p_fatalities_error,
+
                    p_recentcases,
-                   p_recentcases_low,
-                   p_recentcases_high,
+                   p_recentcases_error,
                    
                    p_stillsick,
-                   p_stillsick_low,
-                   p_stillsick_high,
-                   
+                   p_stillsick_error,
+
                    stringsAsFactors = F)
   
   return(dd)
@@ -272,53 +254,37 @@ dw <- data.frame(date=c(),
                  sample_size_recent=c(),
                  reach_recent=c(),
 
-                 cases_est=c(),
-                 cases_low=c(),
-                 cases_high=c(),
-                 
-                 recentcases_est=c(),
-                 recentcases_low=c(),
-                 recentcases_high=c(),
-                 
-                 fatalities_est=c(),
-                 fatalities_low=c(),
-                 fatalities_high=c(),
-                 
                  p_cases=c(),
-                 p_cases_low=c(),
-                 p_cases_high=c(),
-                 
+                 p_cases_error=c(),
+
                  p_fatalities=c(),
-                 p_fatalities_low=c(),
-                 p_fatalities_high=c(),
-                 
+                 p_fatalities_error=c(),
+
                  p_recentcases=c(),
-                 p_recentcases_low=c(),
-                 p_recentcases_high=c(),
-                 
+                 p_recentcases_error=c(),
+
                  p_stillsick=c(),
-                 p_stillsick_low=c(),
-                 p_stillsick_high=c(),
-                 
+                 p_stillsick_error=c(),
+
                  stringsAsFactors = F)
 
 for (i in 1:length(regions)){
   reg <- regions[i]
   cat("Processing", reg, region_names[i], "\n")
   dd <- process_region(dt[dt$iso.3166.2 == reg, ], reg, name=region_names[i], pop=populations[i], 
-                       dates, num_responses, age, recent_age)
+                       dates, max_responses, max_age, recent_max_age)
   #cat("- Writing estimates for:", reg, region_names[i], "\n")
   write.csv(dd, paste0(estimates_path, country_iso, "/", reg, "-estimate.csv"), row.names = FALSE)
   dw <- rbind(dw, dd)
 }
 
-for (j in 1:length(dates)){
-  write.csv(dw[dw$date == dates[j], ], paste0(estimates_path, country_iso, "/", country_iso, "-", dates_dash[j], "-estimate.csv"), row.names = FALSE)
-}
+# for (j in 1:length(dates)){
+#   write.csv(dw[dw$date == dates[j], ], paste0(estimates_path, country_iso, "/", country_iso, "-", dates_dash[j], "-estimate.csv"), row.names = FALSE)
+# }
 
 dw_latest <- dw[dw$date == dates[length(dates)], ]
 rownames(dw_latest) <- NULL
 write.csv(dw_latest, paste0(estimates_path, country_iso, "/", country_iso, "-latest-estimate.csv"), row.names = FALSE)
-print(xtable(dw_latest), type="html", file=paste0(estimates_path, country_iso, "/", country_iso, "-latest-estimate.html"))
+# print(xtable(dw_latest), type="html", file=paste0(estimates_path, country_iso, "/", country_iso, "-latest-estimate.html"))
 
 }

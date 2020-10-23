@@ -3,6 +3,7 @@
 
 library(sf)
 library(tidyverse) # La vamos a usar más adelante
+library(lubridate)
 
 responses_path <- "../data/aggregate/"
 data_path <- "../data/common-data/"
@@ -23,8 +24,8 @@ estimates <- iso_texto <- read.csv(paste0(estimates_path, "ES/ES-latest-estimate
 
 estimates$reach_ratio <- 100000*estimates$reach / estimates$population
 estimates$reach_recent_ratio <- 100000*estimates$reach_recent / estimates$population
-estimates$cases_ratio <- 100000*estimates$cases_est / estimates$population
-estimates$cases_recent_ratio <- 100000*estimates$recentcases_est / estimates$population
+estimates$cases_ratio <- 100000*estimates$p_cases
+estimates$cases_recent_ratio <- 100000*estimates$p_recentcases
 
 carto_base <- left_join(carto_base, estimates)
 
@@ -45,7 +46,7 @@ print(reach_plot)
 dev.off() 
 
 carto_base %>% 
-  mutate(cases_ratio = ifelse(is.na(cases_ratio),  0, cases_ratio)) %>% 
+  # mutate(cases_ratio = ifelse(is.na(cases_ratio),  0, cases_ratio)) %>% 
   # filter(CCAA != "Canarias") %>% 
   ggplot() +
   geom_sf(aes(fill = cases_ratio))  +
@@ -76,7 +77,7 @@ print(reach_recent_plot)
 dev.off() 
 
 carto_base %>% 
-  mutate(cases_recent_ratio = ifelse(is.na(cases_recent_ratio),  0, cases_recent_ratio)) %>% 
+  # mutate(cases_recent_ratio = ifelse(is.na(cases_recent_ratio),  0, cases_recent_ratio)) %>% 
   # filter(CCAA != "Canarias") %>% 
   ggplot() +
   geom_sf(aes(fill = cases_recent_ratio))  +
@@ -89,3 +90,4 @@ carto_base %>%
 jpeg(paste0(estimates_path, "ES/ES-latest-cases-recent-map.jpg"), width = 800, height = 800)
 print(cases_recent_plot)
 dev.off()
+

@@ -11,7 +11,6 @@ library(httr)
 #source("italy_region_based_estimate.R")
 #source("ukraine_region_based_estimate.R")
 
-
 # compute nee decentralized estimates
 try(source("script-confirmed.R"), silent = T)
 try(source("script-ccfr-based.R"), silent = T)
@@ -26,3 +25,4 @@ try(source("script-rivas-arganda-daily.R"), silent = T)
 
 try(source("script-provinces-daily.R"), silent = T)
 try(source("script-provinces-map.R"), silent = T)
+try(source("script-provinces-plot.R"), silent = T)
