@@ -1,6 +1,6 @@
 
-ccfrdata <- read.csv("../data/estimates-ccfr-based/PlotData/PT-estimate.csv")
-casedata <- read.csv("../data/estimates-confirmed/PlotData/PT-estimate.csv")
+ccfrdata <- read.csv("../../data/estimates-ccfr-based/PlotData/PT-estimate.csv")
+casedata <- read.csv("../../data/estimates-confirmed/PlotData/PT-estimate.csv")
 
 
 
@@ -44,7 +44,7 @@ ed <- diff(ecc)
 
 d <- ccfrdata$deaths/0.0138
 
-ds <- d[-(1:12)]
+ds <- d[-(1:9)]
 
 smoo <- 5
 
