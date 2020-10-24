@@ -68,12 +68,12 @@ for (k in 1:length(all.files)) {
     p <- to.smooth %>% 
       plot_ly(x = ~date, y = ~p_cases, type = 'scatter', mode = 'markers', 
               name = 'Estimated p') %>% 
-      add_trace(x = ~date, y = ~p_cases_s, type = 'scatter', mode = 'lines', 
+      add_trace(x = ~date, y = ~p_cases_smooth, type = 'scatter', mode = 'lines', 
                 name = 'Smooth p') %>% 
-      add_trace( x = ~date, y = ~p_cases_s_high, type = "scatter" , mode = "lines",
+      add_trace( x = ~date, y = ~p_cases_smooth_high, type = "scatter" , mode = "lines",
                  line = list(color = 'transparent'),
                  showlegend = FALSE, name = 'High')  %>%
-      add_trace(x = ~date, y = ~p_cases_s_low, type = 'scatter', mode = 'lines',
+      add_trace(x = ~date, y = ~p_cases_smooth_low, type = 'scatter', mode = 'lines',
                 fill = 'tonexty', line = list(color = 'transparent'),
                 showlegend = FALSE, name = 'Low') %>% 
       layout(title = substr(all.files[k], 1, 2))
@@ -81,3 +81,4 @@ for (k in 1:length(all.files)) {
   } # end-if-plot-smoothed-data
   
 } # end-for
+

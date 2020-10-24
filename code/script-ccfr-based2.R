@@ -2,9 +2,10 @@ library(tidyverse)
 library(readxl)
 library(httr)
 
+source("smooth_column-v2.R")
+
 country_codes_file <- "../data/common-data/wikipedia-iso-country-codes.xlsx"
 estimates_path <- "../data/estimates-ccfr-based/PlotData/"
-source("smooth_column-v2.R")
 
 # country_codes_file <- "../coronasurveys/data/common-data/wikipedia-iso-country-codes.xlsx"
 # estimates_path <- "./estimates-ccfr-based/PlotData/"
