@@ -5,8 +5,10 @@ library(dplyr)
 source("smooth_column-v2.R")
 
 estimates_path <- "../data/estimates-provinces/"
+plots_path <- "../data/estimates-provinces/plots/"
 
 # estimates_path <- "./estimates-provinces/"
+# plots_path <- "./estimates-provinces/plots/"
 
 
 smooth_param <- 15
@@ -88,7 +90,7 @@ p1 <- ggplot(data = df, aes(x = date, color = ""))  +
 #p1
 
 ggsave(plot = p1, 
-       filename =  paste0(estimates_path, "ES/ESM-recent-plot.jpg"), 
+       filename =  paste0(plots_path, "ESM-recent-plot.jpg"), 
        width = 9, height = 6)
 
 # df_out <- smooth_column(df_in = df, 
