@@ -4,18 +4,12 @@
 
 smooth_greedy <- function(dt_column){
   dt_column[is.na(dt_column)] <- 0
-  ecc <- dt_column[1]
   for (i in 2:length(dt_column)){
-    if (dt_column[i] < ecc[i-1])  { # track ecc instead
-      d <- ecc[i-1] - dt_column[i] 
-      ecc[i] <- ecc[i-1]
+    if (dt_column[i] < dt_column[i-1])  { # track ecc instead
+      d <- dt_column[i-1] - dt_column[i] 
+      dt_column[i] <- dt_column[i-1]
       dt_column[i+1] <- dt_column[i+1] - d
     }
-    else{
-      ecc[i] <- dt_column[i]
-    }
   }
-  return(ecc)
+  return(dt_column)
 }
-
-
