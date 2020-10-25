@@ -11,9 +11,10 @@ library(httr)
 #source("italy_region_based_estimate.R")
 #source("ukraine_region_based_estimate.R")
 
-# compute nee decentralized estimates
+# compute new decentralized estimates
 try(source("script-confirmed.R"), silent = T)
-try(source("script-ccfr-based.R"), silent = T)
+try(source("script-ccfr-based2.R"), silent = T)
+try(source("script-ccfr-fatalities.R"), silent = T)
 
 try(source("script-30responses.R"), silent = T)
 
