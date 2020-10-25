@@ -808,3 +808,4 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/07,Italy,IT,Province:Roma,ITRM,en,50,1,,0,0,0,,,,,,,N,,limesurvey-14936,r342jf4h04tssga2w5,
 2020/10/08,Italy,IT,Regioni:Sardegna,IT88,en,500,0,,0,0,0,,,,,,,N,,limesurvey-14981,tmywch677lsllum9y3,
 2020/10/17,Italy,IT,Regioni:Lombardia,IT25,en,300,0,,0,0,0,,,,,,,Y,,limesurvey-15686,n3pt84hbu076xto3pv,
+2020/10/24,Italy,IT,Regioni:Lombardia,IT25,en,300,2,,0,1,1,,,,,,,Y,,limesurvey-16684,n3pt84hbu076xto3pv,
