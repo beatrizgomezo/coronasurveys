@@ -26,19 +26,36 @@ ecc <- c(0)
 a <- 0
 ecc[1] <- ec[1]
 
+#################### greedy smoothing ###########################
+# segun: still not monotone if there are two consecutive decrease in series 
 for (i in 2:l)
 {
   if (ec[i] < ec[i-1])
   {
-    d <- ec[i] - ec[i-1]
+    d <- ec[i] - ec[i-1] #segun: d < 0 here
     ecc[i] <- ec[i-1]
-    ec[i+1] <- ec[i+1] - d
+    #ec[i+1] <- ec[i+1] - d #segun: +d instead
+    ec[i+1] <- ec[i+1] + d
   }
   else
   {
     ecc[i] <- ec[i]
   }
 }
+################## proposed greedy smoothing ##########
+for (i in 2:l){
+  if (ec[i] < ecc[i-1])  { # track ecc instead
+    d <- ecc[i-1] - ec[i] 
+    ecc[i] <- ecc[i-1]
+    ec[i+1] <- ec[i+1] - d
+  }
+  else{
+    ecc[i] <- ec[i]
+  }
+}
+
+
+
 
 ed <- diff(ecc)
 

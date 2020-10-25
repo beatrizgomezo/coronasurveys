@@ -2,7 +2,7 @@ library(tidyverse)
 library(readxl)
 library(httr)
 
-source("smooth_column-v2.R")
+source("smooth_greedy.R")
 
 country_codes_file <- "../data/common-data/wikipedia-iso-country-codes.xlsx"
 estimates_path <- "../data/estimates-ccfr-based/PlotData/"
@@ -122,12 +122,10 @@ plot_estimates <- function(country_geoid = "ES",
     dt$p_cases_low <- p_ccfr_low
     dt$p_cases_high <- p_ccfr_high
     
-    dt_aux <- smooth_column(dt, "est_cases", link_in = "log", monotone = T)
-    
     # clean ccfr factor
     ccfr_factor[is.na(ccfr_factor)|(ccfr_factor<1)] <- 1
     # daily ccfr estimate
-    dt$cases_daily <- c(0, diff(dt_aux$est_cases_smooth))
+    dt$cases_daily <- c(0, diff(smooth_greedy(dt$est_cases)))
     
     #undetected active cases
     undetected_daily_estimate <-  dt$cases_daily - dt$cases
