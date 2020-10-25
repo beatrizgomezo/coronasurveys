@@ -80,17 +80,48 @@ batch_effect <- function(df_batch_in, denom2try){
       } # if-cum_responses-greater-b_size
     } # for-rows-df_temp
     
+    # smooth "pct_cli" with our method:
+    df_temp <- smooth_column(df_in = df_temp, 
+                             col_s = "pct_cli", 
+                             link_in = "log",
+                             basis_dim = min(sum(!is.na(df_temp$pct_cli)), 25),
+                             monotone = F)
+    
+    # # fill_pct_cli_smooth_post_batched_smoothing
+    # # fill first and last NA's of "batched"-version with "pct_cli_smooth":
+    # # 1. non-NA elements in "batched_pct_cli":
+    # first_non_NA <- min(which(!is.na(df_temp$batched_pct_cli)))
+    # last_non_NA <- max(which(!is.na(df_temp$batched_pct_cli)))
+    # # 2.assign the values from "pct_cli_smooth":
+    # df_temp[-(first_non_NA:last_non_NA) , "batched_pct_cli"] <- df_temp[-(first_non_NA:last_non_NA) , "pct_cli_smooth"]
+    
+    # # fill_pct_cli_smooth_pre_batched_smoothing_only_1st_and_last
+    # # fill first and last elements of "batched"-version with "pct_cli_smooth":
+    # df_temp[c(1, nrow(df_temp)), "batched_pct_cli"] <- df_temp[c(1, nrow(df_temp)), "pct_cli_smooth"]
+    
+    # # fill_pct_cli_pre_batched_smoothing
+    # # fill first and last NA's of "batched"-version with "pct_cli":
+    # # 1. non-NA elements in "batched_pct_cli":
+    # first_non_NA <- min(which(!is.na(df_temp$batched_pct_cli)))
+    # last_non_NA <- max(which(!is.na(df_temp$batched_pct_cli)))
+    # # 2.assign the values from "pct_cli_smooth":
+    # df_temp[-(first_non_NA:last_non_NA) , "batched_pct_cli"] <- df_temp[-(first_non_NA:last_non_NA) , "pct_cli"]
+    
+    # smooth the  "batched_pct_cli" with our method:
     df_temp <- smooth_column(df_in = df_temp, 
                              col_s = "batched_pct_cli", 
                              link_in = "log",
                              basis_dim = min(sum(!is.na(df_temp$batched_pct_cli)), 25), 
                              monotone = F)
     
-    df_temp <- smooth_column(df_in = df_temp, 
-                             col_s = "pct_cli", 
-                             link_in = "log",
-                             basis_dim = min(sum(!is.na(df_temp$batched_pct_cli)), 40),
-                             monotone = F)
+    # # fill_pct_cli_smooth_post_batched_smoothing
+    # # fill first and last NA's of "batched"-version with "pct_cli_smooth":
+    # # 1. non-NA elements in "batched_pct_cli":
+    # first_non_NA <- min(which(!is.na(df_temp$batched_pct_cli)))
+    # last_non_NA <- max(which(!is.na(df_temp$batched_pct_cli)))
+    # # 2.assign the values from "pct_cli_smooth":
+    # df_temp[-(first_non_NA:last_non_NA) , "batched_pct_cli_smooth"] <- df_temp[-(first_non_NA:last_non_NA) , "pct_cli_smooth"]
+
     
     df_temp <- df_temp %>% 
       select(date, population, total_responses, pct_cli, pct_cli_smooth,
@@ -202,7 +233,6 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
     dt$population <- countries[countries$country==country, "population"]
     
     
-    
     df_out <- batch_effect(df_batch_in = dt, 
                            denom2try = denom_2_try) # denom2try = seq(1000, 5000, by = 500)
     
@@ -221,21 +251,20 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
     ## Some plots
     df_out$d = paste0("d = ", df_out$b_size_denom)
     
-    p1 <- ggplot(data = df_out, aes(x = date, group = d, colour = Legend)) +
-      geom_point(aes(y = pct_cli, colour = "CSDC CLI"), alpha = 0.2, size = 2) +
-      geom_line(aes(y = pct_cli_smooth, colour = "CSDC CLI (smooth)"), linetype = "solid", size = 1, alpha = 0.6) + 
+    p1 <- ggplot(data = df_out, aes(x = date, colour = Legend)) +
+      facet_wrap( ~ d ) +
       geom_point(aes(y = batched_pct_cli, colour = "Batched CSDC CLI"), alpha = 0.5, size = 2) +
       geom_line(aes(y = batched_pct_cli_smooth, colour = "Batched CSDC CLI (smooth)"), linetype = "solid", size =1, alpha = 0.6) +
+      geom_point(aes(y = pct_cli, colour = "CSDC CLI"), alpha = 0.2, size = 2) +
+      geom_line(aes(y = pct_cli_smooth, colour = "CSDC CLI (smooth)"), linetype = "solid", size = 1, alpha = 0.6) +
       geom_point(aes(y = pct_cli, colour = "d = population / batch size"), alpha = 0) +
-      facet_wrap( ~ d ) +
-      theme_bw() + 
+      theme_bw() +
       scale_colour_manual(values = c("blue", "blue", "red", "red", "black"),
                           guide = guide_legend(override.aes = list(
                             linetype = c("blank", "solid", "blank", "solid", "blank"),
-                            shape = c(1, NA, 1, NA, NA)))) + 
+                            shape = c(1, NA, 1, NA, NA)))) +
       xlab("Date") + ylab("% symptomatic cases") + ggtitle(country) +
       theme(legend.position = "bottom")
-    # p1
     
     ggsave(plot = p1, 
            filename =  paste0("../data/estimates-umd-batches/plots/", country_code , "-plots-by-batch.png"), 
@@ -244,10 +273,11 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
   } # end-for-countries_2_try
 } #end-function: umd_batch_symptom_country
 
-umd_batch_symptom_country(countries_2_try = c( 
-                            "Brazil", 
-                            "Ecuador", 
+umd_batch_symptom_country(countries_2_try = c(
+                            "Brazil",
+                            "Ecuador",
                             "France",
+                            "Germany",
                             "United States of America",
                             "Portugal",
                             "Spain",
@@ -255,10 +285,27 @@ umd_batch_symptom_country(countries_2_try = c(
                             "Belgium",
                             "Mexico",
                             "United Kingdom",
-                            "Ukraine"), 
-                          denom_2_try = c(1000, 1500, 2000), 
+                            "Ukraine"),
+                          denom_2_try = c(1000, 1500, 2000),
                           d_to_save = 1000)
 
-# umd_batch_symptom_country(as.character(countries$country), 
-#                           denom_2_try = 5000, 
-#                           d_to_save = 5000)
+
+# countries_b <- countries %>% select(country) %>% 
+#   filter(!(country %in% c( "Benin", 
+#                            "Burkina Faso", 
+#                            "Côte d'Ivoire", 
+#                            "Ethiopia", 
+#                            "Haiti", 
+#                            "Mali",
+#                            "Pakistan",
+#                            "Senegal",
+#                            "South Africa",
+#                            "Tanzania")))
+# 
+# # country_in <- as.character(countries_b$country[89:nrow(countries_b)] )
+# 
+# umd_batch_symptom_country(countries_b$country, #country_in,
+#                           denom_2_try = c(15000),
+#                           d_to_save = 15000)
+
+
