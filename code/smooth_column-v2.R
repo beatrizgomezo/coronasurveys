@@ -2,7 +2,7 @@
 library(dplyr)
 
 ## Functions ----
-smooth_column <- function(df_in, col_s,  basis_dim = 15, link_in = "identity", monotone = F){
+smooth_column <- function(df_in, col_s, basis_dim = 15, link_in = "identity", monotone = F){
   
   ## Column smoother using the packages "mgcv/scam":
   ##
@@ -63,15 +63,19 @@ smooth_column <- function(df_in, col_s,  basis_dim = 15, link_in = "identity", m
   
   # predict during the whole period:
   newd <- data.frame(day = 1:nrow(df_in))
-  y_smooth <- predict(b1, newd, type = "response")
+  pred_smooth <- predict(b1, newd, type = "response", se.fit = T)
   df_predicted <- data.frame(date = df_in$date,
-                             y_smooth = y_smooth)
+                             y_smooth = pred_smooth$fit,
+                             y_smooth_low = pred_smooth$fit - 2*pred_smooth$se.fit,
+                             y_smooth_high = pred_smooth$fit + 2*pred_smooth$se.fit)
   
   # introduce new data into input-data frame:
   df_in <- full_join(df_in, df_predicted, by = "date")
   
   # change to column "xxx_smooth":
-  colnames(df_in)[colnames(df_in) == "y_smooth"] <- paste0(col_s, 
-                                                           "_smooth")
+  colnames(df_in)[colnames(df_in) == "y_smooth"] <- paste0(col_s, "_smooth")
+  colnames(df_in)[colnames(df_in) == "y_smooth_low"] <- paste0(col_s, "_smooth_low")
+  colnames(df_in)[colnames(df_in) == "y_smooth_high"] <- paste0(col_s, "_smooth_high")
+  
   return(df_in)
 }

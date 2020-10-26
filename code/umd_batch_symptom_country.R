@@ -124,8 +124,10 @@ batch_effect <- function(df_batch_in, denom2try){
 
     
     df_temp <- df_temp %>% 
-      select(date, population, total_responses, pct_cli, pct_cli_smooth,
-             number_cli, batched_pct_cli, batched_pct_cli_smooth) %>% 
+      select(date, population, total_responses, pct_cli, 
+             pct_cli_smooth, pct_cli_smooth_low, pct_cli_smooth_high,
+             number_cli, batched_pct_cli, 
+             batched_pct_cli_smooth, batched_pct_cli_smooth_low, batched_pct_cli_smooth_high) %>% 
       mutate(estimate_cli = population*(batched_pct_cli_smooth/100),
              cum_estimate_cli = cumsum(estimate_cli),
              number_cli_smooth = population*(pct_cli_smooth/100),
@@ -237,6 +239,8 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
                            denom2try = denom_2_try) # denom2try = seq(1000, 5000, by = 500)
     
     df_out$p_symptom <- df_out$batched_pct_cli_smooth
+    df_out$p_symptom_high <- df_out$batched_pct_cli_smooth_high
+    df_out$p_symptom_low <- df_out$batched_pct_cli_smooth_low
     
     # select a single batch size:
     df_save <- df_out %>% filter(b_size_denom == d_to_save)
@@ -254,9 +258,17 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
     p1 <- ggplot(data = df_out, aes(x = date, colour = Legend)) +
       facet_wrap( ~ d ) +
       geom_point(aes(y = batched_pct_cli, colour = "Batched CSDC CLI"), alpha = 0.5, size = 2) +
-      geom_line(aes(y = batched_pct_cli_smooth, colour = "Batched CSDC CLI (smooth)"), linetype = "solid", size =1, alpha = 0.6) +
+      geom_line(aes(y = batched_pct_cli_smooth, colour = "Batched CSDC CLI (smooth)"), 
+                linetype = "solid", size =1, alpha = 0.6) +
+      geom_ribbon(aes(ymin = batched_pct_cli_smooth_low, 
+                      ymax = batched_pct_cli_smooth_high), 
+                  alpha = 0.1, color = "blue", size = 0.1) +
       geom_point(aes(y = pct_cli, colour = "CSDC CLI"), alpha = 0.2, size = 2) +
-      geom_line(aes(y = pct_cli_smooth, colour = "CSDC CLI (smooth)"), linetype = "solid", size = 1, alpha = 0.6) +
+      geom_line(aes(y = pct_cli_smooth, colour = "CSDC CLI (smooth)"), 
+                linetype = "solid", size = 1, alpha = 0.6) +
+      geom_ribbon(aes(ymin = pct_cli_smooth_low, 
+                      ymax = pct_cli_smooth_high), 
+                  alpha = 0.1, color = "red", size = 0.1) +
       geom_point(aes(y = pct_cli, colour = "d = population / batch size"), alpha = 0) +
       theme_bw() +
       scale_colour_manual(values = c("blue", "blue", "red", "red", "black"),
@@ -265,7 +277,7 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
                             shape = c(1, NA, 1, NA, NA)))) +
       xlab("Date") + ylab("% symptomatic cases") + ggtitle(country) +
       theme(legend.position = "bottom")
-    
+    p1
     ggsave(plot = p1, 
            filename =  paste0("../data/estimates-umd-batches/plots/", country_code , "-plots-by-batch.png"), 
            width = 9, height = 6)
