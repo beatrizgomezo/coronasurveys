@@ -84,7 +84,7 @@ batch_effect <- function(df_batch_in, denom2try){
     df_temp <- smooth_column(df_in = df_temp, 
                              col_s = "pct_cli", 
                              link_in = "log",
-                             basis_dim = min(sum(!is.na(df_temp$pct_cli)), 25),
+                             basis_dim = min(sum(!is.na(df_temp$pct_cli))-1, 25),
                              monotone = F)
     
     # # fill_pct_cli_smooth_post_batched_smoothing
@@ -99,19 +99,19 @@ batch_effect <- function(df_batch_in, denom2try){
     # # fill first and last elements of "batched"-version with "pct_cli_smooth":
     # df_temp[c(1, nrow(df_temp)), "batched_pct_cli"] <- df_temp[c(1, nrow(df_temp)), "pct_cli_smooth"]
     
-    # # fill_pct_cli_pre_batched_smoothing
-    # # fill first and last NA's of "batched"-version with "pct_cli":
-    # # 1. non-NA elements in "batched_pct_cli":
-    # first_non_NA <- min(which(!is.na(df_temp$batched_pct_cli)))
-    # last_non_NA <- max(which(!is.na(df_temp$batched_pct_cli)))
-    # # 2.assign the values from "pct_cli_smooth":
-    # df_temp[-(first_non_NA:last_non_NA) , "batched_pct_cli"] <- df_temp[-(first_non_NA:last_non_NA) , "pct_cli"]
+    # fill_pct_cli_pre_batched_smoothing
+    # fill first and last NA's of "batched"-version with "pct_cli":
+    # 1. non-NA elements in "batched_pct_cli":
+    first_non_NA <- min(which(!is.na(df_temp$batched_pct_cli)))
+    last_non_NA <- max(which(!is.na(df_temp$batched_pct_cli)))
+    # 2.assign the values from "pct_cli_smooth":
+    df_temp[-(first_non_NA:last_non_NA) , "batched_pct_cli"] <- df_temp[-(first_non_NA:last_non_NA) , "pct_cli"]
     
     # smooth the  "batched_pct_cli" with our method:
     df_temp <- smooth_column(df_in = df_temp, 
                              col_s = "batched_pct_cli", 
                              link_in = "log",
-                             basis_dim = min(sum(!is.na(df_temp$batched_pct_cli)), 25), 
+                             basis_dim = min(sum(!is.na(df_temp$batched_pct_cli))-1, 25), 
                              monotone = F)
     
     # # fill_pct_cli_smooth_post_batched_smoothing
@@ -238,9 +238,9 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
     df_out <- batch_effect(df_batch_in = dt, 
                            denom2try = denom_2_try) # denom2try = seq(1000, 5000, by = 500)
     
-    df_out$p_symptom <- df_out$batched_pct_cli_smooth
-    df_out$p_symptom_high <- df_out$batched_pct_cli_smooth_high
-    df_out$p_symptom_low <- df_out$batched_pct_cli_smooth_low
+    df_out$p_cases_active <- df_out$batched_pct_cli_smooth
+    df_out$p_cases_active_high <- df_out$batched_pct_cli_smooth_high
+    df_out$p_cases_active_low <- df_out$batched_pct_cli_smooth_low
     
     # select a single batch size:
     df_save <- df_out %>% filter(b_size_denom == d_to_save)
@@ -256,19 +256,19 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
     df_out$d = paste0("d = ", df_out$b_size_denom)
     
     p1 <- ggplot(data = df_out, aes(x = date, colour = Legend)) +
-      facet_wrap( ~ d ) +
+      facet_wrap( ~ d, scales = "free_y" ) +
       geom_point(aes(y = batched_pct_cli, colour = "Batched CSDC CLI"), alpha = 0.5, size = 2) +
       geom_line(aes(y = batched_pct_cli_smooth, colour = "Batched CSDC CLI (smooth)"), 
                 linetype = "solid", size =1, alpha = 0.6) +
       geom_ribbon(aes(ymin = batched_pct_cli_smooth_low, 
                       ymax = batched_pct_cli_smooth_high), 
-                  alpha = 0.1, color = "blue", size = 0.1) +
+                  alpha = 0.1, color = "blue", size = 0.1, fill = "blue") +
       geom_point(aes(y = pct_cli, colour = "CSDC CLI"), alpha = 0.2, size = 2) +
       geom_line(aes(y = pct_cli_smooth, colour = "CSDC CLI (smooth)"), 
                 linetype = "solid", size = 1, alpha = 0.6) +
       geom_ribbon(aes(ymin = pct_cli_smooth_low, 
                       ymax = pct_cli_smooth_high), 
-                  alpha = 0.1, color = "red", size = 0.1) +
+                  alpha = 0.1, color = "red", size = 0.1, fill = "red") +
       geom_point(aes(y = pct_cli, colour = "d = population / batch size"), alpha = 0) +
       theme_bw() +
       scale_colour_manual(values = c("blue", "blue", "red", "red", "black"),
@@ -285,39 +285,70 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
   } # end-for-countries_2_try
 } #end-function: umd_batch_symptom_country
 
-umd_batch_symptom_country(countries_2_try = c(
-                            "Brazil",
-                            "Ecuador",
-                            "France",
-                            "Germany",
-                            "United States of America",
-                            "Portugal",
-                            "Spain",
-                            "Austria",
-                            "Belgium",
-                            "Mexico",
-                            "United Kingdom",
-                            "Ukraine"),
-                          denom_2_try = c(1000, 1500, 2000),
-                          d_to_save = 1000)
+
+countries_b <- countries %>% select(country) %>%
+  filter(!(country %in% c( "Angola",
+                           "Benin",
+                           "Burkina Faso",
+                           "Cambodia",
+                           "Cameroon",
+                           "Côte d'Ivoire",
+                           "Ethiopia",
+                           "Haiti",
+                           "Mali",
+                           "Mozambique",
+                           "Nigeria",
+                           "Senegal",
+                           "South Africa",
+                           "Tanzania",
+                           "Yemen"
+                           )))
+
+umd_batch_symptom_country(countries_b$country, 
+                          denom_2_try = c(1500, 2000),
+                          d_to_save = 1500)
 
 
-# countries_b <- countries %>% select(country) %>% 
-#   filter(!(country %in% c( "Benin", 
-#                            "Burkina Faso", 
-#                            "Côte d'Ivoire", 
-#                            "Ethiopia", 
-#                            "Haiti", 
-#                            "Mali",
-#                            "Pakistan",
-#                            "Senegal",
-#                            "South Africa",
-#                            "Tanzania")))
-# 
-# # country_in <- as.character(countries_b$country[89:nrow(countries_b)] )
-# 
-# umd_batch_symptom_country(countries_b$country, #country_in,
-#                           denom_2_try = c(15000),
-#                           d_to_save = 15000)
+umd_batch_symptom_country("Angola", 
+                          denom_2_try = c(15000),
+                          d_to_save = 15000)
 
+umd_batch_symptom_country("Cambodia", 
+                          denom_2_try = c(20000),
+                          d_to_save = 20000)
 
+umd_batch_symptom_country("Cameroon", 
+                          denom_2_try = c(20000),
+                          d_to_save = 20000)
+
+umd_batch_symptom_country("Ethiopia", 
+                          denom_2_try = c(15000),
+                          d_to_save = 15000)
+
+umd_batch_symptom_country("Haiti", 
+                          denom_2_try = c(15000),
+                          d_to_save = 15000)
+
+umd_batch_symptom_country("Mali", 
+                          denom_2_try = c(60000),
+                          d_to_save = 60000)
+
+umd_batch_symptom_country("Mozambique", 
+                          denom_2_try = c(15000),
+                          d_to_save = 15000)
+
+umd_batch_symptom_country("Nigeria", 
+                          denom_2_try = c(15000),
+                          d_to_save = 15000)
+
+umd_batch_symptom_country("Senegal", 
+                          denom_2_try = c(20000),
+                          d_to_save = 20000)
+
+umd_batch_symptom_country("Tanzania", 
+                          denom_2_try = c(60000),
+                          d_to_save = 60000)
+
+umd_batch_symptom_country("Yemen", 
+                          denom_2_try = c(15000),
+                          d_to_save = 15000)
