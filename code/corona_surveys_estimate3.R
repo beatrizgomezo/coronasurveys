@@ -12,15 +12,15 @@ library(httr)
 #source("ukraine_region_based_estimate.R")
 
 # compute new decentralized estimates
-try(source("script-confirmed.R"), silent = T)
-try(source("script-ccfr-based2.R"), silent = T)
+try(source("script-confirmed2.R"), silent = T)
+try(source("script-ccfr-based3.R"), silent = T)
 try(source("script-ccfr-fatalities.R"), silent = T)
 
-try(source("script-30responses.R"), silent = T)
+try(source("umd_batch_symptom_country.R"), silent = T)
 
+try(source("script-30responses.R"), silent = T)
 try(source("script-300responses.R"), silent = T)
 try(source("script-smooth-300responses.R"), silent = T)
-
 try(source("script-W-alpha.R"), silent = T)
 try(source("script-W.R"), silent = T)
 

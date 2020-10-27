@@ -165,7 +165,7 @@ create_countries_pop_iso <- function(){
   
   countries <- left_join(countries, countries_pop, by = "country")
   
-  countries[countries$country == "Côte d'Ivoire", 2:4] <- 
+  countries[countries$country == "C\xf4te d'Ivoire", 2:4] <- 
     countries_pop[countries_pop$country == "Cote dIvoire", 2:4]
   
   countries[countries$country == "Czech Republic", 2:4] <- 
@@ -292,7 +292,7 @@ countries_b <- countries %>% select(country) %>%
                            "Burkina Faso",
                            "Cambodia",
                            "Cameroon",
-                           "Côte d'Ivoire",
+                           "C\xf4te d'Ivoire",
                            "Ethiopia",
                            "Haiti",
                            "Mali",
