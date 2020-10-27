@@ -6204,3 +6204,13 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/25,Spain,ES,Provincia:Madrid,ESM,en,15,4,,0,1,1,,,0,,,,N,,limesurvey-16920,f6jrj8vjnyn19fag2i,FBESM
 2020/10/26,Spain,ES,Provincia:Madrid,ESM,en,100,30,,4,0,0,,,5,,,,N,,limesurvey-17032,8lg3vnsi7xyunkybl5,FBESM
 2020/10/26,Spain,ES,Provincia:Madrid,ESM,en,300,5,,1,0,0,,,2,,,,N,,limesurvey-17038,ci7rqbai7de5kt3i98,FBESM
+2020/10/26,Spain,ES,Provincia:Madrid,ESM,en,100,8,,1,0,0,,,0,,,,N,,limesurvey-17060,boagf0u33sg30lz96x,FBESM
+2020/10/26,Spain,ES,"Provincia:Las Palmas",ESGC,en,250,6,,0,2,7,,,2,,,,Y,,limesurvey-17099,czwzfotb6di6tmlvre,
+2020/10/26,Spain,ES,Provincia:Madrid,ESM,en,100,11,,0,0,0,,,2,,,,Y,,limesurvey-17084,8hqhi98agokc29bylg,
+2020/10/26,Spain,ES,Provincia:Toledo,ESTO,en,100,2,,1,0,0,,,0,,,,Y,,limesurvey-17085,8hqhi98agokc29bylg,
+2020/10/26,Spain,ES,Provincia:Asturias,ESO,en,25,1,,0,0,0,,,0,,,,N,,limesurvey-17074,sjfgh1xc295bc1hjn8,
+2020/10/26,Spain,ES,Provincia:Asturias,ESO,en,25,1,,0,0,0,,,0,,,,N,,limesurvey-17073,sjfgh1xc295bc1hjn8,
+2020/10/26,Spain,ES,Provincia:Asturias,ESO,en,25,1,,0,0,0,,,0,,,,N,,limesurvey-17072,sjfgh1xc295bc1hjn8,
+2020/10/26,Spain,ES,Provincia:Madrid,ESM,en,270,27,,3,0,0,,,4,,,,Y,,limesurvey-17124,kuotb4ejplkcvvzib5,
+2020/10/26,Spain,ES,Provincia:Asturias,ESO,en,25,1,,0,0,0,,,0,,,,N,,limesurvey-17075,sjfgh1xc295bc1hjn8,
+2020/10/26,Spain,ES,"Comunidad Autónoma:Madrid, Comunidad de",ESMD,en,40,0,,0,0,0,,,0,,,,N,,limesurvey-17102,kgp0sr0u6093ecec0q,FBESM
