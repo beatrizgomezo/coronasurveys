@@ -16,7 +16,7 @@ try(source("script-confirmed2.R"), silent = T)
 try(source("script-ccfr-based3.R"), silent = T)
 try(source("script-ccfr-fatalities.R"), silent = T)
 
-try(source("umd_batch_symptom_country.R"), silent = T)
+try(source("script-umd_batch_symptom_country.R"), silent = T)
 
 try(source("script-30responses.R"), silent = T)
 try(source("script-300responses.R"), silent = T)
