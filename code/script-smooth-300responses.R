@@ -30,8 +30,8 @@ for (k in 1:length(all.files)) {
   data300 <- read.csv(paste0("../data/estimates-300responses/PlotData/",
                              all.files[k]))
   
-  ## first non-zero p_cases:
-  frst_n_zero <- head(data300[data300$p_cases!=0, 1], 1)
+  ## first non-zero p_cases_infected:
+  frst_n_zero <- head(data300[data300$p_cases_infected!=0, 1], 1)
   
   ##  Set up data to smooth ----
   to.smooth <- data300[ frst_n_zero:nrow(data300) , ]
@@ -39,41 +39,41 @@ for (k in 1:length(all.files)) {
   to.smooth$date <- as.Date(to.smooth$date)
   
   # Mono-smoothing with scam ----
-  b1 <- scam(p_cases ~ s(day, k = 25, bs="mpi",m=2),
+  b1 <- scam(p_cases_infected ~ s(day, k = 25, bs="mpi",m=2),
              family=gaussian(link="identity"), data=to.smooth)
   
-  b2 <- scam(p_cases_low ~ s(day, k = 25, bs="mpi",m=2),
+  b2 <- scam(p_cases_infected_low ~ s(day, k = 25, bs="mpi",m=2),
              family=gaussian(link="identity"), data=to.smooth)
   
-  b3 <- scam(p_cases_high ~ s(day, k = 25, bs="mpi",m=2),
+  b3 <- scam(p_cases_infected_high ~ s(day, k = 25, bs="mpi",m=2),
              family=gaussian(link="identity"), data=to.smooth)
   
-  to.smooth[, 'p_cases_smooth'] <- b1$fitted.values
-  to.smooth[, 'p_cases_smooth_low'] <- b2$fitted.values
-  to.smooth[, 'p_cases_smooth_high'] <- b3$fitted.values
+  to.smooth[, 'p_cases_infected_smooth'] <- b1$fitted.values
+  to.smooth[, 'p_cases_infected_low_smooth'] <- b2$fitted.values
+  to.smooth[, 'p_cases_infected_high_smooth'] <- b3$fitted.values
   
   ## Savings ----
   data300 <- data300[, -1]
   data300[frst_n_zero:nrow(data300), 
-          c('p_cases_smooth', 
-            'p_cases_smooth_low', 
-            'p_cases_smooth_high')] <- to.smooth[ ,c('p_cases_smooth', 
-                                                     'p_cases_smooth_low', 
-                                                     'p_cases_smooth_high')]
+          c('p_cases_infected_smooth', 
+            'p_cases_infected_low_smooth', 
+            'p_cases_infected_high_smooth')] <- to.smooth[ ,c('p_cases_infected_smooth', 
+                                                     'p_cases_infected_low_smooth', 
+                                                     'p_cases_infected_high_smooth')]
   write.csv(data300,
             paste0("../data/estimates-300responses/PlotData/", all.files[k]))
   
   ## Plots ----
   if (to_plot) {
     p <- to.smooth %>% 
-      plot_ly(x = ~date, y = ~p_cases, type = 'scatter', mode = 'markers', 
+      plot_ly(x = ~date, y = ~p_cases_infected, type = 'scatter', mode = 'markers', 
               name = 'Estimated p') %>% 
-      add_trace(x = ~date, y = ~p_cases_smooth, type = 'scatter', mode = 'lines', 
+      add_trace(x = ~date, y = ~p_cases_infected_smooth, type = 'scatter', mode = 'lines', 
                 name = 'Smooth p') %>% 
-      add_trace( x = ~date, y = ~p_cases_smooth_high, type = "scatter" , mode = "lines",
+      add_trace( x = ~date, y = ~p_cases_infected_high_smooth, type = "scatter" , mode = "lines",
                  line = list(color = 'transparent'),
                  showlegend = FALSE, name = 'High')  %>%
-      add_trace(x = ~date, y = ~p_cases_smooth_low, type = 'scatter', mode = 'lines',
+      add_trace(x = ~date, y = ~p_cases_infected_low_smooth, type = 'scatter', mode = 'lines',
                 fill = 'tonexty', line = list(color = 'transparent'),
                 showlegend = FALSE, name = 'Low') %>% 
       layout(title = substr(all.files[k], 1, 2))
