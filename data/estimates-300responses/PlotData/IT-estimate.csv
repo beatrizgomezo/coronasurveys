@@ -1,4 +1,4 @@
-"","date","p_cases_infected","p_cases_infected_low","p_cases_infected_high","p_m","p_m_low","p_m_high","p_cases_infected_smooth","p_cases_infected_low_smooth","p_cases_infected_high_smooth"
+"","date","p_cases_infected","p_cases_infected_low","p_cases_infected_high","p_m","p_m_low","p_m_high","p_cases_infected_smooth","p_cases_infected_smooth_low","p_cases_infected_smooth_high"
 "1","2020/03/23",0,NA,NA,0,NA,NA,NA,NA,NA
 "2","2020/03/24",0,NA,NA,0,NA,NA,NA,NA,NA
 "3","2020/03/25",0.0129235785244975,0.000689991501448314,0.0251571655475467,0.0204212864086755,0.00838629864009392,0.032456274177257,0.011493279734319,0.000928958181464744,0.0210222523860436

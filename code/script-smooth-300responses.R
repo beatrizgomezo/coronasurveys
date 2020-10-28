@@ -49,17 +49,17 @@ for (k in 1:length(all.files)) {
              family=gaussian(link="identity"), data=to.smooth)
   
   to.smooth[, 'p_cases_infected_smooth'] <- b1$fitted.values
-  to.smooth[, 'p_cases_infected_low_smooth'] <- b2$fitted.values
-  to.smooth[, 'p_cases_infected_high_smooth'] <- b3$fitted.values
+  to.smooth[, 'p_cases_infected_smooth_low'] <- b2$fitted.values
+  to.smooth[, 'p_cases_infected_smooth_high'] <- b3$fitted.values
   
   ## Savings ----
   data300 <- data300[, -1]
   data300[frst_n_zero:nrow(data300), 
           c('p_cases_infected_smooth', 
-            'p_cases_infected_low_smooth', 
-            'p_cases_infected_high_smooth')] <- to.smooth[ ,c('p_cases_infected_smooth', 
-                                                     'p_cases_infected_low_smooth', 
-                                                     'p_cases_infected_high_smooth')]
+            'p_cases_infected_smooth_low', 
+            'p_cases_infected_smooth_high')] <- to.smooth[ ,c('p_cases_infected_smooth', 
+                                                     'p_cases_infected_smooth_low', 
+                                                     'p_cases_infected_smooth_high')]
   write.csv(data300,
             paste0("../data/estimates-300responses/PlotData/", all.files[k]))
   
@@ -70,10 +70,10 @@ for (k in 1:length(all.files)) {
               name = 'Estimated p') %>% 
       add_trace(x = ~date, y = ~p_cases_infected_smooth, type = 'scatter', mode = 'lines', 
                 name = 'Smooth p') %>% 
-      add_trace( x = ~date, y = ~p_cases_infected_high_smooth, type = "scatter" , mode = "lines",
+      add_trace( x = ~date, y = ~p_cases_infected_smooth_high, type = "scatter" , mode = "lines",
                  line = list(color = 'transparent'),
                  showlegend = FALSE, name = 'High')  %>%
-      add_trace(x = ~date, y = ~p_cases_infected_low_smooth, type = 'scatter', mode = 'lines',
+      add_trace(x = ~date, y = ~p_cases_infected_smooth_low, type = 'scatter', mode = 'lines',
                 fill = 'tonexty', line = list(color = 'transparent'),
                 showlegend = FALSE, name = 'Low') %>% 
       layout(title = substr(all.files[k], 1, 2))
