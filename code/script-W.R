@@ -1,6 +1,6 @@
 library(dplyr) 
 
-# smoothed p_cases and CI:
+# smoothed p_cases_infected and CI:
 source("smooth_column-v2.R")
 smooth_param <- 15
 
@@ -16,8 +16,8 @@ estimates_path <- "../data/estimates-W/"
 
 ci_level <- 0.95
 max_ratio <- 1/3
-num_responses <- 30
-W <- 10000
+num_responses <- 100
+W <- 150
 
 #with recent cases
 provincial_regional_estimate_w_only <- function(countrycode = "ES",
@@ -81,9 +81,9 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                        country=c(),
                        region=c(),
                        population=c(),
-                       p_cases=c(),
+                       p_cases_infected=c(),
                        p_cases_recent=c(),
-                       p_cases_stillsick=c())
+                       p_cases_active=c())
                    
   #----------------------------------
   
@@ -399,9 +399,9 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                   "stillsick_p_w_regs")]
     
     df_aux %>% rename(country = countrycode, region = regioncode, 
-                      population=population_region, p_cases=p_w_regs, 
+                      population=population_region, p_cases_infected=p_w_regs, 
                       p_cases_recent=recent_p_w_regs,
-                      p_cases_stillsick=stillsick_p_w_regs) -> df_aux
+                      p_cases_active=stillsick_p_w_regs) -> df_aux
     df_aux <- unique(df_aux)
     
     dwhole <- rbind(dwhole, df_aux)
@@ -437,9 +437,9 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
   
   # for (j in regions){
   #   df_aux <- dwhole[dwhole$region == j,]
-  #   df_aux[["p_cases"]][is.na(df_aux[["p_cases"]])] <- 0
-  #   if (sum(df_aux$p_cases != 0) > smooth_param) {
-  #     df_aux <- smooth_column(df_aux, "p_cases", smooth_param)
+  #   df_aux[["p_cases_infected"]][is.na(df_aux[["p_cases_infected"]])] <- 0
+  #   if (sum(df_aux$p_cases_infected != 0) > smooth_param) {
+  #     df_aux <- smooth_column(df_aux, "p_cases_infected", smooth_param)
   #   }
   #   df_aux[["p_cases_recent"]][is.na(df_aux[["p_cases_recent"]])] <- 0
   #   if (sum(df_aux$p_cases_recent != 0) > smooth_param) {
@@ -461,18 +461,20 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                       #I_r_p_m_country = I_r_p_m_country,
                                       #I_r_recent_p_w_country = I_r_recent_p_w_country, 
                                       #I_r_recent_p_m_country = I_r_recent_p_m_country,
-                                      p_cases = p_w_country,
+                                      p_cases_infected = p_w_country,
                                       p_cases_recent = recent_p_w_country,
-                                      p_cases_stillsick = stillsick_p_w_country
+                                      p_cases_active = stillsick_p_w_country
                                       # p_m_country = p_m_country,
                                       # recent_p_m_country = recent_p_m_country
                                       )
   
 #---------------------------------------
   
-  # region_based_estimate[["p_cases"]][is.na(region_based_estimate[["p_cases"]])] <- 0
-  if (sum(region_based_estimate$p_cases != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases", 
+  region_based_estimate$p_cases_daily <- region_based_estimate$p_cases_recent / 7
+  
+  # region_based_estimate[["p_cases_infected"]][is.na(region_based_estimate[["p_cases_infected"]])] <- 0
+  if (sum(region_based_estimate$p_cases_infected != 0) > smooth_param) {
+    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_infected", 
                                            smooth_param, link_in = "log", monotone = T)
   }
   # region_based_estimate[["p_cases_recent"]][is.na(region_based_estimate[["p_cases_recent"]])] <- 0
@@ -480,9 +482,9 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
   #   region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent", 
   #                                          smooth_param, link_in = "log", monotone = F)
   # }
-  # region_based_estimate[["p_cases_stillsick"]][is.na(region_based_estimate[["p_cases_stillsick"]])] <- 0
-  # if (sum(region_based_estimate$p_cases_stillsick != 0) > smooth_param) {
-  #   region_based_estimate <- smooth_column(region_based_estimate, "p_cases_stillsick", 
+  # region_based_estimate[["p_cases_active"]][is.na(region_based_estimate[["p_cases_active"]])] <- 0
+  # if (sum(region_based_estimate$p_cases_active != 0) > smooth_param) {
+  #   region_based_estimate <- smooth_column(region_based_estimate, "p_cases_active", 
   #                                          smooth_param, link_in = "log", monotone = F)
   # }
   

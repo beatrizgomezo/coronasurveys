@@ -1,4 +1,4 @@
-"date","country","region","population","p_cases","p_cases_recent","p_cases_stillsick"
+"date","country","region","population","p_cases_infected","p_cases_recent","p_cases_active"
 "2020/03/20","CY","CY01",341700,0,0,0
 "2020/03/20","CY","CY02",244900,0,0,0
 "2020/03/20","CY","CY03",147000,0,0,0
