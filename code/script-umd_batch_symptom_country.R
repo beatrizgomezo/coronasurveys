@@ -250,7 +250,7 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
     country_code <- countries[countries$country==country, "iso_alpha2"]
     
     write.csv(df_save,
-              paste0("../data/estimates-umd-batches/PlotData/", country_code , "-estimate.csv"),
+              paste0("../data/estimates-umd-symptom-survey/PlotData/", country_code , "-estimate.csv"),
               row.names = FALSE)
     
     
@@ -281,7 +281,7 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
       theme(legend.position = "bottom")
     p1
     ggsave(plot = p1, 
-           filename =  paste0("../data/estimates-umd-batches/plots/", country_code , "-plots-by-batch.png"), 
+           filename =  paste0("../data/estimates-umd-symptom-survey/plots/", country_code , "-plots-by-batch.png"), 
            width = 9, height = 6)
     
   } # end-for-countries_2_try
