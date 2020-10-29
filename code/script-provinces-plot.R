@@ -78,15 +78,15 @@ p1 <- ggplot(data = df, aes(x = date, color = ""))  +
   # geom_vline(aes(xintercept = ymd("2020-10-25"), color = "Fin_de_semana"),
   #            linetype="solid")+
   #
-  geom_rect(xmin = ymd("2020-10-02"), xmax = ymd("2020-10-08"),
-          ymin = 0, ymax = 100, 
-          alpha = 0.01, color = "orange", size = 0.1, fill = "magenta") +
-  geom_rect(xmin = ymd("2020-10-09"), xmax = ymd("2020-10-24"),
-            ymin = 0, ymax = 100, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "magenta") +
-  geom_rect(xmin = ymd("2020-10-25"), xmax = ymd("2020-11-08"),
-            ymin = 0, ymax = 100, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "magenta") +
+  # geom_rect(xmin = ymd("2020-10-02"), xmax = ymd("2020-10-08"),
+  #         ymin = 0, ymax = 100, 
+  #         alpha = 0.01, color = "orange", size = 0.1, fill = "magenta") +
+  # geom_rect(xmin = ymd("2020-10-09"), xmax = ymd("2020-10-24"),
+  #           ymin = 0, ymax = 100, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "magenta") +
+  # geom_rect(xmin = ymd("2020-10-25"), xmax = ymd("2020-11-08"),
+  #           ymin = 0, ymax = 100, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "magenta") +
   # geom_vline(aes(xintercept = ymd("2020-10-24"), color = "Cierre"), 
   #            linetype="dotted", size=1)+
   # geom_vline(aes(xintercept = ymd("2020-10-09"), color = "Cierre"), 
