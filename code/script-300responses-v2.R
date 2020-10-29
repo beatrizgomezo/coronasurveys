@@ -222,11 +222,7 @@ get_spain_region_based_rosa <- function(country_geoid = "ES",
     
     region_based_estimate2 <- data.frame(date = dates,
                                          p_cases_infected = cases_p_reach,
-                                         p_cases_infected_low = 
-                                           ifelse((cases_p_reach < 1.96 * sqrt(Vp1)),  
-                                                  0, 
-                                                  cases_p_reach - (1.96 * sqrt(Vp1))),
-                                         p_cases_infected_high = cases_p_reach + (1.96 * sqrt(Vp1)),
+                                         p_cases_infected_error = 1.96 * sqrt(Vp1),
                                          # p_m = cases_p_reach_prop, 
                                          # p_m_low = cases_p_reach_prop - 1.96 * sqrt(Vp2),
                                          # p_m_high = cases_p_reach_prop + 1.96 * sqrt(Vp2),
