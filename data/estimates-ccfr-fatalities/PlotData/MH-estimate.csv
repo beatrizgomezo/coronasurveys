@@ -1,6 +1,6 @@
 "date","countrycode","population","cases","deaths","cum_cases","cum_deaths","cases_infected","cases_daily","cases_contagious","cases_active","p_cum_cases","p_cum_deaths","p_cases_infected","p_cases_daily","p_cases_contagious","p_cases_active"
 "2020/10/06","MH",58791,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"2020/10/07","MH",58791,0,0,0,0,NA,NA,NA,NA,0,0,NA,NA,NA,NA
+"2020/10/07","MH",58791,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 "2020/10/08","MH",58791,0,0,0,0,NA,NA,NA,NA,0,0,NA,NA,NA,NA
 "2020/10/09","MH",58791,0,0,0,0,NA,NA,NA,NA,0,0,NA,NA,NA,NA
 "2020/10/10","MH",58791,0,0,0,0,NA,NA,NA,NA,0,0,NA,NA,NA,NA
@@ -23,3 +23,4 @@
 "2020/10/27","MH",58791,0,0,0,0,NA,NA,NA,NA,0,0,NA,NA,NA,NA
 "2020/10/28","MH",58791,0,0,0,0,NA,NA,NA,NA,0,0,NA,NA,NA,NA
 "2020/10/29","MH",58791,2,0,2,0,NA,NA,NA,NA,3.4018812403259e-05,0,NA,NA,NA,NA
+"2020/10/30","MH",58791,0,0,2,0,NA,NA,NA,NA,3.4018812403259e-05,0,NA,NA,NA,NA
