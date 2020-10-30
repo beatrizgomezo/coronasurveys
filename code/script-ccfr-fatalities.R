@@ -16,7 +16,7 @@ contagious_window <- 12
 active_window <- 18
 infection_to_death_window <- 23
 CFR <- 0.0138
-# factor_window <- 14
+factor_window <- 14
 
 plot_estimates <- function(country_geoid,
                            dts){
@@ -69,16 +69,14 @@ plot_estimates <- function(country_geoid,
     len <- length(aux)
     
     # factor = detectio ratio of cumulative cases
-    # factor <- (aux[len]-aux[len-factor_window])/
-    #   (dt$cum_cases[len]-dt$cum_cases[len-factor_window])
+    factor <- max(1, (aux[len]-aux[len-factor_window])/ (dt$cum_cases[len]-dt$cum_cases[len-factor_window]))
 
     aux[1:(len-infection_to_death_window)] <- aux[-(1:infection_to_death_window)]
     
-    # aux[(len-infection_to_death_window+1):len] <- 
-    #   aux[len-infection_to_death_window] + factor * 
-    #   (dt$cum_cases[(len-infection_to_death_window+1):len] - dt$cum_cases[len-infection_to_death_window])
+    aux[(len-infection_to_death_window+1):len] <- aux[len-infection_to_death_window] + factor *
+      (dt$cum_cases[(len-infection_to_death_window+1):len] - dt$cum_cases[len-infection_to_death_window])
     
-    aux[(len-infection_to_death_window+1):len] <- NA
+    # aux[(len-infection_to_death_window+1):len] <- NA
    
      # cat("::- script-ccfr-fatalities: Factor ", factor, "::\n")
     
