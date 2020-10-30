@@ -242,7 +242,7 @@ umd_batch_symptom_country <- function(countries_2_try, denom_2_try, d_to_save){
     df_out$p_cases_active_high <- df_out$batched_pct_cli_smooth_high/100
     df_out$p_cases_active_low <- df_out$batched_pct_cli_smooth_low/100
     
-    df_out$date <- gsub("-", "/", df_out$date)
+    df_out$date <- as.Date(gsub("-", "/", df_out$date))
     
     # select a single batch size:
     df_save <- df_out %>% filter(b_size_denom == d_to_save)
