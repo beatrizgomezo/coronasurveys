@@ -21,6 +21,7 @@ try(source("script-umd_batch_symptom_country.R"), silent = T)
 try(source("script-30responses.R"), silent = T)
 try(source("script-300responses-v2.R"), silent = T)
 try(source("script-300responses-smooth.R"), silent = T)
+
 try(source("script-W-alpha.R"), silent = T)
 try(source("script-W.R"), silent = T)
 
@@ -28,4 +29,7 @@ try(source("script-rivas-arganda-daily.R"), silent = T)
 
 try(source("script-provinces-daily.R"), silent = T)
 try(source("script-provinces-map.R"), silent = T)
+
+try(source("script-ES_datadista_cases_fatalities.R"), silent = T)
+
 try(source("script-provinces-plot.R"), silent = T)

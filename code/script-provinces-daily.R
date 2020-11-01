@@ -100,7 +100,10 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
 
   p_recentcases <- c()
   p_recentcases_error <- c()
-
+  
+  p_cases_daily <- c()
+  p_cases_daily_error <- c()
+  
   p_stillsick <- c()
   p_stillsick_error <- c()
   
@@ -155,6 +158,11 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
       p_recentcases <- c(p_recentcases, est$val)
       p_recentcases_error <- c(p_recentcases_error, est$error)
       
+      dt_recent$cases_daily <- dt_recent$recentcases / 7
+      est <- process_ratio(dt_recent, "cases_daily", "reach", "cases")
+      p_cases_daily <- c(p_cases_daily, est$val)
+      p_cases_daily_error <- c(p_cases_daily_error, est$error)
+      
       est <- process_ratio(dt_recent, "stillsick", "reach", "cases")
       p_stillsick <- c(p_stillsick, est$val)
       p_stillsick_error <- c(p_stillsick_error, est$error)
@@ -163,6 +171,8 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
       # cat("Low reach_recent\n"  )
       p_recentcases <- c(p_recentcases, NA)
       p_recentcases_error <- c(p_recentcases_error, NA)
+      p_cases_daily <- c(p_cases_daily, NA)
+      p_cases_daily_error <- c(p_cases_daily_error, NA)
       p_stillsick <- c(p_stillsick, NA)
       p_stillsick_error <- c(p_stillsick_error, NA)
     }
@@ -187,6 +197,9 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
 
                    p_recentcases,
                    p_recentcases_error,
+                   
+                   p_cases_daily,
+                   p_cases_daily_error,
                    
                    p_stillsick,
                    p_stillsick_error,
@@ -262,7 +275,10 @@ dw <- data.frame(date=c(),
 
                  p_recentcases=c(),
                  p_recentcases_error=c(),
-
+                 
+                 p_cases_daily=c(),
+                 p_cases_daily_error=c(),
+                 
                  p_stillsick=c(),
                  p_stillsick_error=c(),
 
