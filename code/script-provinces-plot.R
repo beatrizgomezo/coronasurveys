@@ -124,8 +124,8 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
   # geom_ribbon(aes(ymin = (recent_shifted_smooth-recent_error_shifted)*100000, 
   #                 ymax = (recent_shifted_smooth+recent_error_shifted)*100000), 
   #             alpha = 0.1, color = "red", size = 0.1, fill = "red") +
-  geom_point(data=df_cs, aes(y = p_stillsick*100000, color = "Sintomáticos"), alpha = 0.5, size = 2) +
-  geom_line(data=df_cs, aes(y = p_stillsick_smooth*100000, color = "Sintomáticos"), 
+  geom_point(data=df_cs, aes(y = p_stillsick*100000, color = "Enfermos"), alpha = 0.5, size = 2) +
+  geom_line(data=df_cs, aes(y = p_stillsick_smooth*100000, color = "Enfermos"), 
             linetype = "solid", size = 1, alpha = 0.6) +
   geom_ribbon(data=df_cs, aes(ymin = (p_stillsick_smooth-p_stillsick_error)*100000, 
                   ymax = (p_stillsick_smooth+p_stillsick_error)*100000), 
