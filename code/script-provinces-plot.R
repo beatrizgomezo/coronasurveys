@@ -244,7 +244,7 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
             linetype = "solid", size = 1, alpha = 0.6) +
   geom_ribbon(aes(ymin = (p_recentcases_smooth - p_recentcases_error)*100000,
                   ymax = (p_recentcases_smooth + p_recentcases_error)*100000),
-              alpha = 0.1, color = "red", size = 0.1, fill = "red") +
+              alpha = 0.1, color = "blue", size = 0.1, fill = "blue") +
   #
   geom_point(data = df_dd, aes(y = p_cum_confirmed*100000, color = "Confirmados"),
              alpha = 0.5, size = 2) +
@@ -260,7 +260,7 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
   # ylim(0, 3000)+
   theme_bw() + 
   ggtitle("Incidencia acumulada (7 días) en Madrid") +
-  scale_colour_manual(values = c("magenta", "blue", "red"),
+  scale_colour_manual(values = c("magenta", "red", "blue"),
                       name="",
                       guide = guide_legend(override.aes = list(
                         linetype = c(#"dotted", 
