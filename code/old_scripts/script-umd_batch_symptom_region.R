@@ -8,12 +8,6 @@ library(stringr)
 ## Load smoothing function ----
 source("smooth_column-v2.R")
 
-estimates_path <- "../data/estimates-umd-symptom-survey/"
-
-# estimates_path <- "./estimates-umd-symptom-survey/"
-
-batch_d <- 10000
-
 ## Function to extract updated data from UMD api: ----
 UMD_api <- function(country, region = F,  type = "daily", date_start = NA, date_end = NA){
   
@@ -93,15 +87,12 @@ batch_effect <- function(df_batch_in, denom2try){
     for (i in 1:(nrow(df_temp)-1)) {
       if (df_temp[i, "cum_responses"] >= b_size) {
         
-        df_temp[ceiling((i+i_past)/2), "batched_pct_cli"] <- 
-          df_temp[i, "cum_number_cli"]/df_temp[i, "cum_responses"]*100
+        df_temp[ceiling((i+i_past)/2), "batched_pct_cli"] <- df_temp[i, "cum_number_cli"]/df_temp[i, "cum_responses"]*100
         
         i_past = i
         
-        df_temp[(i+1):nrow(df_temp), "cum_responses"] <- 
-          df_temp[(i+1):nrow(df_temp), "cum_responses"] - df_temp[i, "cum_responses"]
-        df_temp[(i+1):nrow(df_temp), "cum_number_cli"] <- 
-          df_temp[(i+1):nrow(df_temp), "cum_number_cli"] - df_temp[i, "cum_number_cli"]
+        df_temp[(i+1):nrow(df_temp), "cum_responses"] <- df_temp[(i+1):nrow(df_temp), "cum_responses"] - df_temp[i, "cum_responses"]
+        df_temp[(i+1):nrow(df_temp), "cum_number_cli"] <- df_temp[(i+1):nrow(df_temp), "cum_number_cli"] - df_temp[i, "cum_number_cli"]
         
       } # if-cum_responses-greater-b_size
     } # for-rows-df_temp
@@ -131,8 +122,7 @@ batch_effect <- function(df_batch_in, denom2try){
     first_non_NA <- min(which(!is.na(df_temp$batched_pct_cli)))
     last_non_NA <- max(which(!is.na(df_temp$batched_pct_cli)))
     # 2.assign the values from "pct_cli_smooth":
-    df_temp[-(first_non_NA:last_non_NA) , "batched_pct_cli"] <- 
-      df_temp[-(first_non_NA:last_non_NA) , "pct_cli"]
+    df_temp[-(first_non_NA:last_non_NA) , "batched_pct_cli"] <- df_temp[-(first_non_NA:last_non_NA) , "pct_cli"]
     
     # smooth the  "batched_pct_cli" with our method:
     df_temp <- smooth_column(df_in = df_temp, 
@@ -173,8 +163,8 @@ batch_effect <- function(df_batch_in, denom2try){
 #   for (country in countries_2_try) {
     
     country = "Spain"
-    denom_2_try = seq(1500, batch_d, by = 500)
-    d_to_save = batch_d
+    denom_2_try = seq(1500, 5000, by = 500)
+    d_to_save = 1500
 
     print(paste0("Batching and smoothing: ", country, "'s UMD data"))
     
@@ -225,11 +215,11 @@ batch_effect <- function(df_batch_in, denom2try){
     # select a single batch size:
     df_save <- df_out %>% filter(b_size_denom == d_to_save)
     
-    country_code <- "ES"
-    region_code <- "ESMD"
+    # country_code <- countries[countries$country==country, "iso_alpha2"]
+    country_code <- "ESMD"
     
     write.csv(df_save,
-              paste0(estimates_path, country_code, "/", region_code, "-estimate.csv"),
+              paste0("../data/estimates-umd-symptom-survey/regional-level/", country_code , "-estimate.csv"),
               row.names = FALSE)
     
     
@@ -262,7 +252,7 @@ batch_effect <- function(df_batch_in, denom2try){
       theme(legend.position = "bottom")
     p1
     ggsave(plot = p1, 
-           filename =  paste0(estimates_path, country_code, "/", region_code, "-plots-by-batch.png"), 
+           filename =  paste0("../data/estimates-umd-symptom-survey/regional-level/", country_code , "-plots-by-batch.png"), 
            width = 9, height = 6)
     
 #   } # end-for-countries_2_try
