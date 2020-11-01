@@ -20,6 +20,7 @@ datadista_file <- "../data/estimates-datadista/smooth_cases_fatalities.csv"
 smooth_param <- 15
 age_recent <- 3
 start_date <- "2020-09-30"
+cum_window <- 7
 
 
 ## Load data ----
@@ -78,6 +79,21 @@ df_dd <- smooth_column(df_in = df_dd,
                         col_s = "p_cases", 
                         basis_dim = smooth_param,
                         link_in = "log")
+
+# Computing 7-day cumulative incidence
+df_dd$p_cum_cases <- NA
+if (nrow(df_dd) >= cum_window){
+  df_dd$p_cum_cases <- cumsum(c(df_dd$p_cases[1:cum_window],
+                                  diff(df_dd$p_cases, 
+                                       lag = cum_window)))
+  }
+
+df_dd <- smooth_column(df_in = df_dd,
+                       col_s = "p_cum_cases", 
+                       basis_dim = smooth_param,
+                       link_in = "log")
+
+
 
 
 # Read UMD data
@@ -206,22 +222,22 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
   #                 ymax = (daily_shifted_smooth + daily_error_shifted)*100000),
   #             alpha = 0.1, color = "red", size = 0.1, fill = "red") +
   #
-  geom_point(aes(y = p_recentcases*100000, color = "Nuevos casos (7 días)"),
+  geom_point(aes(y = p_recentcases*100000, color = "Nuevos casos CoronaSurveys"),
              alpha = 0.5, size = 2) +
-  geom_line(aes(y = p_recentcases_smooth*100000, color = "Nuevos casos (7 días)"),
+  geom_line(aes(y = p_recentcases_smooth*100000, color = "Nuevos casos CoronaSurveys"),
             linetype = "solid", size = 1, alpha = 0.6) +
   geom_ribbon(aes(ymin = (p_recentcases_smooth - p_recentcases_error)*100000,
                   ymax = (p_recentcases_smooth + p_recentcases_error)*100000),
               alpha = 0.1, color = "red", size = 0.1, fill = "red") +
   #
-  geom_point(data = df_dd, aes(y = p_cases*100000*7, color = "Confirmados x 7"),
+  geom_point(data = df_dd, aes(y = p_cum_cases*100000, color = "Confirmados"),
              alpha = 0.5, size = 2) +
-  geom_line(data = df_dd, aes(y = p_cases_smooth*100000*7, color = "Confirmados x 7"),
+  geom_line(data = df_dd, aes(y = p_cum_cases_smooth*100000, color = "Confirmados"),
             linetype = "solid", size = 1, alpha = 0.6) +
   labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
   # ylim(0, 3000)+
   theme_bw() + 
-  ggtitle("Incidencia diaria en Madrid") +
+  ggtitle("Incidencia acumulada (7 días) en Madrid") +
   scale_colour_manual(values = c("blue", "red", "green"),
                       name="",
                       guide = guide_legend(override.aes = list(
