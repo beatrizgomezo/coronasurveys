@@ -9,7 +9,7 @@ population <- 6663394
 estimates_path <- "../data/estimates-provinces/"
 estimates_umd_path <- "../data/estimates-umd-symptom-survey/"
 plots_path <- "../data/estimates-provinces/plots/"
-datadista_file <- "../data/estimates-datadista/smooth_cases_fatalities.csv"
+ccfr_path <- "../data/estimates-ccfr-based/ES/"
 
 # estimates_path <- "./estimates-provinces/"
 # estimates_umd_path <- "./estimates-umd-symptom-survey/"
@@ -65,31 +65,41 @@ df_cs <- smooth_column(df_in = df_cs,
 
 
 
-# Read datadista data
-df_dd <- read.csv(paste0(datadista_file))
-df_dd <- df_dd %>% select(date, region, cases)
+# Read cCFR-based data
+df_dd <- read.csv(paste0(ccfr_path, "ESMD-estimate.csv"))
+df_dd <- df_dd %>% select(date, cases, p_cases_daily, p_cases_active, population)
 df_dd$date <- as.Date(df_dd$date)
 
 df_dd <- df_dd[df_dd$date >= ymd(start_date),]
-df_dd <- df_dd[df_dd$region == "ESMD",]
-
-df_dd$p_cases <- df_dd$cases / population
-
-df_dd <- smooth_column(df_in = df_dd, 
-                        col_s = "p_cases", 
-                        basis_dim = smooth_param,
-                        link_in = "log")
 
 # Computing 7-day cumulative incidence
-df_dd$p_cum_cases <- NA
+df_dd$p_confirmed <- df_dd$cases / df_dd$population
+
+df_dd$p_cum_confirmed <- NA
+df_dd$p_cum_daily <- NA
 if (nrow(df_dd) >= cum_window){
-  df_dd$p_cum_cases <- cumsum(c(df_dd$p_cases[1:cum_window],
-                                  diff(df_dd$p_cases, 
+  df_dd$p_cum_confirmed <- cumsum(c(df_dd$p_confirmed[1:cum_window],
+                                  diff(df_dd$p_confirmed, 
                                        lag = cum_window)))
-  }
+  df_dd$p_cum_daily <- cumsum(c(df_dd$p_cases_daily[1:cum_window],
+                                    diff(df_dd$p_cases_daily, 
+                                         lag = cum_window)))
+}
+
+# Smoothing
 
 df_dd <- smooth_column(df_in = df_dd,
-                       col_s = "p_cum_cases", 
+                       col_s = "p_cum_confirmed", 
+                       basis_dim = smooth_param,
+                       link_in = "log")
+
+df_dd <- smooth_column(df_in = df_dd,
+                       col_s = "p_cum_daily", 
+                       basis_dim = smooth_param,
+                       link_in = "log")
+
+df_dd <- smooth_column(df_in = df_dd,
+                       col_s = "p_cases_active", 
                        basis_dim = smooth_param,
                        link_in = "log")
 
@@ -165,20 +175,26 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
   geom_ribbon(data=df_cs, aes(ymin = (p_stillsick_smooth-p_stillsick_error)*100000, 
                   ymax = (p_stillsick_smooth+p_stillsick_error)*100000), 
               alpha = 0.1, color = "blue", size = 0.1, fill = "blue") +
-  labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
+  #
+  geom_point(data = df_dd, aes(y = p_cases_active*100000, color = "cCFR-based"),
+             alpha = 0.5, size = 2) +
+  geom_line(data = df_dd, aes(y = p_cases_active_smooth*100000, color = "cCFR-based"),
+            linetype = "solid", size = 1, alpha = 0.6) +
+  #
+    labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
   # ylim(0, 3000)+
   theme_bw() + 
   ggtitle("Casos activos en Madrid") +
-  scale_colour_manual(values = c("blue", "red", "green"),
+  scale_colour_manual(values = c("magenta", "blue", "red", "green"),
                       name="",
                       guide = guide_legend(override.aes = list(
                         linetype = c(#"dotted", 
                                      # "dotted", "blank", 
-                          "solid", 
+                          "solid", "solid",
                           "solid", "solid"),
                         shape = c(#NA, 
                                   # NA, 1, NA, 
-                          1,
+                          1, 1,
                                   1, 1)))) +
   theme(legend.position = "bottom")
 #p1
@@ -230,10 +246,16 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
                   ymax = (p_recentcases_smooth + p_recentcases_error)*100000),
               alpha = 0.1, color = "red", size = 0.1, fill = "red") +
   #
-  geom_point(data = df_dd, aes(y = p_cum_cases*100000, color = "Confirmados"),
+  geom_point(data = df_dd, aes(y = p_cum_confirmed*100000, color = "Confirmados"),
              alpha = 0.5, size = 2) +
-  geom_line(data = df_dd, aes(y = p_cum_cases_smooth*100000, color = "Confirmados"),
+  geom_line(data = df_dd, aes(y = p_cum_confirmed_smooth*100000, color = "Confirmados"),
             linetype = "solid", size = 1, alpha = 0.6) +
+  #
+  geom_point(data = df_dd, aes(y = p_cum_daily*100000, color = "cCFR-based"),
+             alpha = 0.5, size = 2) +
+  geom_line(data = df_dd, aes(y = p_cum_daily_smooth*100000, color = "cCFR-based"),
+            linetype = "solid", size = 1, alpha = 0.6) +
+  #
   labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
   # ylim(0, 3000)+
   theme_bw() + 

@@ -30,6 +30,6 @@ try(source("script-rivas-arganda-daily.R"), silent = T)
 try(source("script-provinces-daily.R"), silent = T)
 try(source("script-provinces-map.R"), silent = T)
 
-try(source("script-ES_datadista_cases_fatalities.R"), silent = T)
+try(source("script-ES-ccfr-based.R"), silent = T)
 
 try(source("script-provinces-plot.R"), silent = T)
