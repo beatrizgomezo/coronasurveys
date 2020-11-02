@@ -800,3 +800,6 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/28,Brazil,BR,"São Paulo",BRSP,en,108,9,,1,0,0,,,,,,,Y,,limesurvey-17310,gowc7zx50xx6noogob,
 2020/10/29,Brazil,BR,"Rio Grande do Sul",BRRS,en,3,0,,0,0,0,,,,,,,N,,limesurvey-17477,vdgzsvwsee095aoavm,
 2020/10/31,Brazil,BR,"São Paulo",BRSP,en,2,0,,0,0,0,,,,,,,N,,limesurvey-17725,jp6p6mtd5k73m6doen,
+2020/11/02,Brazil,BR,"São Paulo",BRSP,en,40,4,,0,0,0,,,,,,,N,,limesurvey-18162,ggble1c60gaqtgy6u2,FBBR
+2020/11/02,Brazil,BR,"São Paulo",BRSP,en,40,4,,0,0,0,,,,,,,N,,limesurvey-18161,ggble1c60gaqtgy6u2,FBBR
+2020/11/02,Brazil,BR,"Rio de Janeiro",BRRJ,en,50,8,,1,0,0,,,,,,,N,,limesurvey-18181,ihmkbesw2j2jbo6j9z,FBBR

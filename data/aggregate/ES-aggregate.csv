@@ -6344,3 +6344,10 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/01,Spain,ES,Provincia:Madrid,ESM,en,14,4,,,0,,,,0,,,,N,,limesurvey-18112,t6gjwtfgu8xl2o48qi,FBESM
 2020/11/01,Spain,ES,Provincia:Asturias,ESO,en,30,1,,0,0,0,,,0,,,,Y,,limesurvey-18084,no33a9mi89bcuyeasn,
 2020/11/01,Spain,ES,Provincia:Madrid,ESM,en,5,2,,0,0,0,,,0,,,,N,,limesurvey-18059,i6olh9vbr28w3ts4yj,FBESM
+2020/11/01,Spain,ES,Provincia:Madrid,ESM,en,20,8,,3,,3,,,4,,,,Y,,limesurvey-17877,d3h7us7431e40ofdc7,
+2020/11/02,Spain,ES,Provincia:Madrid,ESM,en,61,6,,0,0,0,,,1,,,,N,,limesurvey-18156,wwvyuywhf8dizdxyz5,FBESM
+2020/11/02,Spain,ES,Provincia:Toledo,ESTO,en,1000,60,,25,325,93,,,80,,,,Y,,limesurvey-18167,bwe64hr9xb60sl4rhn,
+2020/11/02,Spain,ES,Provincia:Toledo,ESTO,en,1000,60,,25,325,93,,,80,,,,Y,,limesurvey-18170,bwe64hr9xb60sl4rhn,
+2020/11/02,Spain,ES,Provincia:Asturias,ESO,en,70,1,,0,0,0,,,0,,,,Y,,limesurvey-18154,loe7icqwnvownd4bi9,
+2020/11/02,Spain,ES,Provincia:Toledo,ESTO,en,1000,60,,25,325,93,,,80,,,,Y,,limesurvey-18168,bwe64hr9xb60sl4rhn,
+2020/11/02,Spain,ES,Provincia:Madrid,ESM,en,602,70,,10,0,3,,,200,,,,Y,,limesurvey-18148,vchx7le9tv11swe9nl,
