@@ -1,5 +1,5 @@
 library(dplyr)
-
+source("smooth_greedy_monotone.R")
 active_window <- 18
 cfr_baseline <- 1.36
 estimates_path <- "../data/estimates-ccfr-based/ES/"
@@ -123,7 +123,8 @@ plot_estimates <- function(region_ine = 1,
   # clean ccfr factor
   ccfr_factor[is.na(ccfr_factor)|(ccfr_factor<1)] <- 1
   # daily ccfr estimate
-  dt$cases_daily <- ccfr_factor*dt$cases
+  #dt$cases_daily <- ccfr_factor*dt$cases
+  dt$cases_daily <- c(0, diff(smooth_greedy(dt$dt$est_cases)))
   
   #total active cases
   dt$cases_active <- cumsum(c(dt$cases_daily[1:ac_window],
