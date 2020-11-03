@@ -67,7 +67,8 @@ df_cs <- smooth_column(df_in = df_cs,
 
 # Read cCFR-based data
 df_dd <- read.csv(paste0(ccfr_path, "ESMD-estimate.csv"))
-df_dd <- df_dd %>% select(date, cases, p_cases_daily, p_cases_active, population)
+df_dd <- df_dd %>% 
+  select(date, cases, p_cases_daily, p_cases_active, population)
 df_dd$date <- as.Date(df_dd$date)
 
 df_dd <- df_dd[df_dd$date >= ymd(start_date),]
@@ -94,7 +95,7 @@ df_dd <- smooth_column(df_in = df_dd,
                        link_in = "log")
 
 # df_dd <- smooth_column(df_in = df_dd,
-#                        col_s = "p_cum_daily", 
+#                        col_s = "p_cum_daily",
 #                        basis_dim = smooth_param,
 #                        link_in = "log")
 
