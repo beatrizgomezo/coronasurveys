@@ -93,10 +93,10 @@ df_dd <- smooth_column(df_in = df_dd,
                        basis_dim = smooth_param,
                        link_in = "log")
 
-df_dd <- smooth_column(df_in = df_dd,
-                       col_s = "p_cum_daily", 
-                       basis_dim = smooth_param,
-                       link_in = "log")
+# df_dd <- smooth_column(df_in = df_dd,
+#                        col_s = "p_cum_daily", 
+#                        basis_dim = smooth_param,
+#                        link_in = "log")
 
 df_dd <- smooth_column(df_in = df_dd,
                        col_s = "p_cases_active", 
@@ -176,25 +176,25 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
                   ymax = (p_stillsick_smooth+p_stillsick_error)*100000), 
               alpha = 0.1, color = "blue", size = 0.1, fill = "blue") +
   #
-  geom_point(data = df_dd, aes(y = p_cases_active*100000, color = "cCFR-based"),
-             alpha = 0.5, size = 2) +
-  geom_line(data = df_dd, aes(y = p_cases_active_smooth*100000, color = "cCFR-based"),
-            linetype = "solid", size = 1, alpha = 0.6) +
+  # geom_point(data = df_dd, aes(y = p_cases_active*100000, color = "cCFR-based"),
+  #            alpha = 0.5, size = 2) +
+  # geom_line(data = df_dd, aes(y = p_cases_active_smooth*100000, color = "cCFR-based"),
+  #           linetype = "solid", size = 1, alpha = 0.6) +
   #
     labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
   # ylim(0, 3000)+
   theme_bw() + 
   ggtitle("Casos activos en Madrid") +
-  scale_colour_manual(values = c("magenta", "blue", "red", "green"),
+  scale_colour_manual(values = c("blue", "red", "green", "magenta"),
                       name="",
                       guide = guide_legend(override.aes = list(
                         linetype = c(#"dotted", 
                                      # "dotted", "blank", 
-                          "solid", "solid",
+                          "solid", 
                           "solid", "solid"),
                         shape = c(#NA, 
                                   # NA, 1, NA, 
-                          1, 1,
+                          1, 
                                   1, 1)))) +
   theme(legend.position = "bottom")
 #p1
@@ -251,16 +251,16 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
   geom_line(data = df_dd, aes(y = p_cum_confirmed_smooth*100000, color = "Confirmados"),
             linetype = "solid", size = 1, alpha = 0.6) +
   #
-  geom_point(data = df_dd, aes(y = p_cum_daily*100000, color = "cCFR-based"),
-             alpha = 0.5, size = 2) +
-  geom_line(data = df_dd, aes(y = p_cum_daily_smooth*100000, color = "cCFR-based"),
-            linetype = "solid", size = 1, alpha = 0.6) +
+  # geom_point(data = df_dd, aes(y = p_cum_daily*100000, color = "cCFR-based"),
+  #            alpha = 0.5, size = 2) +
+  # # geom_line(data = df_dd, aes(y = p_cum_daily_smooth*100000, color = "cCFR-based"),
+  #           linetype = "solid", size = 1, alpha = 0.6) +
   #
   labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
   # ylim(0, 3000)+
   theme_bw() + 
   ggtitle("Incidencia acumulada (7 días) en Madrid") +
-  scale_colour_manual(values = c("magenta", "red", "blue"),
+  scale_colour_manual(values = c("red", "blue", "magenta"),
                       name="",
                       guide = guide_legend(override.aes = list(
                         linetype = c(#"dotted", 
