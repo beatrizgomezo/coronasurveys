@@ -6351,3 +6351,8 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/02,Spain,ES,Provincia:Asturias,ESO,en,70,1,,0,0,0,,,0,,,,Y,,limesurvey-18154,loe7icqwnvownd4bi9,
 2020/11/02,Spain,ES,Provincia:Toledo,ESTO,en,1000,60,,25,325,93,,,80,,,,Y,,limesurvey-18168,bwe64hr9xb60sl4rhn,
 2020/11/02,Spain,ES,Provincia:Madrid,ESM,en,602,70,,10,0,3,,,200,,,,Y,,limesurvey-18148,vchx7le9tv11swe9nl,
+2020/11/02,Spain,ES,Provincia:Madrid,ESM,en,9,0,,0,0,,,,0,,,,N,,limesurvey-18254,x7u96xzw9j70iey8bi,FBESM
+2020/11/02,Spain,ES,Provincia:Madrid,ESM,en,15,5,,1,0,0,,,2,,,,N,,limesurvey-18272,1egc5ao72rwbsqg2u0,FBESM
+2020/11/02,Spain,ES,Provincia:Madrid,ESM,en,80,0,,0,0,0,,,0,,,,N,,limesurvey-18187,6s8j7xp550s15ubnwy,FBESM
+2020/11/02,Spain,ES,Provincia:Madrid,ESM,en,50,8,,1,0,0,,,1,,,,N,,limesurvey-18223,3jwd8718e0zndzwrme,FBESM
+2020/11/02,Spain,ES,"Comunidad Autónoma:Madrid, Comunidad de",ESMD,en,3,1,,0,0,0,,,0,,,,N,,limesurvey-18210,xg56mb3o6oibi98pjx,FBESM
