@@ -12,14 +12,17 @@ library(httr)
 #source("ukraine_region_based_estimate.R")
 
 # compute new decentralized estimates
-try(source("script-confirmed.R"), silent = T)
-try(source("script-ccfr-based2.R"), silent = T)
+try(source("script-confirmed2.R"), silent = T)
+try(source("script-ccfr-based3.R"), silent = T)
 try(source("script-ccfr-fatalities.R"), silent = T)
+try(source("script-ES-ccfr-based.R"), silent = T)
+
+try(source("script-umd_batch_symptom_country.R"), silent = T)
+try(source("script-umd_batch_symptom_region.R"), silent = T)
 
 try(source("script-30responses.R"), silent = T)
-
-try(source("script-300responses.R"), silent = T)
-try(source("script-smooth-300responses.R"), silent = T)
+try(source("script-300responses-v2.R"), silent = T)
+try(source("script-300responses-smooth.R"), silent = T)
 
 try(source("script-W-alpha.R"), silent = T)
 try(source("script-W.R"), silent = T)
@@ -28,4 +31,6 @@ try(source("script-rivas-arganda-daily.R"), silent = T)
 
 try(source("script-provinces-daily.R"), silent = T)
 try(source("script-provinces-map.R"), silent = T)
+
+
 try(source("script-provinces-plot.R"), silent = T)

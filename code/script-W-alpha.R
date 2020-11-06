@@ -213,7 +213,7 @@ provincial_regional_estimate <- function(countrycode = "EC",
       dt_est_prov_reg_country <- merge(dt_est_prov_reg, dt_est_count, all = T, by = "countrycode")
       dir.create(paste0("../data/estimates-W-alpha/", countrycode, "/"), showWarnings = F)
       
-      cat(paste0("::- script-W-alpha: Writing the region based daily estimate for ", countrycode, "::\n")) 
+      # cat(paste0("::- script-W-alpha: Writing the region based daily estimate for ", countrycode, "::\n")) 
       write.csv(x = dt_est_prov_reg_country, file = paste0("../data/estimates-W-alpha/", countrycode, "/",
                                                            countrycode,
                                                            "-province-region-country-based-estimate-", gsub("/", "_", j), ".csv"))
@@ -556,7 +556,7 @@ provincial_regional_estimate2 <- function(countrycode = "ES",
       dt_est_prov_reg_country <- merge(dt_est_prov_reg, dt_est_count, all = T, by = "countrycode")
       
       dir.create(paste0("../data/estimates-W-alpha/", countrycode, "/"), showWarnings = F)
-      cat(paste0("::- script-W-alpha: Writing the region based daily estimate for ", countrycode, "::\n")) 
+      # cat(paste0("::- script-W-alpha: Writing the region based daily estimate for ", countrycode, "::\n")) 
       write.csv(x = dt_est_prov_reg_country, file = paste0("../data/estimates-W-alpha/", countrycode, "/",
                                                            countrycode,
                                                            "-province-region-country-based-estimate-", gsub("/", "_", j), ".csv"))

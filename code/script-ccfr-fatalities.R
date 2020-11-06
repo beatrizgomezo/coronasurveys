@@ -14,7 +14,7 @@ url_ecdc <- "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-g
 
 contagious_window <- 12
 active_window <- 18
-infection_to_death_window <- 23
+onset_to_death_window <- 15 # https://www.cdc.gov/coronavirus/2019-ncov/hcp/planning-scenarios.html#table-2
 CFR <- 0.0138
 factor_window <- 14
 
@@ -47,8 +47,8 @@ plot_estimates <- function(country_geoid,
   dt$cases[is.na(dt$cases)] <- 0
   dt$deaths[is.na(dt$deaths)] <- 0
   
-  # Add infection_to_death_window rows to dt
-  ds <- setdiff(seq(as.Date(min(dt$date)-infection_to_death_window), as.Date(max(dt$date)), by="days"),
+  # Add onset_to_death_window rows to dt
+  ds <- setdiff(seq(as.Date(min(dt$date)-onset_to_death_window), as.Date(max(dt$date)), by="days"),
                 dt$date)
   
   dt2 <- data.frame("date" = ds, 
@@ -64,20 +64,21 @@ plot_estimates <- function(country_geoid,
   dt$cum_cases <- smooth_greedy(cumsum(dt$cases))
   dt$cum_deaths <- smooth_greedy(cumsum(dt$deaths))
   
-  if (nrow(dt)>infection_to_death_window){
+  if (nrow(dt)>onset_to_death_window){
     aux <- dt$cum_deaths / CFR
     len <- length(aux)
     
-    # factor = detection ratio of cumulative cases
-    factor <- (aux[len]-aux[len-factor_window])/
-      (dt$cum_cases[len]-dt$cum_cases[len-factor_window])
+    # factor = detectio ratio of cumulative cases
+    factor <- max(1, (aux[len]-aux[len-factor_window])/ (dt$cum_cases[len]-dt$cum_cases[len-factor_window]))
+
+    aux[1:(len-onset_to_death_window)] <- aux[-(1:onset_to_death_window)]
     
-    aux[1:(len-infection_to_death_window)] <- aux[-(1:infection_to_death_window)]
-    aux[(len-infection_to_death_window+1):len] <- 
-      aux[len-infection_to_death_window] + factor * 
-      (dt$cum_cases[(len-infection_to_death_window+1):len] - dt$cum_cases[len-infection_to_death_window])
- 
-    # cat("::- script-ccfr-fatalities: Factor ", factor, "::\n")
+    aux[(len-onset_to_death_window+1):len] <- aux[len-onset_to_death_window] + factor *
+      (dt$cum_cases[(len-onset_to_death_window+1):len] - dt$cum_cases[len-onset_to_death_window])
+    
+    # aux[(len-onset_to_death_window+1):len] <- NA
+   
+     # cat("::- script-ccfr-fatalities: Factor ", factor, "::\n")
     
     dt$cases_infected <- aux
     dt$cases_daily <- c(0, diff(dt$cases_infected))
