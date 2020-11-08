@@ -16,7 +16,7 @@ estimates_path <- "../data/estimates-W/"
 
 ci_level <- 0.95
 max_ratio <- 1/3
-num_responses <- 100
+num_responses <- 50
 W <- 150
 
 #with recent cases
@@ -318,11 +318,13 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                         stringsAsFactors = F)
                            })
     dt_est_reg_count <- do.call(rbind, dt_est_reg_count)
-    dt_est_reg_count1 <- na.omit(dt_est_reg_count[,c(1,2,3,4,5,8)])
+#    dt_est_reg_count1 <- na.omit(dt_est_reg_count[,c(1,2,3,4,5,8)])
+    dt_est_reg_count1 <- na.omit(dt_est_reg_count[,c(1,2,3,4,5,6,7,8,9,10)])
     weightcountry1 <- dt_est_reg_count1$population_region/sum(dt_est_reg_count1$population_region)
     p_w_country_rhs <- sum(weightcountry1 * dt_est_reg_count1$p_w_regs)
     p_m_country_rhs <- sum(weightcountry1 * dt_est_reg_count1$p_m_regs)
-    dt_est_reg_count2 <- na.omit(dt_est_reg_count[,c(1,2,3,6,7,8)])
+#    dt_est_reg_count2 <- na.omit(dt_est_reg_count[,c(1,2,3,6,7,8)])
+    dt_est_reg_count2 <- na.omit(dt_est_reg_count[,c(1,2,3,4,5,6,7,8,9,10)])
     weightcountry2 <- dt_est_reg_count2$population_region/sum(dt_est_reg_count2$population_region)
     recent_p_w_country_rhs <- sum(weightcountry2 * dt_est_reg_count2$recent_p_w_regs)
     recent_p_m_country_rhs <- sum(weightcountry2 * dt_est_reg_count2$recent_p_m_regs)
