@@ -17,8 +17,8 @@ estimates_path <- "../data/estimates-W/"
 
 ci_level <- 0.95
 max_ratio <- 1/3
-num_responses <- 50
-W <- 150
+num_responses <- 30
+W <- 100
 
 #with recent cases
 provincial_regional_estimate_w_only <- function(countrycode = "ES",
