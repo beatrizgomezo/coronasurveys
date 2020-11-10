@@ -1,4 +1,5 @@
 library(dplyr) 
+library(zoo)
 
 # smoothed p_cases_infected and CI:
 source("smooth_column-v2.R")
@@ -59,7 +60,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
   dt$iso.3166.2[dt$iso.3166.2 == ""] <- countrycode
   
   # compute provincial estimates
-  dates <- unique(dt$date)
+  # dates <- unique(dt$date)
+  dates <- seq(as.Date(dt$date[1]), Sys.Date(), by = "day")
   
   
   dt_region2 <- dt_region[, c("countrycode",  "regioncode",   "provincecode", "population")] ## bring autonomous cities code to lowest level
@@ -354,7 +356,7 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                              ((sumreach_country_rhs2/(sumreach_country + sumreach_country_rhs2)) * stillsick_p_m_country_rhs), na.rm = T)
     
     if (write_daily_file == T){
-      dt_est_count <- data.frame(date=j,
+      dt_est_count <- data.frame(date=as.Date(j),
                                  countrycode = countrycode,
                                  population_country = sum(dtregs$population_region),
                                  p_w_country_only = p_w_country_only,
@@ -386,7 +388,7 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
       
       #----------------------------------------------
       write.csv(x = dt_est_prov_reg_country, file = paste0(estimates_path, countrycode, "/", countrycode,
-                                                           "-", gsub("/", "_", j), "-estimate.csv"), row.names = FALSE)
+                                                           "-", gsub("-", "_", as.Date(j)), "-estimate.csv"), row.names = FALSE)
       
       if (j == dates[length(dates)]){
         write.csv(x = dt_est_prov_reg_country, file = paste0(estimates_path, countrycode, "/", countrycode,
@@ -396,7 +398,7 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
     }
 
     # Concatenate to dwhole the regional estimates for date j
-    dt_est_prov_reg$date <- j
+    dt_est_prov_reg$date <- as.Date(j)
     df_aux <- dt_est_prov_reg[, c("date", "countrycode", "regioncode", "population_region", "p_w_regs", "recent_p_w_regs",
                                   "stillsick_p_w_regs")]
     
@@ -507,8 +509,8 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
 
 interest <- c("BR", "CL", "CY", "DE", "EC", "FR", "GB", "PT", "UA", "US")
 #interest <- c("BR", "US")
-dd <- sapply(interest, provincial_regional_estimate_w_only, province = F, write_daily_file = T)
+dd <- sapply(interest, provincial_regional_estimate_w_only, province = F, write_daily_file = F)
 
 interest2 <- c("ES", "IT")
-dd2 <- sapply(interest2, provincial_regional_estimate_w_only, province = T, write_daily_file = T)
+dd2 <- sapply(interest2, provincial_regional_estimate_w_only, province = T, write_daily_file = F)
 
