@@ -482,15 +482,15 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
                                            smooth_param, link_in = "log", monotone = T)
   }
   # region_based_estimate[["p_cases_recent"]][is.na(region_based_estimate[["p_cases_recent"]])] <- 0
-  # if (sum(region_based_estimate$p_cases_recent != 0) > smooth_param) {
-  #   region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent", 
-  #                                          smooth_param, link_in = "log", monotone = F)
-  # }
+  if (sum(region_based_estimate$p_cases_recent != 0) > smooth_param) {
+    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent",
+                                           smooth_param, link_in = "log", monotone = F)
+  }
   # region_based_estimate[["p_cases_active"]][is.na(region_based_estimate[["p_cases_active"]])] <- 0
-  # if (sum(region_based_estimate$p_cases_active != 0) > smooth_param) {
-  #   region_based_estimate <- smooth_column(region_based_estimate, "p_cases_active", 
-  #                                          smooth_param, link_in = "log", monotone = F)
-  # }
+  if (sum(region_based_estimate$p_cases_active != 0) > smooth_param) {
+    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_active",
+                                           smooth_param, link_in = "log", monotone = F)
+  }
   
 
 #-------------------------------------------
