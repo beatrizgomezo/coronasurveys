@@ -6517,3 +6517,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/10,Spain,ES,Provincia:Madrid,ESM,en,60,15,,0,1,1,,,1,,,,N,,limesurvey-19787,js7888xghvfaareggr,FBESM
 2020/11/10,Spain,ES,Provincia:Madrid,ESM,en,150,7,,1,0,0,,,1,,,,N,,limesurvey-19827,lu7l4qcy87mn6t1c2h,FBESM
 2020/11/10,Spain,ES,Provincia:Madrid,ESM,en,100,8,,0,0,0,,,6,,,,N,,limesurvey-19880,akdv7fv07xelugbbdt,FBESM
+2020/11/11,Spain,ES,"Comunidad Autónoma:Madrid, Comunidad de",ESMD,en,100,15,,0,0,0,,,0,,,,Y,,limesurvey-19967,g5mz3bbnna26d2oxrh,
+2020/11/11,Spain,ES,Provincia:Madrid,ESM,en,100,7,,1,0,1,,,0,,,,N,,limesurvey-19949,nsga5s9ikbkgc3nazv,FBESM

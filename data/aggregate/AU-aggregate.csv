@@ -43,3 +43,4 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/09/02,Australia,AU,"New South Wales",AUNSW,en,1000,0,,0,0,0,,,,,,,N,,limesurvey-13437,3rw3dg5grtmmvg5c23,
 2020/09/12,Australia,AU,Victoria,AUVIC,en,100,0,,0,0,0,,,,,,,N,,limesurvey-13721,cg5gu86gq741839nmb,
 2020/11/09,Australia,AU,Victoria,AUVIC,en,50,0,,0,0,0,,,,,,,Y,,limesurvey-19621,k545agoxpgj8zee0il,
+2020/11/11,Australia,AU,"Western Australia",AUWA,en,200,0,,0,0,0,,,,,,,Y,,limesurvey-19975,nu89usx3a9fyocyl2f,
