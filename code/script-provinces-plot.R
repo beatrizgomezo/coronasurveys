@@ -19,7 +19,7 @@ ccfr_path <- "../data/estimates-ccfr-based/ES/"
 
 smooth_param <- 15
 age_recent <- 3
-start_date <- "2020-09-30"
+start_date <- "2020-10-02"
 cum_window <- 7
 
 
