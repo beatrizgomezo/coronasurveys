@@ -6622,3 +6622,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/18,Spain,ES,Provincia:Cáceres,ESCC,en,4,2,,0,0,0,,,1,,,,Y,,limesurvey-21270,kuotb4ejplkcvvzib5,
 2020/11/18,Spain,ES,Provincia:Madrid,ESM,en,60,8,,,10,1,,,,,,,N,,limesurvey-21356,ro73syq8kophrqence,FBESM
 2020/11/18,Spain,ES,Provincia:Madrid,ESM,en,100,6,,0,,0,,,0,,,,N,,limesurvey-21375,pt9cq7fppptknmg03g,FBESM
+2020/11/18,Spain,ES,Provincia:Madrid,ESM,en,20,0,,,,,,,,,,,N,,limesurvey-21236,yutif6yorabhjn4qar,FBESM
+2020/11/19,Spain,ES,Provincia:Madrid,ESM,en,900,800,,500,700,750,,,200,,,,N,,limesurvey-21469,jntg8mxaahjvzli3z0,FBESM
