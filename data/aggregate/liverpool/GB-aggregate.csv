@@ -1,2 +1,3 @@
 Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered,Fatalities,RecentCases,RecentHospital,RecentCasesNursing,StillSick,Tested,Positive,Hospital,Severe,ICU,Surveyfirst,Surveyknown,Surveyforward,Dataset,Cookie,Campaign
 2020/11/18,"United Kingdom",GB,Liverpool,GBLIV,en,20,2,,0,0,,,1,,,2,,,,,,limesurvey-186,iqfiv7ha1khnanbhk,
+2020/11/19,"United Kingdom",GB,Liverpool,GBLIV,en,37,2,,0,1,,,1,,,0,,,,,,limesurvey-220,wjzw5eufgekhp975cy,
