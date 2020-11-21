@@ -373,3 +373,4 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/05,Germany,DE,Nordrhein-Westfalen,DENW,en,20,0,,0,0,0,,,,,,,N,,limesurvey-18760,zk1ydlj3emromh5way,
 2020/11/16,Germany,DE,Bayern,DEBY,en,20,2,,0,0,0,,,,,,,N,,limesurvey-20823,v436wxfnuckbhthkzv,
 2020/11/18,Germany,DE,,,en,24,0,,0,0,0,,,,,,,Y,,limesurvey-21268,kuotb4ejplkcvvzib5,
+2020/11/20,Germany,DE,Hessen,DEHE,en,100,4,,0,1,1,,,,,,,Y,,limesurvey-21716,oinexlrb3av1cv5ssl,
