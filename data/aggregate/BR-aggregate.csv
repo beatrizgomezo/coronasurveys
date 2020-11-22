@@ -964,3 +964,7 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/21,Brazil,BR,"São Paulo",BRSP,en,10000,20,,55,1,50,,,,,,,N,,limesurvey-21843,b3trhvjd8oh2kuak18,FBBR
 2020/11/21,Brazil,BR,"São Paulo",BRSP,en,10000,20,,55,1,50,,,,,,,N,,limesurvey-21845,b3trhvjd8oh2kuak18,FBBR
 2020/11/21,Brazil,BR,Maranhão,BRMA,en,10,10,,0,0,0,,,,,,,N,,limesurvey-21948,1dwpvxisaumbf54o8l,FBBR
+2020/11/22,Brazil,BR,"Rio de Janeiro",BRRJ,en,1,100,,0,1,2,,,,,,,N,,limesurvey-22011,opyfm4b0lhym627dlb,FBBR
+2020/11/22,Brazil,BR,"Minas Gerais",BRMG,en,13,2,,0,0,0,,,,,,,N,,limesurvey-21968,kwe85kyafgsq0j0fra,FBBR
+2020/11/22,Brazil,BR,"São Paulo",BRSP,en,30,3,,0,0,0,,,,,,,N,,limesurvey-22014,ru46q855iozfjhusgs,FBBR
+2020/11/22,Brazil,BR,"Rio de Janeiro",BRRJ,en,1,100,,0,1,2,,,,,,,N,,limesurvey-22012,opyfm4b0lhym627dlb,FBBR
