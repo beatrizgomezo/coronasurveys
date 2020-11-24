@@ -6676,3 +6676,4 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/22,Spain,ES,Provincia:Madrid,ESM,en,10000,5,,0,0,2,,,2,,,,N,,limesurvey-22098,oqh59l211equjbak43,FBESM
 2020/11/22,Spain,ES,Provincia:Madrid,ESM,en,70,3,,0,0,0,,,0,,,,N,,limesurvey-22070,jyg492n5dx5iojcr0e,FBESM
 2020/11/23,Spain,ES,Provincia:Madrid,ESM,en,120,2,,1,1,1,,,1,,,,N,,limesurvey-22165,kygts3llz1c3fgbvru,FBESM
+2020/11/23,Spain,ES,"Comunidad Autónoma:País Vasco / Euskal Herria",ESPV,en,30,4,,0,1,1,,,0,,,,Y,,limesurvey-22170,ln05mykvklm1xrzfvu,

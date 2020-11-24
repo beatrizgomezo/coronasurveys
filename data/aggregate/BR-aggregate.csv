@@ -975,3 +975,9 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/22,Brazil,BR,"São Paulo",BRSP,en,100,10,,,4,5,,,,,,,N,,limesurvey-22034,lvd87fab4r4nkerljw,FBBR
 2020/11/23,Brazil,BR,"São Paulo",BRSP,en,100,60,,2,0,0,,,,,,,N,,limesurvey-22116,46eg1a14d0s3fecdmm,FBBR
 2020/11/23,Brazil,BR,"Minas Gerais",BRMG,en,500,15,,1,0,6,,,,,,,N,,limesurvey-22148,sh9l97tvpy8pvrgt67,FBBR
+2020/11/23,Brazil,BR,"Rio de Janeiro",BRRJ,en,100,13,,1,3,4,,,,,,,N,,limesurvey-22257,opyfm4b0lhym627dlb,
+2020/11/23,Brazil,BR,Paraíba,BRPB,en,30002,6,,30,0,3,,,,,,,N,,limesurvey-22209,9m9npan8dh06p8wthi,FBBR
+2020/11/23,Brazil,BR,"São Paulo",BRSP,en,50,8,,0,1,0,,,,,,,N,,limesurvey-22249,jrr1onrj4cfnwu2wky,FBBR
+2020/11/23,Brazil,BR,"São Paulo",BRSP,en,50,8,,0,1,0,,,,,,,N,,limesurvey-22248,jrr1onrj4cfnwu2wky,FBBR
+2020/11/23,Brazil,BR,"São Paulo",BRSP,en,50,5,,3,0,0,,,,,,,N,,limesurvey-22203,sr0rjh88mv7q24xjuu,FBBR
+2020/11/23,Brazil,BR,Paraíba,BRPB,en,30002,6,,30,0,3,,,,,,,N,,limesurvey-22208,9m9npan8dh06p8wthi,FBBR
