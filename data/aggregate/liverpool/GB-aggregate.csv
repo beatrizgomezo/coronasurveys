@@ -61,3 +61,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/27,"United Kingdom",GB,Sefton,GBSFT,en,30,2,,2,0,,,0,,,0,,,,,,limesurvey-821,dyylmr0d1pki01ait3,GALIV
 2020/11/27,"United Kingdom",GB,Liverpool,GBLIV,en,70,8,,0,0,,,0,,,1,,,,,,limesurvey-812,a3kjvfnqd9ki00kezx,FBGBLP
 2020/11/28,"United Kingdom",GB,"St. Helens",GBSHN,en,1,0,,0,0,,,0,,,0,,,,,,limesurvey-851,s87x4rsu8pki1c24a6,GALIV
+2020/11/28,"United Kingdom",GB,Liverpool,GBLIV,en,250,0,,0,0,,,0,,,0,,,,,,limesurvey-895,0irg7t6puski1mhiyy,GALIV
+2020/11/28,"United Kingdom",GB,Wirral,GBWRL,en,200,0,,0,0,,,0,,,0,,,,,,limesurvey-886,8nh6ylxbazki1lj917,GALIV
