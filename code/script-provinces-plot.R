@@ -242,6 +242,9 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
   geom_rect(xmin = ymd("2020-11-21"), xmax = ymd("2020-11-22"),
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  geom_rect(xmin = ymd("2020-11-28"), xmax = ymd("2020-11-29"),
+            ymin = 0, ymax = Inf, 
+            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
   #
   # geom_point(aes(y = daily_shifted*100000, color = "Nuevos casos CoronaSurveys"),
   #            alpha = 0.5, size = 2) +
