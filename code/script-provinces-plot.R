@@ -158,6 +158,10 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
   geom_rect(xmin = ymd("2020-11-21"), xmax = ymd("2020-11-22"),
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  geom_rect(xmin = ymd("2020-11-28"), xmax = ymd("2020-11-29"),
+            ymin = 0, ymax = Inf, 
+            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+# 
   geom_point(aes(y = pct_cli*1000, color = "UMD"), 
              alpha = 0.5, size = 2) +
   geom_point(aes(y = batched_pct_cli*1000, color = "UMD-B"), 
