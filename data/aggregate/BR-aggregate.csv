@@ -1056,3 +1056,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/30,Brazil,BR,"São Paulo",BRSP,en,50,20,,2,5,0,,,,,,,N,,limesurvey-23114,tuwbz2iussirrxobdj,FBBR
 2020/11/30,Brazil,BR,"Rio de Janeiro",BRRJ,en,600,10,,0,1,1,,,,,,,N,,limesurvey-23173,71v0bexsc4xbj50p2b,FBBR
 2020/11/30,Brazil,BR,"Rio Grande do Sul",BRRS,en,3000,10,,0,0,0,,,,,,,N,,limesurvey-23140,jh3bk4ijhi8sghaqsq,FBBR
+2020/12/01,Brazil,BR,,,en,1000,30,,12,0,9,,,,,,,,,limesurvey-23285,prvegusygcbjw7z4w6,FBBR
+2020/12/01,Brazil,BR,Paraná,BRPR,en,300,50,,0,4,10,,,,,,,N,,limesurvey-23234,oljuao50ofvf2n6587,FBBR
