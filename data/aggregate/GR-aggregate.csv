@@ -368,3 +368,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/26,Greece,GR,"Dytiki Makedonia",GRC,en,10,4,,0,0,0,,,,,,,N,,limesurvey-22612,aungq987mri48lv9aw,
 2020/11/26,Greece,GR,Attiki,GRI,en,2,0,,,0,0,,,,,,,,,limesurvey-22608,gjm8bpx4d3kcyi4t6i,
 2020/11/26,Greece,GR,Kriti,GRM,en,15,7,,0,4,4,,,,,,,Y,,limesurvey-22678,w2kf8gcaovdr9nqxdh,
+2020/11/30,Greece,GR,Attiki,GRI,en,25,0,,0,0,0,,,,,,,Y,,limesurvey-23109,c8zo8oy4iwkbtpikiu,
+2020/11/30,Greece,GR,"Ionia Nisia",GRF,en,20,0,,0,0,0,,,,,,,Y,,limesurvey-23110,c8zo8oy4iwkbtpikiu,

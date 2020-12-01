@@ -6735,3 +6735,9 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/11/30,Spain,ES,Provincia:Madrid,ESM,en,50,0,,0,0,0,,,0,,,,N,,limesurvey-23055,87h3dj7i8vq2c6wwta,FBESM
 2020/11/30,Spain,ES,Provincia:Cáceres,ESCC,en,4,2,,0,0,0,,,1,,,,Y,,limesurvey-23073,kuotb4ejplkcvvzib5,
 2020/11/30,Spain,ES,Provincia:Madrid,ESM,en,50,0,,0,0,0,,,0,,,,N,,limesurvey-23054,87h3dj7i8vq2c6wwta,FBESM
+2020/11/30,Spain,ES,Provincia:Asturias,ESO,en,120,9,,0,0,2,,,2,,,,,,limesurvey-23135,24ybrmpvxuick31gdx,
+2020/11/30,Spain,ES,Provincia:Madrid,ESM,en,15,0,,0,0,0,,,0,,,,Y,,limesurvey-23161,80ok6j9p2qoadm362c,FBESM
+2020/11/30,Spain,ES,Provincia:Toledo,ESTO,en,100,4,,1,0,0,,,0,,,,Y,,limesurvey-23149,8hqhi98agokc29bylg,
+2020/11/30,Spain,ES,Provincia:Madrid,ESM,en,30,30,,2,0,0,,,2,,,,N,,limesurvey-23129,drxgrc8wtogg8fsjgg,FBESM
+2020/11/30,Spain,ES,Provincia:Madrid,ESM,en,30,15,,2,0,1,,,1,,,,N,,limesurvey-23168,pms6s2y1wstr23ticq,FBESM
+2020/11/30,Spain,ES,Provincia:Madrid,ESM,en,100,11,,0,0,0,,,2,,,,Y,,limesurvey-23148,8hqhi98agokc29bylg,
