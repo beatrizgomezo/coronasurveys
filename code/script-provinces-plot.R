@@ -4,7 +4,7 @@ library(dplyr)
 # smoothed p_cases and CI:
 source("smooth_column-v2.R")
 
-population <- 6663394
+# population <- 6663394
 
 estimates_path <- "../data/estimates-provinces/"
 estimates_umd_path <- "../data/estimates-umd-symptom-survey/"
@@ -161,6 +161,9 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
   geom_rect(xmin = ymd("2020-11-28"), xmax = ymd("2020-11-29"),
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  geom_rect(xmin = ymd("2020-12-05"), xmax = ymd("2020-12-08"),
+            ymin = 0, ymax = Inf, 
+            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
 # 
   geom_point(aes(y = pct_cli*1000, color = "UMD"), 
              alpha = 0.5, size = 2) +
@@ -247,6 +250,9 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
   geom_rect(xmin = ymd("2020-11-28"), xmax = ymd("2020-11-29"),
+            ymin = 0, ymax = Inf, 
+            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  geom_rect(xmin = ymd("2020-12-05"), xmax = ymd("2020-12-08"),
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
   #
