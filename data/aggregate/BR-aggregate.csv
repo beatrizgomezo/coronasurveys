@@ -1128,3 +1128,10 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/12/05,Brazil,BR,"Rio Grande do Sul",BRRS,en,50,2,,0,20,1,,,,,,,N,,limesurvey-24079,baf9j4cxcwjijmftgm,FBBR
 2020/12/05,Brazil,BR,Paraná,BRPR,en,18,4,,0,1,111,,,,,,,Y,,limesurvey-24129,av241w54ozdgapk12q,FBBR
 2020/12/05,Brazil,BR,"São Paulo",BRSP,en,20,3,,0,1,0,,,,,,,N,,limesurvey-24124,e1im9s7jpqbuyiwuty,FBBR
+2020/12/06,Brazil,BR,"Rio de Janeiro",BRRJ,en,10,4,,0,4,0,,,,,,,N,,limesurvey-24166,n3767pr6dr6n5lppeo,FBBR
+2020/12/06,Brazil,BR,"Rio de Janeiro",BRRJ,en,10,4,,0,4,0,,,,,,,N,,limesurvey-24167,n3767pr6dr6n5lppeo,FBBR
+2020/12/06,Brazil,BR,"Minas Gerais",BRMG,en,50,5,,,5,55,,,,,,,N,,limesurvey-24201,hxzgbud8fqcw5bv0an,FBBR
+2020/12/06,Brazil,BR,"São Paulo",BRSP,en,5,6,,1,,4,,,,,,,N,,limesurvey-24187,knbd1yk04gw8mktt3i,FBBR
+2020/12/06,Brazil,BR,"Minas Gerais",BRMG,en,3,200,,1,0,0,,,,,,,N,,limesurvey-24204,6x9pud9u1l3smlvjct,FBBR
+2020/12/06,Brazil,BR,"Espírito Santo",BRES,en,16,6,,0,0,0,,,,,,,N,,limesurvey-24189,bm40xk07emkcr48gp,FBBR
+2020/12/06,Brazil,BR,"São Paulo",BRSP,en,5,6,,1,,4,,,,,,,N,,limesurvey-24186,knbd1yk04gw8mktt3i,FBBR
