@@ -66,40 +66,40 @@ df_cs <- smooth_column(df_in = df_cs,
 
 
 # Read cCFR-based data
-df_dd <- read.csv(paste0(ccfr_path, "ESMD-estimate.csv"))
-df_dd <- df_dd %>% 
+df_ccfr <- read.csv(paste0(ccfr_path, "ESMD-estimate.csv"))
+df_ccfr <- df_ccfr %>% 
   select(date, cases, p_cases_daily, p_cases_active, population)
-df_dd$date <- as.Date(df_dd$date)
+df_ccfr$date <- as.Date(df_ccfr$date)
 
-df_dd <- df_dd[df_dd$date >= ymd(start_date),]
+df_ccfr <- df_ccfr[df_ccfr$date >= ymd(start_date),]
 
 # Computing 7-day cumulative incidence
-df_dd$p_confirmed <- df_dd$cases / df_dd$population
+df_ccfr$p_confirmed <- df_ccfr$cases / df_ccfr$population
 
-df_dd$p_cum_confirmed <- NA
-df_dd$p_cum_daily <- NA
-if (nrow(df_dd) >= cum_window){
-  df_dd$p_cum_confirmed <- cumsum(c(df_dd$p_confirmed[1:cum_window],
-                                  diff(df_dd$p_confirmed, 
+df_ccfr$p_cum_confirmed <- NA
+df_ccfr$p_cum_daily <- NA
+if (nrow(df_ccfr) >= cum_window){
+  df_ccfr$p_cum_confirmed <- cumsum(c(df_ccfr$p_confirmed[1:cum_window],
+                                  diff(df_ccfr$p_confirmed, 
                                        lag = cum_window)))
-  df_dd$p_cum_daily <- cumsum(c(df_dd$p_cases_daily[1:cum_window],
-                                    diff(df_dd$p_cases_daily, 
+  df_ccfr$p_cum_daily <- cumsum(c(df_ccfr$p_cases_daily[1:cum_window],
+                                    diff(df_ccfr$p_cases_daily, 
                                          lag = cum_window)))
 }
 
 # Smoothing
 
-df_dd <- smooth_column(df_in = df_dd,
+df_ccfr <- smooth_column(df_in = df_ccfr,
                        col_s = "p_cum_confirmed", 
                        basis_dim = smooth_param,
                        link_in = "log")
 
-# df_dd <- smooth_column(df_in = df_dd,
+# df_ccfr <- smooth_column(df_in = df_ccfr,
 #                        col_s = "p_cum_daily",
 #                        basis_dim = smooth_param,
 #                        link_in = "log")
 
-df_dd <- smooth_column(df_in = df_dd,
+df_ccfr <- smooth_column(df_in = df_ccfr,
                        col_s = "p_cases_active", 
                        basis_dim = smooth_param,
                        link_in = "log")
@@ -165,14 +165,13 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
 # 
-  geom_point(aes(y = pct_cli*1000, color = "UMD"), 
+  geom_point(aes(y = pct_cli*1000, color = "U. Maryland Covidmap"), 
              alpha = 0.5, size = 2) +
-  geom_point(aes(y = batched_pct_cli*1000, color = "UMD-B"), 
-             alpha = 0.5, size = 2) +
-  geom_line(aes(y = pct_cli_smooth*1000, color = "UMD"),
+  # geom_point(aes(y = batched_pct_cli*1000, color = "UMD-B"), 
+  #            alpha = 0.5, size = 2) +
+  geom_line(aes(y = pct_cli_smooth*1000, color = "U. Maryland Covidmap"),
             linetype = "solid", size = 1, alpha = 0.6) +
-  geom_line(aes(y = batched_pct_cli_smooth*1000, color = "UMD-B"),
-            linetype = "solid", size = 1, alpha = 0.6) +
+  #
   # geom_ribbon(aes(ymin = pct_cli_smooth_low*1000, 
   #                 ymax = pct_cli_smooth_high*1000), 
   #             alpha = 0.1, color = "red", size = 0.1, fill = "red") +
@@ -190,9 +189,9 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
                   ymax = (p_stillsick_smooth+p_stillsick_error)*100000), 
               alpha = 0.1, color = "blue", size = 0.1, fill = "blue") +
   #
-  # geom_point(data = df_dd, aes(y = p_cases_active*100000, color = "cCFR-based"),
+  # geom_point(data = df_ccfr, aes(y = p_cases_active*100000, color = "cCFR-based"),
   #            alpha = 0.5, size = 2) +
-  # geom_line(data = df_dd, aes(y = p_cases_active_smooth*100000, color = "cCFR-based"),
+  # geom_line(data = df_ccfr, aes(y = p_cases_active_smooth*100000, color = "cCFR-based"),
   #           linetype = "solid", size = 1, alpha = 0.6) +
   #
     labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
@@ -203,12 +202,11 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
                       name="",
                       guide = guide_legend(override.aes = list(
                         linetype = c(#"dotted", 
-                                     # "dotted", "blank", 
+                                     # "dotted", "blank", "solid", 
                           "solid", 
-                          "solid", "solid"),
+                          "solid"),
                         shape = c(#NA, 
-                                  # NA, 1, NA, 
-                          1, 
+                                  # NA, 1, NA, 1, 
                                   1, 1)))) +
   theme(legend.position = "bottom")
 #p1
@@ -272,14 +270,14 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
                   ymax = (p_recentcases_smooth + p_recentcases_error)*100000),
               alpha = 0.1, color = "blue", size = 0.1, fill = "blue") +
   #
-  geom_point(data = df_dd, aes(y = p_cum_confirmed*100000, color = "Confirmados"),
+  geom_point(data = df_ccfr, aes(y = p_cum_confirmed*100000, color = "Confirmados"),
              alpha = 0.5, size = 2) +
-  geom_line(data = df_dd, aes(y = p_cum_confirmed_smooth*100000, color = "Confirmados"),
+  geom_line(data = df_ccfr, aes(y = p_cum_confirmed_smooth*100000, color = "Confirmados"),
             linetype = "solid", size = 1, alpha = 0.6) +
   #
-  # geom_point(data = df_dd, aes(y = p_cum_daily*100000, color = "cCFR-based"),
+  # geom_point(data = df_ccfr, aes(y = p_cum_daily*100000, color = "cCFR-based"),
   #            alpha = 0.5, size = 2) +
-  # # geom_line(data = df_dd, aes(y = p_cum_daily_smooth*100000, color = "cCFR-based"),
+  # # geom_line(data = df_ccfr, aes(y = p_cum_daily_smooth*100000, color = "cCFR-based"),
   #           linetype = "solid", size = 1, alpha = 0.6) +
   #
   labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
