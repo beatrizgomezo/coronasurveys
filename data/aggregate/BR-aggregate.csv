@@ -1123,3 +1123,8 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/12/05,Brazil,BR,Pernambuco,BRPE,en,10000,15,,1,4,4,,,,,,,N,,limesurvey-23993,nuxxq569mc7m4cfdyk,FBBR
 2020/12/05,Brazil,BR,"Rio Grande do Sul",BRRS,en,100,10,,1,4,4,,,,,,,N,,limesurvey-23972,7dwuihigz0xu7xxyw5,FBBR
 2020/12/05,Brazil,BR,"Rio Grande do Sul",BRRS,en,7,3,,0,1,1,,,,,,,N,,limesurvey-23989,ni79twnuim9vs5kzug,FBBR
+2020/12/05,Brazil,BR,"Minas Gerais",BRMG,en,50000,30,,1,1,3,,,,,,,N,,limesurvey-24059,r9pbyn3c0qzopdh8qp,FBBR
+2020/12/05,Brazil,BR,"São Paulo",BRSP,en,4,10,,0,0,5,,,,,,,N,,limesurvey-24087,jrr1onrj4cfnwu2wky,FBBR
+2020/12/05,Brazil,BR,"Rio Grande do Sul",BRRS,en,50,2,,0,20,1,,,,,,,N,,limesurvey-24079,baf9j4cxcwjijmftgm,FBBR
+2020/12/05,Brazil,BR,Paraná,BRPR,en,18,4,,0,1,111,,,,,,,Y,,limesurvey-24129,av241w54ozdgapk12q,FBBR
+2020/12/05,Brazil,BR,"São Paulo",BRSP,en,20,3,,0,1,0,,,,,,,N,,limesurvey-24124,e1im9s7jpqbuyiwuty,FBBR
