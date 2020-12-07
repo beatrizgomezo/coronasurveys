@@ -1135,3 +1135,12 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/12/06,Brazil,BR,"Minas Gerais",BRMG,en,3,200,,1,0,0,,,,,,,N,,limesurvey-24204,6x9pud9u1l3smlvjct,FBBR
 2020/12/06,Brazil,BR,"Espírito Santo",BRES,en,16,6,,0,0,0,,,,,,,N,,limesurvey-24189,bm40xk07emkcr48gp,FBBR
 2020/12/06,Brazil,BR,"São Paulo",BRSP,en,5,6,,1,,4,,,,,,,N,,limesurvey-24186,knbd1yk04gw8mktt3i,FBBR
+2020/12/06,Brazil,BR,Paraíba,BRPB,en,110,28,,15,3,10,,,,,,,N,,limesurvey-24233,v6do77jgj3h8e895en,FBBR
+2020/12/06,Brazil,BR,"Santa Catarina",BRSC,en,100,14,,1,4,2,,,,,,,N,,limesurvey-24240,vb8brgqq83w1kcc23v,FBBR
+2020/12/06,Brazil,BR,"São Paulo",BRSP,en,10,2,,0,1,0,,,,,,,N,,limesurvey-24345,uyq8bg1g8n41qiq4ef,FBBR
+2020/12/06,Brazil,BR,"São Paulo",BRSP,en,501,7,,1,0,4,,,,,,,Y,,limesurvey-24277,eisxuyecaydgmk1v51,FBBR
+2020/12/06,Brazil,BR,"Rio de Janeiro",BRRJ,en,112,23,,5,2,1,,,,,,,N,,limesurvey-24259,1ei6nekstcjurzz6ba,FBBR
+2020/12/06,Brazil,BR,"Santa Catarina",BRSC,en,3,5,,0,30,33,,,,,,,N,,limesurvey-24265,pt16xohp92dv2kima2,FBBR
+2020/12/06,Brazil,BR,"São Paulo",BRSP,en,501,7,,1,0,4,,,,,,,Y,,limesurvey-24276,eisxuyecaydgmk1v51,FBBR
+2020/12/06,Brazil,BR,"Mato Grosso do Sul",BRMS,en,3,6,,0,4,4,,,,,,,Y,,limesurvey-24272,hh4a0bz302cge4g2gd,FBBR
+2020/12/06,Brazil,BR,"Rio de Janeiro",BRRJ,en,112,23,,5,2,1,,,,,,,N,,limesurvey-24258,1ei6nekstcjurzz6ba,FBBR

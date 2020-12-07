@@ -517,3 +517,5 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/10/31,France,FR,région:Île-de-France,FRIDF,en,6,0,,0,0,0,,,,,,,N,,limesurvey-17680,dna4dmjkvb0ugu3sit,
 2020/11/15,France,FR,,,en,21,3,,0,0,0,,,,,,,Y,,limesurvey-20631,kuotb4ejplkcvvzib5,
 2020/11/18,France,FR,,,en,21,3,,0,0,9,,,,,,,Y,,limesurvey-21269,kuotb4ejplkcvvzib5,
+2020/12/06,France,FR,département:Rhône,FR69,en,30,3,,1,0,0,,,,,,,Y,,limesurvey-24226,389i9kvb8op8iws8m6,
+2020/12/06,France,FR,département:Rhône,FR69,en,30,3,,1,0,0,,,,,,,Y,,limesurvey-24228,mlg0ctlj6wvqepwe11,
