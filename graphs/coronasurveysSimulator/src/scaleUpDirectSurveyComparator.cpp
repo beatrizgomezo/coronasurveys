@@ -161,10 +161,10 @@ void doSimulationRun(const SimulationParameters& p){
             int outDeg=stoi(parameters.substr(commaPos+1));
             graph=GenCircle<PUNGraph>(nodes,outDeg,false);
         } else if (p.graphModel.find("CRing")!=string::npos){
-            bool biased=false
+            bool biased=false;
             string parameters;
             if (p.graphModel[5]=='B'){
-                biased=true
+                biased=true;
                 parameters=p.graphModel.substr(6);
             } else {
                 parameters=p.graphModel.substr(5);

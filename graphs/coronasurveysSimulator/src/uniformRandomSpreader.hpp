@@ -18,7 +18,7 @@ public:
     UniformRandomSpreader(int randomSeed):AbstractSpreader(randomSeed){
     }
     virtual void computeInfectedFromGraph(const PUNGraph graph, int numToInfect);
-    void setCenterNode(int cId){this->centerId=cId};
+    void setCenterNode(int cId){this->centerId=cId;}
     
 };
 
