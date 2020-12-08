@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 pop=10000
 reach=100
 for u in range(0, pop):

@@ -8,8 +8,9 @@ TARGET   = scaleUpDirectSurveyComparator
 
 
 # compiling flags here
-CFLAGS=-c -O3 -std=c++14
-LFLAGS   = -Wall -I. -lm -fopenmp
+#CFLAGS=-c -O3 -std=c++14 -ggdb
+CFLAGS=-c -std=c++14 -ggdb
+LFLAGS   = -Wall -I. -lm -fopenmp -ggdb
 
 SRCDIR   = src
 OBJDIR   = obj
