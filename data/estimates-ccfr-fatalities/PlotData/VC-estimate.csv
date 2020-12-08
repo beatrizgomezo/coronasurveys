@@ -1,6 +1,4 @@
 "date","countrycode","population","cases","deaths","cum_cases","cum_deaths","cases_infected","cases_daily","cases_contagious","cases_active","p_cum_cases","p_cum_deaths","p_cases_infected","p_cases_daily","p_cases_contagious","p_cases_active"
-"2020/02/27","VC",110593,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"2020/02/28","VC",110593,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 "2020/02/29","VC",110593,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 "2020/03/01","VC",110593,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 "2020/03/02","VC",110593,0,0,0,0,0,0,0,0,0,0,0,0,0,0
