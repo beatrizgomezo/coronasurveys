@@ -154,13 +154,7 @@ void doSimulationRun(const SimulationParameters& p){
             int nodes=stoi(parameters.substr(0, commaPos));
             int edges=stoi(parameters.substr(commaPos+1));
             graph=GenRndGnm<PUNGraph>(nodes,edges,false,rndGen);
-        } else if (p.graphModel.find("Ring")!=string::npos){
-            string parameters=p.graphModel.substr(4);
-            int commaPos=parameters.find("-");
-            int nodes=stoi(parameters.substr(0, commaPos));
-            int outDeg=stoi(parameters.substr(commaPos+1));
-            graph=GenCircle<PUNGraph>(nodes,outDeg,false);
-        } else if (p.graphModel.find("CRing")!=string::npos){
+        }  else if (p.graphModel.find("CRing")!=string::npos){
             bool biased=false;
             string parameters;
             if (p.graphModel[5]=='B'){
@@ -188,6 +182,12 @@ void doSimulationRun(const SimulationParameters& p){
             if (biased){
                 spreader.setCenterNode(centerNode);
             }
+        } else if (p.graphModel.find("Ring")!=string::npos){
+            string parameters=p.graphModel.substr(4);
+            int commaPos=parameters.find("-");
+            int nodes=stoi(parameters.substr(0, commaPos));
+            int outDeg=stoi(parameters.substr(commaPos+1));
+            graph=GenCircle<PUNGraph>(nodes,outDeg,false);
         }
     }
     cout<<"loaded graph with "<<graph->GetNodes()<<" nodes and "<<graph->GetEdges()<<" edges."<<endl;
