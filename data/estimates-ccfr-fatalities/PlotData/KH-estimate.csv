@@ -1,6 +1,4 @@
 "date","countrycode","population","cases","deaths","cum_cases","cum_deaths","cases_infected","cases_daily","cases_contagious","cases_active","p_cum_cases","p_cum_deaths","p_cases_infected","p_cases_daily","p_cases_contagious","p_cases_active"
-"2019/12/16","KH",16486542,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"2019/12/17","KH",16486542,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 "2019/12/18","KH",16486542,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 "2019/12/19","KH",16486542,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 "2019/12/20","KH",16486542,0,0,0,0,0,0,0,0,0,0,0,0,0,0

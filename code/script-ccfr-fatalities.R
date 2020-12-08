@@ -14,7 +14,7 @@ url_ecdc <- "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-g
 
 contagious_window <- 12
 active_window <- 18
-onset_to_death_window <- 15 # https://www.cdc.gov/coronavirus/2019-ncov/hcp/planning-scenarios.html#table-2
+onset_to_death_window <- 13 # https://www.cdc.gov/coronavirus/2019-ncov/hcp/planning-scenarios.html#table-2
 CFR <- 0.0138
 factor_window <- 14
 
