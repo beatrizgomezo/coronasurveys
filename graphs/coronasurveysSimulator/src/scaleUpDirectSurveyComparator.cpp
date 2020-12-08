@@ -154,6 +154,40 @@ void doSimulationRun(const SimulationParameters& p){
             int nodes=stoi(parameters.substr(0, commaPos));
             int edges=stoi(parameters.substr(commaPos+1));
             graph=GenRndGnm<PUNGraph>(nodes,edges,false,rndGen);
+        } else if (p.graphModel.find("Ring")!=string::npos){
+            string parameters=p.graphModel.substr(4);
+            int commaPos=parameters.find("-");
+            int nodes=stoi(parameters.substr(0, commaPos));
+            int outDeg=stoi(parameters.substr(commaPos+1));
+            graph=GenCircle<PUNGraph>(nodes,outDeg,false);
+        } else if (p.graphModel.find("CRing")!=string::npos){
+            bool biased=false
+            string parameters;
+            if (p.graphModel[5]=='B'){
+                biased=true
+                parameters=p.graphModel.substr(6);
+            } else {
+                parameters=p.graphModel.substr(5);
+            }
+            int commaPos=parameters.find("-");
+            int nodes=stoi(parameters.substr(0, commaPos));
+            string remainder=parameters.substr(commaPos+1);
+            int commaPos2=remainder.find("-");
+            int outDeg=stoi(remainder.substr(0,commaPos2));
+            double connProb=stod(remainder.substr(commaPos+1));
+            cout<<"got parameters for CRing: "<<biased<<" "<<nodes<< " "<< outDeg<<" "<< connProb<<endl;
+            graph=GenCircle<PUNGraph>(nodes,outDeg,false);
+            TIntV allCircle;
+            graph->GetNIdV(allCircle);
+            int centerNode=graph->AddNode();
+            for (TIntV::TIter it=allCircle.BegI(); it!=allCircle.EndI(); it++){
+                if (rndGen.GetUniDev()<connProb){
+                    graph->AddEdge(*it,centerNode);
+                }
+            }
+            if (biased){
+                spreader.setCenterNode(centerNode);
+            }
         }
     }
     cout<<"loaded graph with "<<graph->GetNodes()<<" nodes and "<<graph->GetEdges()<<" edges."<<endl;

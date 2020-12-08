@@ -13,11 +13,12 @@
 #include "abstractSpreader.hpp"
 
 class UniformRandomSpreader: public AbstractSpreader{
-  
+    int centerId=-1;
 public:
     UniformRandomSpreader(int randomSeed):AbstractSpreader(randomSeed){
     }
     virtual void computeInfectedFromGraph(const PUNGraph graph, int numToInfect);
+    void setCenterNode(int cId){this->centerId=cId};
     
 };
 

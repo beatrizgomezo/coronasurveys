@@ -15,6 +15,9 @@ void UniformRandomSpreader::computeInfectedFromGraph(const PUNGraph graph, int n
     TIntV nodeIds;
     //graph->GetNIdV(nodeIds); // get the vector of node ids
     infected.clear();
+    if (centerId>0){
+        infected.insert(centerId);
+    }
     while (infected.size() < min(numToInfect, graph->GetNodes())){
         infected.insert(graph->GetRndNId(rnd));
     }
