@@ -168,7 +168,7 @@ void doSimulationRun(const SimulationParameters& p){
             string remainder=parameters.substr(commaPos+1);
             int commaPos2=remainder.find("-");
             int outDeg=stoi(remainder.substr(0,commaPos2));
-            double connProb=stod(remainder.substr(commaPos+1));
+            double connProb=stod(remainder.substr(commaPos2+1));
             cout<<"got parameters for CRing: "<<biased<<" "<<nodes<< " "<< outDeg<<" "<< connProb<<endl;
             graph=GenCircle<PUNGraph>(nodes,outDeg,false);
             TIntV allCircle;
