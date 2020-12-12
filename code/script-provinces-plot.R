@@ -164,7 +164,10 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
   geom_rect(xmin = ymd("2020-12-05"), xmax = ymd("2020-12-08"),
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-# 
+  geom_rect(xmin = ymd("2020-12-12"), xmax = ymd("2020-12-13"),
+            ymin = 0, ymax = Inf, 
+            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # 
   geom_point(aes(y = pct_cli*1000, color = "U. Maryland Covidmap"), 
              alpha = 0.5, size = 2) +
   # geom_point(aes(y = batched_pct_cli*1000, color = "UMD-B"), 
@@ -251,6 +254,9 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
   geom_rect(xmin = ymd("2020-12-05"), xmax = ymd("2020-12-08"),
+            ymin = 0, ymax = Inf, 
+            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  geom_rect(xmin = ymd("2020-12-12"), xmax = ymd("2020-12-13"),
             ymin = 0, ymax = Inf, 
             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
   #
