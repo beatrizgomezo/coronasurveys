@@ -375,3 +375,7 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/12/02,Greece,GR,Attiki,GRI,en,25,0,,0,0,0,,,,,,,Y,,limesurvey-23496,tizcpwvp99ob4h48ex,
 2020/12/03,Greece,GR,Attiki,GRI,en,15,0,,0,0,0,,,,,,,Y,,limesurvey-23620,ftogrcltg65zl9lm5a,
 2020/12/03,Greece,GR,Attiki,GRI,en,30,0,,0,0,0,,,,,,,N,,limesurvey-23638,ssd74bo2okhnfve40c,
+2020/12/14,Greece,GR,"Ionia Nisia",GRF,en,30,1,,0,0,0,,,,,,,,,limesurvey-6081,w1vyhffk2j1ya9kd6s,
+2020/12/14,Greece,GR,Attiki,GRI,en,100,15,,0,0,0,,,,,,,,,limesurvey-6074,k22ujd0ilobjr2995q,
+2020/12/14,Greece,GR,"Ionia Nisia",GRF,en,30,1,,0,0,0,,,,,,,,,limesurvey-6080,w1vyhffk2j1ya9kd6s,
+2020/12/14,Greece,GR,Attiki,GRI,en,50,1,,0,0,0,,,,,,,,,limesurvey-6062,4l76pwu7cj63mzz7hd,
