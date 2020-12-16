@@ -33,4 +33,4 @@ try(source("script-provinces-daily.R"), silent = T)
 try(source("script-provinces-map.R"), silent = T)
 
 
-try(source("script-provinces-plot.R"), silent = T)
+#try(source("script-provinces-plot.R"), silent = T)

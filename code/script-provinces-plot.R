@@ -20,6 +20,7 @@ ccfr_path <- "../data/estimates-ccfr-based/ES/"
 smooth_param <- 15
 age_recent <- 3
 start_date <- "2020-10-10"
+end_date <- "2020-12-10"
 cum_window <- 7
 
 
@@ -34,6 +35,7 @@ df_cs$date <- df_cs$date - (age_recent-1)/2
 
 # df <- tail(df, n=(nrow(df)-211))
 df_cs <- df_cs[df_cs$date >= ymd(start_date),]
+df_cs <- df_cs[df_cs$date <= ymd(end_date),]
 
 
 #shift cases daily
