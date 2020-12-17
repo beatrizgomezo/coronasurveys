@@ -1,5 +1,4 @@
 Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Visibility,Recovered,Fatalities,RecentCases,StillSick,Tested,Positive,Hospital,Severe,ICU,Vaccinated,RecentVaccinated,Surveyfirst,Surveyknown,Surveyforward,Dataset,Cookie,Campaign
-2020/04/23,Denmark,DK,,,,10,0,,,,,,,,,,,,,world-g-sheet,,
 2020/04/23,Denmark,DK,,,,10,0,,,,,,,,,,,,,,,,world-g-sheet,,
 2020/05/11,Denmark,DK,Hovedstaden,DK84,en,100,0,,0,,,,,,,,,,,Y,N,N,limesurvey-3769,nbq2fep51nka2x3s63,
 2020/05/15,Denmark,DK,Nordjylland,DK81,en,40,0,,,,,,,,,,,,,Y,N,N,limesurvey-6497,3ka90wpoqoka7x538e,

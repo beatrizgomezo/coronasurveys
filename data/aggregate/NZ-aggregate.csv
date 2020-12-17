@@ -1,6 +1,4 @@
 Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Visibility,Recovered,Fatalities,RecentCases,StillSick,Tested,Positive,Hospital,Severe,ICU,Vaccinated,RecentVaccinated,Surveyfirst,Surveyknown,Surveyforward,Dataset,Cookie,Campaign
-2020/04/15,"New Zealand",NZ,,,,100,0,,,,,,,,,,,,,world-g-sheet,,
-2020/04/15,"New Zealand",NZ,,,,150,5,,,,,,,,,,,,,world-g-sheet,,
 2020/04/15,"New Zealand",NZ,,,,100,0,,,,,,,,,,,,,,,,world-g-sheet,,
 2020/04/15,"New Zealand",NZ,,,,150,5,,,,,,,,,,,,,,,,world-g-sheet,,
 2020/06/05,"New Zealand",NZ,Waikato,NZWKO,en,100,0,,0,,,,,,,,,,,Y,N,N,limesurvey-13822,mhcgwdl06xkb2tm95d,

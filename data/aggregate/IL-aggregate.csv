@@ -1,7 +1,5 @@
 Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Visibility,Recovered,Fatalities,RecentCases,StillSick,Tested,Positive,Hospital,Severe,ICU,Vaccinated,RecentVaccinated,Surveyfirst,Surveyknown,Surveyforward,Dataset,Cookie,Campaign
-2020/04/12,Israel,IL,,,,100,0,,,,,,,,,,,,,world-g-sheet,,
 2020/04/12,Israel,IL,,,,100,0,,,,,,,,,,,,,,,,world-g-sheet,,
-2020/04/14,Israel,IL,,,,100,0,,,,,,,,,,,,,world-g-sheet,,
 2020/04/14,Israel,IL,,,,100,0,,,,,,,,,,,,,,,,world-g-sheet,,
 2020/06/23,Israel,IL,HaMerkaz,ILM,en,10,0,,0,,,,,,,,,,,Y,Y,Y,limesurvey-18639,g7kmci936qkbrulp4e,
 2020/07/01,Israel,IL,HaMerkaz,ILM,en,10,0,,0,,,,,,,,,,,N,Y,Y,limesurvey-22508,az3hsoj39hkc39w61b,
