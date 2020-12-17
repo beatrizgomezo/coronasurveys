@@ -6889,3 +6889,11 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/12/16,Spain,ES,,,en,100,0,,0,0,0,,,,,,,,,limesurvey-6358,wnbs1f6u024azew18p,
 2020/12/16,Spain,ES,Provincia:Madrid,ESM,en,20,1,,0,0,0,,,,,,,,,limesurvey-6366,r3ulcnhs5bf6129kqe,FBES
 2020/12/16,Spain,ES,Provincia:Granada,ESGR,en,15,1,,0,0,0,,,,,,,,,limesurvey-6387,gn0m88qtqpacf6boqx,FBES
+2020/12/17,Spain,ES,Provincia:Albacete,ESAB,en,10,0,,0,0,0,,,,,,,,,limesurvey-6487,kwx9pl9wun68cfjqif,FBES
+2020/12/17,Spain,ES,Provincia:Lugo,ESLU,en,200,2,,0,1,1,,,,,,,,,limesurvey-6498,71q13sdf3z5r1n05vb,
+2020/12/17,Spain,ES,Provincia:Barcelona,ESB,en,30,0,,0,0,0,,,,,,,,,limesurvey-6485,owp876og1vu3hwgenv,
+2020/12/17,Spain,ES,"Provincia:Santa Cruz de Tenerife",ESTF,en,150,50,,6,50,50,,,,,,,,,limesurvey-6481,reudit1kuw7p0f1ttj,FBES
+2020/12/17,Spain,ES,Provincia:Madrid,ESM,en,40,7,,0,0,0,,,,,,,,,limesurvey-6477,ffq4bjolrmauk2kp6d,
+2020/12/17,Spain,ES,"Provincia:Santa Cruz de Tenerife",ESTF,en,150,50,,6,50,50,,,,,,,,,limesurvey-6480,reudit1kuw7p0f1ttj,FBES
+2020/12/17,Spain,ES,Provincia:Barcelona,ESB,en,160,10,,0,0,0,,,,,,,,,limesurvey-6494,96w1sjfoez8vco9pih,FBES
+2020/12/17,Spain,ES,"Comunidad Autónoma:Aragón",ESAR,en,15,6,,2,3,3,,,,,,,,,limesurvey-6492,niqe4r2ka1nkcfl8oz,FBES

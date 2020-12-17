@@ -1287,3 +1287,10 @@ Timestamp,Country,ISO-3166-1-a2,Region,ISO-3166-2,Language,Reach,Cases,Recovered
 2020/12/16,Brazil,BR,"Minas Gerais",BRMG,en,150,10,,2,3,5,,,,,,,,,limesurvey-6320,r4hvpspjbz5xsdxyl,FBBR
 2020/12/16,Brazil,BR,"Minas Gerais",BRMG,en,150,10,,2,3,5,,,,,,,,,limesurvey-6317,r4hvpspjbz5xsdxyl,FBBR
 2020/12/16,Brazil,BR,"Minas Gerais",BRMG,en,150,10,,2,3,5,,,,,,,,,limesurvey-6321,r4hvpspjbz5xsdxyl,FBBR
+2020/12/17,Brazil,BR,"São Paulo",BRSP,en,3000,400,,0,0,1,,,,,,,,,limesurvey-6509,h9e97nb41jgvh7u976,FBBR
+2020/12/17,Brazil,BR,"São Paulo",BRSP,en,3000,400,,0,0,1,,,,,,,,,limesurvey-6510,h9e97nb41jgvh7u976,FBBR
+2020/12/17,Brazil,BR,"Rio de Janeiro",BRRJ,en,10,4,,0,0,0,,,,,,,,,limesurvey-6530,ml6k1th7z8mjxrj0o7,FBBR
+2020/12/17,Brazil,BR,"Distrito Federal",BRDF,en,100,15,,0,0,0,,,,,,,,,limesurvey-6528,32o0n5c572mpbq6aph,FBBR
+2020/12/17,Brazil,BR,"Rio Grande do Sul",BRRS,en,60,8,,2,1,1,,,,,,,,,limesurvey-6502,vsskuhfghs1ftepd8e,FBBR
+2020/12/17,Brazil,BR,Paraná,BRPR,en,4000,20,,0,0,0,,,,,,,,,limesurvey-6533,keupigpd63q9wlubx8,FBBR
+2020/12/17,Brazil,BR,"Distrito Federal",BRDF,en,15,0,,0,0,,,,,,,,,,limesurvey-6535,e1n44hl0u8fmb2jdaw,FBBR
