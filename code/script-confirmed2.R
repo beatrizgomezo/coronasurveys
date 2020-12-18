@@ -53,9 +53,10 @@ plot_estimates <- function(country_geoid = "AF", dts,
   dt$population <- pop_data$population[pop_data$CountryCode == dt$CountryCode[1]]
   
   dt <- dt %>% 
-    select(date, CountryCode, population, cases, deaths, cases_infected, cum_deaths, 
+    mutate(countrycode = country_geoid) %>% 
+    select(date, countrycode, population, cases, deaths, cases_infected, cum_deaths, 
            cases_contagious, cases_active) %>% 
-    rename(countrycode = CountryCode, cases_daily = cases) 
+    rename(cases_daily = cases) 
   # mutate(p_cases_infected = cases_infected/population,
   #        p_cases_daily = abs(cases_daily/population),
   #        p_cases_contagious = abs(cases_contagious/population),
