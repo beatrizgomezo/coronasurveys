@@ -45,7 +45,7 @@ plot_estimates <- function(country_geoid = "AF", dts,
   pop_data <- read.csv("../data/common-data/oxford-umd-country-population.csv", as.is = T)
   dt$population <- pop_data$population[pop_data$CountryCode == dt$CountryCode[1]]
   dt <- dt %>% 
-    select(date, cases, deaths, cum_cases, cum_deaths, cases_active, cases_infect, cases_symptom, population, ) %>% 
+    select(date, cases, deaths, cum_cases, cum_deaths, cases_active, cases_infect, cases_symptom, population) %>% 
     # rename(population = popData2019) %>% 
     mutate(p_cases = cum_cases/population,
            p_cases_daily = cases/population,
