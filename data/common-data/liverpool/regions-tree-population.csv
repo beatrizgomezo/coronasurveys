@@ -1,0 +1,7 @@
+countrycode,regioncode,provincecode,districtcode,population,regionname,regiontype,references
+GB,GBLV,GBLIV,,498042,Liverpool,District,https://www.citypopulation.de/en/uk/merseyside/
+GB,GBLV,GBHAL,,129410,Halton,District,
+GB,GBLV,GBKWL,,150862,Knowsley,District,
+GB,GBLV,GBSFT,,276410,Sefton,District,
+GB,GBLV,GBSHN,,180585,St. Helens,District,
+GB,GBLV,GBWRL,,324011,Wirral,District,

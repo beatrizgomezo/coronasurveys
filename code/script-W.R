@@ -478,21 +478,30 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
   
   # region_based_estimate[["p_cases_infected"]][is.na(region_based_estimate[["p_cases_infected"]])] <- 0
   if (sum(region_based_estimate$p_cases_infected != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_infected", 
-                                           smooth_param, link_in = "log", monotone = T)
+    try(
+      region_based_estimate <- smooth_column(region_based_estimate, "p_cases_infected", 
+                                             smooth_param, link_in = "log", monotone = T)
+      , silent = F
+    )
+
   }
   # region_based_estimate[["p_cases_recent"]][is.na(region_based_estimate[["p_cases_recent"]])] <- 0
   if (sum(region_based_estimate$p_cases_recent != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent",
-                                           smooth_param, link_in = "log", monotone = F)
+    try(
+      region_based_estimate <- smooth_column(region_based_estimate, "p_cases_recent",
+                                             smooth_param, link_in = "log", monotone = F)
+      , silent = F
+    )
   }
   # region_based_estimate[["p_cases_active"]][is.na(region_based_estimate[["p_cases_active"]])] <- 0
   if (sum(region_based_estimate$p_cases_active != 0) > smooth_param) {
-    region_based_estimate <- smooth_column(region_based_estimate, "p_cases_active",
-                                           smooth_param, link_in = "log", monotone = F)
+    try(
+      region_based_estimate <- smooth_column(region_based_estimate, "p_cases_active",
+                                             smooth_param, link_in = "log", monotone = F)
+      , silent = F
+    )
   }
   
-
 #-------------------------------------------
   
   if(write_summary_file == T){
@@ -507,7 +516,7 @@ provincial_regional_estimate_w_only <- function(countrycode = "ES",
 }
 
 
-interest <- c("BR", "CL", "CY", "DE", "EC", "FR", "GB", "PT", "UA", "US")
+interest <- c("BR", "CL", "CY", "DE", "EC", "FR", "GB", "GR", "PT", "UA", "US")
 #interest <- c("BR", "US")
 dd <- sapply(interest, provincial_regional_estimate_w_only, province = F, write_daily_file = T)
 
