@@ -29,16 +29,22 @@ df_country <- data_ox[data_ox$Jurisdiction == "NAT_TOTAL",]
 df_region <- data_ox[data_ox$Jurisdiction == "STATE_TOTAL",]
 
 # Generates files with the list of countries and regions
-df_country <- df_country %>%
-  select(CountryName, CountryCode)  %>%
-  distinct()
-write.csv(df_country, file = "../data/common-data/country_oxford.csv",
+# df_country <- df_country %>%
+#   select(CountryName, CountryCode)  %>%
+#   distinct()
+write.csv(df_country %>%
+            select(CountryName, CountryCode)  %>%
+            distinct(),
+          file = "../data/common-data/country_oxford.csv",
           row.names = FALSE)
 
-df_region <- df_region %>%
-  select(RegionName, RegionCode)  %>%
-  distinct()
-write.csv(df_region, file = "../data/common-data/region_oxford.csv",
+# df_region <- df_region %>%
+#   select(RegionName, RegionCode)  %>%
+#   distinct()
+write.csv(df_region %>%
+            select(RegionName, RegionCode)  %>%
+            distinct(),
+          file = "../data/common-data/region_oxford.csv",
           row.names = FALSE)
 
 c_data <- read.csv("../data/common-data/oxford-umd-country-population.csv", as.is = T)
@@ -48,7 +54,7 @@ all_countries <- country_list$CountryName
 
 for (country in all_countries) {
   cat("Processing", country, "\n")
-  df <- data_ox[data_ox$CountryName == country,]
+  df <- df_country[df_country$CountryName == country ,]
   df$cases <- c(NA,diff(df$ConfirmedCases))
   df$deaths <- c(NA,diff(df$ConfirmedDeaths))
   geoid <- c_data[c_data$CountryName == country,"geo_id"]
@@ -60,7 +66,7 @@ region_list <- read.csv(region_file, as.is = T)
 all_regions <- region_list$RegionName
 for (region in all_regions) {
   cat("Processing", region, "\n")
-  df <- data_ox[data_ox$RegionName == region,]
+  df <- df_region[df_region$RegionName == region,]
   df$cases <- c(NA,diff(df$ConfirmedCases))
   df$deaths <- c(NA,diff(df$ConfirmedDeaths))
   region_code <- df$RegionCode[1]
