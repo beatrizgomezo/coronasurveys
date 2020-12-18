@@ -11,13 +11,14 @@ plot_estimates <- function(country_geoid = "AF", dts,
                            ac_window,
                            symptom_window){
   cat("::- script-confirmed: Working on", country_geoid, "::\n")
-  data <- dts %>% 
-    select(dateRep:popData2019, "Alpha.2.code" )
-  data$geoId <- data$Alpha.2.code 
-  data <- data %>% select(dateRep:popData2019)
-  data <- data[data$geoId == country_geoid,]
+  # data <- dts %>% 
+  #   select(dateRep:popData2019, "Alpha.2.code" )
+  dt <- dts %>% select(Date, cases, deaths, CountryCode)
+  #data$geoId <- data$Alpha.2.code 
+  #data <- data %>% select(dateRep:popData2019)
+  #data <- data[data$geoId == country_geoid,]
   
-  dt <- as.data.frame(data[rev(1:nrow(data)),])
+  #dt <- as.data.frame(data[rev(1:nrow(dt)),])
   ####### fix NAs in cases and deaths #######
   dt$cases[is.na(dt$cases)] <- 0
   dt$deaths[is.na(dt$deaths)] <- 0
@@ -25,7 +26,7 @@ plot_estimates <- function(country_geoid = "AF", dts,
   dt$cum_cases <- cumsum(dt$cases)
   dt$cum_deaths <- cumsum(dt$deaths)
   
-  dt$date <- gsub("-", "/", as.Date(dt$dateRep, format = "%d/%m/%Y"))
+  dt$date <- gsub("-", "/", as.Date(dt$Date, format = "%Y-%m-%d"))
   if (nrow(dt) >= ac_window){
     dt$cases_active <- cumsum(c(dt$cases[1:ac_window], diff(dt$cases, lag = ac_window))) # Carlo active cases
     dt$cases_infect <- cumsum(c(dt$cases[1:ac_window], diff(dt$cases, lag = ac_window))) # Carlo active cases
@@ -41,10 +42,11 @@ plot_estimates <- function(country_geoid = "AF", dts,
   else {
     dt$cases_symptom <- NA
   }
-  
+  pop_data <- read.csv("../data/common-data/oxford-umd-country-population.csv", as.is = T)
+  dt$population <- pop_data$population[pop_data$CountryCode == dt$CountryCode[1]]
   dt <- dt %>% 
-    select(date, cases, deaths, cum_cases, cum_deaths, cases_active, cases_infect, cases_symptom, popData2019, ) %>% 
-    rename(population = popData2019) %>% 
+    select(date, cases, deaths, cum_cases, cum_deaths, cases_active, cases_infect, cases_symptom, population, ) %>% 
+    # rename(population = popData2019) %>% 
     mutate(p_cases = cum_cases/population,
            p_cases_daily = cases/population,
            p_cases_active = abs(cases_active/population),
@@ -62,12 +64,13 @@ generate_estimates <- function(active_window_cases = infectious_window_cases,
                                symptom_window_cases = symptomatic_window_cases){
   country_codes <- sapply(str_split(list.files("../data/oxford/"), pattern = "-"), function(x) x[[1]])
   country_codes <- country_codes[!grepl("_", country_codes, fixed = T)]
-  sapply(country_codes, function(x){
+  dx <- sapply(country_codes, function(x){
     df <- read.csv(paste0("../data/oxford/", x, "-estimate.csv"), as.is = T)
     plot_estimates(x, dts = df, ac_window = active_window_cases, 
                    symptom_window = symptom_window_cases)
   })
 }
+generate_estimates()
 
 
 
