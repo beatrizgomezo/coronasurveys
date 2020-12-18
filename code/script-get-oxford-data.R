@@ -10,7 +10,7 @@ country_file <- "../data/common-data/country_oxford.csv"
 region_file <- "../data/common-data/region_oxford.csv"
 output_path = "../data/oxford/"
 
-data_ox <- read.csv(DATA_URL)
+data_ox <- read.csv(DATA_URL, as.is = T)
 cat("::- script-confirmed: Oxford data available! ::\n")
 jurisdictions <- unique(data_ox$Jurisdiction)
 if (length(jurisdictions) != 2) {
@@ -41,30 +41,30 @@ df_region <- df_region %>%
 write.csv(df_region, file = "../data/common-data/region_oxford.csv",
           row.names = FALSE)
 
-c_data <- read.csv("../data/common-data/oxford-umd-country-population.csv")
+c_data <- read.csv("../data/common-data/oxford-umd-country-population.csv", as.is = T)
 
-country_list <- read.csv(country_file)
+country_list <- read.csv(country_file, as.is = T)
 all_countries <- country_list$CountryName
 
 for (country in all_countries) {
   cat("Processing", country, "\n")
-  df <- df_country[df_country$CountryName == country,]
+  df <- data_ox[data_ox$CountryName == country,]
   df$cases <- c(NA,diff(df$ConfirmedCases))
   df$deaths <- c(NA,diff(df$ConfirmedDeaths))
   geoid <- c_data[c_data$CountryName == country,"geo_id"]
-  write.csv(df, paste0(output_path, "/", geoid, "-estimate.csv"),
+  write.csv(df, paste0(output_path, geoid, "-estimate.csv"),
             row.names = FALSE)
 }
 
-region_list <- read.csv(region_file)
+region_list <- read.csv(region_file, as.is = T)
 all_regions <- region_list$RegionName
 for (region in all_regions) {
   cat("Processing", region, "\n")
-  df <- df_region[df_region$RegionName == region,]
+  df <- data_ox[data_ox$RegionName == region,]
   df$cases <- c(NA,diff(df$ConfirmedCases))
   df$deaths <- c(NA,diff(df$ConfirmedDeaths))
   region_code <- df$RegionCode[1]
-  write.csv(df, paste0(output_path, "/", region_code, "-estimate.csv"),
+  write.csv(df, paste0(output_path, region_code, "-estimate.csv"),
             row.names = FALSE)
 }
 
