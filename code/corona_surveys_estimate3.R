@@ -12,6 +12,7 @@ library(httr)
 #source("ukraine_region_based_estimate.R")
 
 # compute new decentralized estimates
+try(source("script-get-oxford-data.R"), silent = T)
 try(source("script-confirmed2.R"), silent = T)
 try(source("script-ccfr-based3.R"), silent = T)
 try(source("script-ccfr-fatalities.R"), silent = T)
