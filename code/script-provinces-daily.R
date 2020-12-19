@@ -20,7 +20,7 @@ recent_cutoff <- 1/2
 max_responses = 50
 max_age <- 1000
 max_age_recent <- 3
-sampling <- 5000 # If the reach is < population/sampling the estimate is NA
+sampling <- 10000 # If the reach is < population/sampling the estimate is NA
 sampling_recent <- 100000 # If the reach is < population/sampling_recent the estimate is NA
 
 
