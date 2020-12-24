@@ -20,7 +20,8 @@ ccfr_path <- "../data/estimates-ccfr-based/ES/"
 smooth_param <- 15
 age_recent <- 3
 start_date <- "2020-10-10"
-end_date <- "2020-12-10"
+#end_date <- "2020-12-10"
+end_date <- Sys.Date()
 cum_window <- 7
 
 
@@ -130,45 +131,45 @@ df_umd <- smooth_column(df_in = df_umd,
 
 # colors <- c("Nuevos casos" = "red", "recent_c" = "red", "sick_c" = "blue", "Sintomáticos" = "blue")
 p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
-  geom_rect(xmin = ymd("2020-09-19"), xmax = ymd("2020-09-20"),
-                ymin = 0, ymax = Inf, 
-              alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-09-26"), xmax = ymd("2020-09-27"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-03"), xmax = ymd("2020-10-04"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-10"), xmax = ymd("2020-10-12"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-17"), xmax = ymd("2020-10-18"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-24"), xmax = ymd("2020-10-25"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-31"), xmax = ymd("2020-11-02"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-11-7"), xmax = ymd("2020-11-09"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-11-14"), xmax = ymd("2020-11-15"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-11-21"), xmax = ymd("2020-11-22"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-11-28"), xmax = ymd("2020-11-29"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-12-05"), xmax = ymd("2020-12-08"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-12-12"), xmax = ymd("2020-12-13"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-09-19"), xmax = ymd("2020-09-20"),
+  #               ymin = 0, ymax = Inf, 
+  #             alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-09-26"), xmax = ymd("2020-09-27"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-03"), xmax = ymd("2020-10-04"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-10"), xmax = ymd("2020-10-12"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-17"), xmax = ymd("2020-10-18"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-24"), xmax = ymd("2020-10-25"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-31"), xmax = ymd("2020-11-02"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-11-7"), xmax = ymd("2020-11-09"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-11-14"), xmax = ymd("2020-11-15"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-11-21"), xmax = ymd("2020-11-22"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-11-28"), xmax = ymd("2020-11-29"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-12-05"), xmax = ymd("2020-12-08"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-12-12"), xmax = ymd("2020-12-13"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
   # 
   geom_point(aes(y = pct_cli*1000, color = "U. Maryland Covidmap"), 
              alpha = 0.5, size = 2) +
@@ -222,45 +223,45 @@ ggsave(plot = p1,
 
 
 p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
-  geom_rect(xmin = ymd("2020-09-19"), xmax = ymd("2020-09-20"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-09-26"), xmax = ymd("2020-09-27"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-03"), xmax = ymd("2020-10-04"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-10"), xmax = ymd("2020-10-12"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-17"), xmax = ymd("2020-10-18"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-24"), xmax = ymd("2020-10-25"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-10-31"), xmax = ymd("2020-11-02"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-11-07"), xmax = ymd("2020-11-09"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-11-14"), xmax = ymd("2020-11-15"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-11-21"), xmax = ymd("2020-11-22"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-11-28"), xmax = ymd("2020-11-29"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-12-05"), xmax = ymd("2020-12-08"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
-  geom_rect(xmin = ymd("2020-12-12"), xmax = ymd("2020-12-13"),
-            ymin = 0, ymax = Inf, 
-            alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-09-19"), xmax = ymd("2020-09-20"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-09-26"), xmax = ymd("2020-09-27"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-03"), xmax = ymd("2020-10-04"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-10"), xmax = ymd("2020-10-12"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-17"), xmax = ymd("2020-10-18"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-24"), xmax = ymd("2020-10-25"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-10-31"), xmax = ymd("2020-11-02"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-11-07"), xmax = ymd("2020-11-09"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-11-14"), xmax = ymd("2020-11-15"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-11-21"), xmax = ymd("2020-11-22"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-11-28"), xmax = ymd("2020-11-29"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-12-05"), xmax = ymd("2020-12-08"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
+  # geom_rect(xmin = ymd("2020-12-12"), xmax = ymd("2020-12-13"),
+  #           ymin = 0, ymax = Inf, 
+  #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
   #
   # geom_point(aes(y = daily_shifted*100000, color = "Nuevos casos CoronaSurveys"),
   #            alpha = 0.5, size = 2) +
