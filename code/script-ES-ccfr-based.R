@@ -191,7 +191,7 @@ plot_estimates <- function(region_ine = 1,
     rename(cases = num_casos)
   dtdeaths <- read.csv(deathsurl, as.is = T)
   dtdeaths <- dtdeaths %>%
-    rename(ccaa = CCAA, deaths = total)
+    rename(fecha = Fecha, ccaa = CCAA, deaths = Fallecidos)
   ine_dict <- data.frame(cod_ine = 1:19, 
                          reg_code = c("ESAN", "ESAR", "ESAS", "ESIB", "ESCN", "ESCB", "ESCL",
                                       "ESCM", "ESCT", "ESVC", "ESEX", "ESGA", "ESMD",
