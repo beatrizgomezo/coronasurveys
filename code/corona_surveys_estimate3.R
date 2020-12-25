@@ -30,6 +30,8 @@ try(source("script-W.R"), silent = T)
 
 try(source("script-rivas-arganda-daily.R"), silent = T)
 
+try(source("script-liverpool-daily.R"), silent = T)
+
 try(source("script-provinces-daily.R"), silent = T)
 try(source("script-provinces-map.R"), silent = T)
 
