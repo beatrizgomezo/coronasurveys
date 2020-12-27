@@ -58,6 +58,8 @@ for (country in all_countries) {
   df$cases <- c(NA,diff(df$ConfirmedCases))
   df$deaths <- c(NA,diff(df$ConfirmedDeaths))
   geoid <- c_data[c_data$CountryName == country,"geo_id"]
+  df$population <- c_data[c_data$CountryName == country,"population"]
+  df$iso2 <- geoid
   write.csv(df, paste0(output_path, geoid, "-estimate.csv"),
             row.names = FALSE)
 }
@@ -70,6 +72,8 @@ for (region in all_regions) {
   df$cases <- c(NA,diff(df$ConfirmedCases))
   df$deaths <- c(NA,diff(df$ConfirmedDeaths))
   region_code <- df$RegionCode[1]
+  df$population <- region_list[region_list$RegionName == region,"Population"]
+  df$iso2 <- region_code
   write.csv(df, paste0(output_path, region_code, "-estimate.csv"),
             row.names = FALSE)
 }
