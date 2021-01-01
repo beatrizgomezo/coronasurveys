@@ -19,7 +19,7 @@ recent_cutoff <- 1/2
 
 max_responses = 50
 max_age <- 1000
-max_age_recent <- 3
+max_age_recent <- 7
 sampling <- 10000 # If the reach is < population/sampling the estimate is NA
 sampling_recent <- 100000 # If the reach is < population/sampling_recent the estimate is NA
 
@@ -45,7 +45,9 @@ remove_outliers <- function(dt, ratio_cutoff=1/3, fatalities_cutoff=1/10) {
   # recent_cutoff <- boxplot.stats(dt$ratio, coef=1.5)$stats[5] # changed cutoff to upper fence
   
   # remove outliers based on ratios
-  dt <- dt[dt$reach <= reach_cutoff, ]
+  # dt <- dt[dt$reach <= reach_cutoff, ]
+  dt$reach <- pmin(dt$reach, reach_cutoff) # If reach is higher than cutoff, keep cutoff instead of removing
+  
   cat("Responses after removing ouliers with reach cutoff", 
       reach_cutoff, ":", nrow(dt), "\n")
   
