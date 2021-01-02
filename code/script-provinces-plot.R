@@ -50,16 +50,19 @@ df_cs$daily_shifted[(len-2):len] <-
   df_cs$daily_error_shifted[(len-2):len] <- NA
 
 ## Non-monotonic ----
+cat("Smoothing p_recentcases\n")
 df_cs <- smooth_column(df_in = df_cs, 
                     col_s = "p_recentcases", 
                     basis_dim = smooth_param,
                     link_in = "log")
 
+cat("Smoothing daily_shifted\n")
 df_cs <- smooth_column(df_in = df_cs, 
                     col_s = "daily_shifted", 
                     basis_dim = smooth_param,
                     link_in = "log")
 
+cat("Smoothing p_stillsick\n")
 df_cs <- smooth_column(df_in = df_cs, 
                     col_s = "p_stillsick", 
                     basis_dim = smooth_param,
@@ -91,21 +94,23 @@ if (nrow(df_ccfr) >= cum_window){
 }
 
 # Smoothing
-
+cat("Smoothing p_cum_confirmed\n")
 df_ccfr <- smooth_column(df_in = df_ccfr,
                        col_s = "p_cum_confirmed", 
                        basis_dim = smooth_param,
                        link_in = "log")
 
+# cat("Smoothing p_cum_daily\n")
 # df_ccfr <- smooth_column(df_in = df_ccfr,
 #                        col_s = "p_cum_daily",
 #                        basis_dim = smooth_param,
 #                        link_in = "log")
 
-df_ccfr <- smooth_column(df_in = df_ccfr,
-                       col_s = "p_cases_active", 
-                       basis_dim = smooth_param,
-                       link_in = "log")
+# cat("Smoothing p_cases_active\n")
+# df_ccfr <- smooth_column(df_in = df_ccfr,
+#                        col_s = "p_cases_active", 
+#                        basis_dim = smooth_param,
+#                        link_in = "log")
 
 
 
@@ -118,12 +123,13 @@ df_umd$date <- as.Date(df_umd$date)
 # df <- tail(df, n=(nrow(df)-211))
 df_umd <- df_umd[df_umd$date >= ymd(start_date),]
 
-
+cat("Smoothing pct_cli\n")
 df_umd <- smooth_column(df_in = df_umd, 
                     col_s = "pct_cli", 
                     basis_dim = smooth_param,
                     link_in = "log")
 
+cat("Smoothing batched_pct_cli\n")
 df_umd <- smooth_column(df_in = df_umd,
                         col_s = "batched_pct_cli",
                         basis_dim = smooth_param,
