@@ -17,7 +17,7 @@ cases_cutoff <- 1/3
 fatalities_cutoff <- 1/2
 recent_cutoff <- 1/2
 
-max_responses <- 200
+max_responses <- 100
 max_age <- 150
 max_age_recent <- 15
 sampling <- 100000 # If the reach is < population/sampling the estimate is NA
