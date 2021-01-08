@@ -17,7 +17,7 @@ cases_cutoff <- 1/3
 fatalities_cutoff <- 1/2
 recent_cutoff <- 1/2
 
-max_responses <- 50
+max_responses <- 200
 max_age <- 150
 max_age_recent <- 15
 sampling <- 100000 # If the reach is < population/sampling the estimate is NA
@@ -271,7 +271,7 @@ for (i in 1:length(regions)){
 }
 cat("\n")
 
-dt <- remove_outliers(dt, ratio_cutoff, fatalities_cutoff)
+dt <- remove_outliers(dt, cases_cutoff, fatalities_cutoff)
 
 dw <- data.frame(date=c(),
                  region=c(),
@@ -336,7 +336,7 @@ write.csv(dw_latest, paste0(estimates_path, country_iso, "/", country_iso, "-lat
 
 subcondition <- (as.Date(dw$date) >= as.Date("2020-04-13") & as.Date(dw$date) <= as.Date("2020-04-27"))
 dw_ene <- dw[subcondition, ]
-dw_ene <- dw_ene %>% select(date, region, population, sample_size, reach, p_cases)
+dw_ene <- dw_ene %>% select(date, region, population, sample_size, reach, p_cases, p_cases_error)
 write.csv(dw_ene, paste0(estimates_path, country_iso, "/", country_iso, "-enecovid-estimate.csv"), row.names = FALSE)
 }
 
