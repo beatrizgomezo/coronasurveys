@@ -37,7 +37,7 @@ carto_base %>%
   geom_sf(aes(fill = reach_ratio))  +
   theme_minimal() + 
   # coord_sf(datum = NA) + 
-  scale_fill_continuous(name="Cobertura", low = "white", high = "darkgreen", na.value = "yellow") +
+  scale_fill_continuous(name="Cobertura", low = "white", high = "darkred", na.value = "yellow") +
   labs (title = "Cobertura de la población en personas por 100.000 habitantes", 
         caption = "Coordenadas: arcgis.com. Código adaptado de mpaladino. https://coronasurveys.org") -> reach_plot
 
@@ -52,7 +52,7 @@ carto_base %>%
   geom_sf(aes(fill = cases_ratio))  +
   theme_minimal() + 
   # coord_sf(datum = NA) + 
-  scale_fill_continuous(name="Casos", low = "white", high = "darkgreen", na.value = "yellow") +
+  scale_fill_continuous(name="Casos", low = "white", high = "darkred", na.value = "yellow") +
   labs (title = "Incidencia total estimada por 100.000 habitantes", 
         caption = "Coordenadas: arcgis.com. Código adaptado de mpaladino. https://coronasurveys.org") -> cases_plot
 
@@ -68,7 +68,7 @@ carto_base %>%
   geom_sf(aes(fill = reach_recent_ratio))  +
   theme_minimal() + 
   # coord_sf(datum = NA) + 
-  scale_fill_continuous(name="Cobertura", low = "white", high = "darkgreen", na.value = "yellow") +
+  scale_fill_continuous(name="Cobertura", low = "white", high = "darkred", na.value = "yellow") +
   labs (title = "Cobertura reciente de la población en personas por 100.000 habitantes\n", 
         caption = "Coordenadas: arcgis.com. Código adaptado de mpaladino. https://coronasurveys.org") -> reach_recent_plot
 
@@ -83,7 +83,7 @@ carto_base %>%
   geom_sf(aes(fill = cases_recent_ratio))  +
   theme_minimal() + 
   # coord_sf(datum = NA) + 
-  scale_fill_continuous(name="Casos", low = "white", high = "darkgreen", na.value = "yellow") +
+  scale_fill_continuous(name="Casos", low = "white", high = "darkred", na.value = "yellow") +
   labs (title = "Incidencia estimada útimos 14 días por 100.000 habitantes", 
         caption = "Coordenadas: arcgis.com. Código adaptado de mpaladino. https://coronasurveys.org") -> cases_recent_plot
 
