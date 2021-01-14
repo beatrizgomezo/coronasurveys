@@ -18,11 +18,11 @@ ccfr_path <- "../data/estimates-ccfr-based/ES/"
 
 
 smooth_param <- 15
-age_recent <- 3
+age_recent <- 7
 start_date <- "2020-10-10"
 #end_date <- "2020-12-10"
 end_date <- Sys.Date()
-cum_window <- 7
+cum_window <- 14
 
 
 ## Load data ----
@@ -298,7 +298,7 @@ p1 <- ggplot(data = df_cs, aes(x = date, color = ""))  +
   labs(x = "Fecha", y =  "Casos por 100.000 habitantes") +
   # ylim(0, 3000)+
   theme_bw() + 
-  ggtitle("Incidencia acumulada (7 días) en Madrid") +
+  ggtitle("Incidencia acumulada (14 días) en Madrid") +
   scale_colour_manual(values = c("red", "blue", "magenta"),
                       name="",
                       guide = guide_legend(override.aes = list(
