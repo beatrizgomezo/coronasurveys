@@ -1,7 +1,7 @@
 library(tidyverse)
-library(readxl)
-library(httr)
-require(stringi)
+# library(readxl)
+# library(httr)
+library(stringi)
 
 source("smooth_greedy_monotone.R")
 
