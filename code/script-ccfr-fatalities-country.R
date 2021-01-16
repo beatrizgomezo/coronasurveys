@@ -30,7 +30,7 @@ plot_estimates <- function(country_geoid, code3,
   # data <- data[data$geoId == country_geoid,]
   data <- dts[dts$CountryCode == code3,]
   
-  cat(min(data$Date), nrow(data), country_geoid, code3, ".\n")
+  #cat(min(data$Date), nrow(data), country_geoid, code3, ".\n")
   
   dt <- as.data.frame(data[rev(1:nrow(data)),])
   
