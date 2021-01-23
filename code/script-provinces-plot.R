@@ -117,7 +117,7 @@ df_ccfr <- smooth_column(df_in = df_ccfr,
 
 # Read UMD data
 df_umd <- read.csv(paste0(estimates_umd_path, "ES/ESMD-estimate.csv"))
-df_umd <- df_umd %>% select(date, pct_cli, batched_pct_cli)
+df_umd <- df_umd %>% select(date, pct_cli) #, batched_pct_cli)
 df_umd$date <- as.Date(df_umd$date)
 
 # df <- tail(df, n=(nrow(df)-211))
@@ -129,11 +129,11 @@ df_umd <- smooth_column(df_in = df_umd,
                     basis_dim = smooth_param,
                     link_in = "log")
 
-cat("Smoothing batched_pct_cli\n")
-df_umd <- smooth_column(df_in = df_umd,
-                        col_s = "batched_pct_cli",
-                        basis_dim = smooth_param,
-                        link_in = "log")
+# cat("Smoothing batched_pct_cli\n")
+# df_umd <- smooth_column(df_in = df_umd,
+#                         col_s = "batched_pct_cli",
+#                         basis_dim = smooth_param,
+#                         link_in = "log")
 
 # colors <- c("Nuevos casos" = "red", "recent_c" = "red", "sick_c" = "blue", "Sintomáticos" = "blue")
 p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
