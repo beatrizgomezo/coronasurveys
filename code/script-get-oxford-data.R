@@ -8,6 +8,7 @@ library(stringr)
 DATA_URL = "https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker/master/data/OxCGRT_latest.csv"
 country_file <- "../data/common-data/country_oxford.csv"
 region_file <- "../data/common-data/region_oxford.csv"
+data_file <- "../data/common-data/oxford-umd-country-population.csv"
 output_path = "../data/oxford/"
 
 data_ox <- read.csv(DATA_URL, as.is = T)
@@ -47,7 +48,7 @@ write.csv(df_region %>%
           file = "../data/common-data/region_oxford.csv",
           row.names = FALSE)
 
-c_data <- read.csv("../data/common-data/oxford-umd-country-population.csv", as.is = T)
+c_data <- read.csv(data_file, as.is = T)
 
 country_list <- read.csv(country_file, as.is = T)
 all_countries <- country_list$CountryName
