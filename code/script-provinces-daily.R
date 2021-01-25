@@ -109,6 +109,12 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
   p_stillsick <- c()
   p_stillsick_error <- c()
   
+  p_vaccinated <- c()
+  p_vaccinated_error <- c()
+  
+  p_refusevaccine <- c()
+  p_refusevaccine_error <- c()
+  
   population <- c()
   
   for (j in dates){
@@ -146,6 +152,10 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
       est <- process_ratio(dt_date, "fatalities", "reach", "cases")
       p_fatalities <- c(p_fatalities, est$val)
       p_fatalities_error <- c(p_fatalities_error, est$error)
+      
+      est <- process_ratio(dt_date, "vaccinated", "reach", "reach")
+      p_vaccinated <- c(p_vaccinated, est$val)
+      p_vaccinated_error <- c(p_vaccinated_error, est$error)
     }
     else {
       # cat("Low reach\n"  )
@@ -153,6 +163,8 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
       p_cases_error <- c(p_cases_error, NA)
       p_fatalities <- c(p_fatalities, NA)
       p_fatalities_error <- c(p_fatalities_error, NA)
+      p_vaccinated <- c(p_vaccinated, NA)
+      p_vaccinated_error <- c(p_vaccinated_error, NA)
     }
 
     if (sum(dt_recent$reach) >= pop/sampling_recent){
@@ -168,6 +180,10 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
       est <- process_ratio(dt_recent, "stillsick", "reach", "cases")
       p_stillsick <- c(p_stillsick, est$val)
       p_stillsick_error <- c(p_stillsick_error, est$error)
+      
+      est <- process_ratio(dt_recent, "refusevaccine", "reach", "reach")
+      p_refusevaccine <- c(p_refusevaccine, est$val)
+      p_refusevaccine_error <- c(p_refusevaccine_error, est$error)
     }
     else {
       # cat("Low reach_recent\n"  )
@@ -177,6 +193,8 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
       p_cases_daily_error <- c(p_cases_daily_error, NA)
       p_stillsick <- c(p_stillsick, NA)
       p_stillsick_error <- c(p_stillsick_error, NA)
+      p_refusevaccine <- c(p_refusevaccine, NA)
+      p_refusevaccine_error <- c(p_refusevaccine_error, NA)
     }
     
     population <- c(population, pop)
@@ -205,7 +223,13 @@ process_region <- function(dt, reg, name, pop, dates, max_responses = 1000, max_
                    
                    p_stillsick,
                    p_stillsick_error,
-
+                   
+                   p_vaccinated,
+                   p_vaccinated_error,
+                   
+                   p_refusevaccine,
+                   p_refusevaccine_error,
+                   
                    stringsAsFactors = F)
   
   return(dd)
@@ -283,6 +307,12 @@ dw <- data.frame(date=c(),
                  
                  p_stillsick=c(),
                  p_stillsick_error=c(),
+                 
+                 p_vaccinated = c(),
+                 p_vaccinated_error = c(),
+                 
+                 p_refusevaccine = c(),
+                 p_refusevaccine_error = c(),
 
                  stringsAsFactors = F)
 

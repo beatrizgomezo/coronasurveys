@@ -117,15 +117,15 @@ df_ccfr <- smooth_column(df_in = df_ccfr,
 
 # Read UMD data
 df_umd <- read.csv(paste0(estimates_umd_path, "ES/ESMD-estimate.csv"))
-df_umd <- df_umd %>% select(date, pct_cli) #, batched_pct_cli)
+df_umd <- df_umd %>% select(date, pct_cli_weighted) #, batched_pct_cli)
 df_umd$date <- as.Date(df_umd$date)
 
 # df <- tail(df, n=(nrow(df)-211))
 df_umd <- df_umd[df_umd$date >= ymd(start_date),]
 
-cat("Smoothing pct_cli\n")
+cat("Smoothing pct_cli_weighted\n")
 df_umd <- smooth_column(df_in = df_umd, 
-                    col_s = "pct_cli", 
+                    col_s = "pct_cli_weighted", 
                     basis_dim = smooth_param,
                     link_in = "log")
 
@@ -177,15 +177,15 @@ p1 <- ggplot(data = df_umd, aes(x = date, color = ""))  +
   #           ymin = 0, ymax = Inf, 
   #           alpha = 0.01, color = "orange", size = 0.1, fill = "yellow") +
   # 
-  geom_point(aes(y = pct_cli*1000, color = "U. Maryland Covidmap"), 
+  geom_point(aes(y = pct_cli_weighted*1000, color = "U. Maryland Covidmap"), 
              alpha = 0.5, size = 2) +
   # geom_point(aes(y = batched_pct_cli*1000, color = "UMD-B"), 
   #            alpha = 0.5, size = 2) +
-  geom_line(aes(y = pct_cli_smooth*1000, color = "U. Maryland Covidmap"),
+  geom_line(aes(y = pct_cli_weighted_smooth*1000, color = "U. Maryland Covidmap"),
             linetype = "solid", size = 1, alpha = 0.6) +
   #
-  # geom_ribbon(aes(ymin = pct_cli_smooth_low*1000, 
-  #                 ymax = pct_cli_smooth_high*1000), 
+  # geom_ribbon(aes(ymin = pct_cli_weighted_smooth_low*1000, 
+  #                 ymax = pct_cli_weighted_smooth_high*1000), 
   #             alpha = 0.1, color = "red", size = 0.1, fill = "red") +
   # geom_point(aes(y = recent_shifted*100000, color = "Nuevos casos (7 días)"),
   #            alpha = 0.5, size = 2) +
