@@ -1,9 +1,12 @@
 library(tidyr)
 library(dplyr)
+library(lubridate)
 
 # smoothed p_cases and CI:
 source("smooth_column-v2.R")
 
+start_date <- ymd("2020-07-30")
+end_date <- Sys.Date()
 
 responses_path <- "../data/aggregate/rivas-arganda/"
 data_path <- "../data/common-data/rivas-arganda/regions-tree-population.csv"
@@ -461,7 +464,8 @@ region_names <- region_tree$regionname
 populations <- region_tree$population
 
 #list of dates
-dates_dash <- as.character(seq.Date(as.Date(dt$timestamp[1]), as.Date(tail(dt$timestamp,1)), by = "days"))
+# dates_dash <- as.character(seq.Date(as.Date(dt$timestamp[1]), as.Date(tail(dt$timestamp,1)), by = "days"))
+dates_dash <- as.character(seq.Date(start_date, end_date, by = "days"))
 dates <- gsub("-","/", dates_dash)
 
 # #list responses per date
