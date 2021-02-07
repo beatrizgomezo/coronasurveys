@@ -19,7 +19,7 @@ from standard_predictor.xprize_predictor import XPrizePredictor
 import re
 import time
 
-sys.path.append(os.path.expanduser("~/work/logger"))
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
 import utils
 
 
@@ -137,7 +137,7 @@ if __name__ == '__main__':
     if len(matches) > 0:
         log_name = matches[0]
 
-    logger = utils.named_log(str(log_name))
+    logger = utils.named_log(str(log_name), log_name)
 
     print(f"Generating prescriptions from {args.start_date} to {args.end_date}...")
 

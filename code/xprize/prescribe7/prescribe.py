@@ -13,7 +13,7 @@ import subprocess
 import re
 import time
 
-sys.path.append(os.path.expanduser("~/work/logger"))
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
 import utils
 
 IP_COLS = ['C1_School closing',
@@ -37,6 +37,7 @@ regions_file    = "countries_regions.csv"
 threshold_file  = "dance_threshold50.csv"
 ratios_file     = "ratios.csv"
 num_cases_file  = "numcases.csv"
+
 
 # Prescriptor
 def prescribe(start_date_str: str,
@@ -271,7 +272,7 @@ if __name__ == '__main__':
     if len(matches) > 0:
         log_name = matches[0]
 
-    logger = utils.named_log(str(log_name))
+    logger = utils.named_log(str(log_name), log_name)
 
     print(f"Generating prescriptions from {args.start_date} to {args.end_date}...")
 

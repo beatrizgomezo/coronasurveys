@@ -2,10 +2,11 @@ import sys
 import os
 import argparse
 import subprocess
+from concurrent.futures import ThreadPoolExecutor
 import re
 import time
 
-sys.path.append(os.path.expanduser("~/work/logger"))
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
 import utils
 
 if __name__ == '__main__':
@@ -49,7 +50,7 @@ if __name__ == '__main__':
     if len(matches) > 0:
         log_name = matches[0]
 
-    logger = utils.named_log(str(log_name))
+    logger = utils.named_log(str(log_name), log_name)
 
     rScriptFile, ext = os.path.splitext(sys.argv[0])
     rScriptFile += ".R"
@@ -67,15 +68,28 @@ if __name__ == '__main__':
             os.path.dirname(os.path.realpath(__file__))
         ]
 
-        logger.info("R command: " + ' '.join(r_cmd))
+        logger.info("")
+        logger.info("")
+        logger.info("=========================================================================")
+        logger.info("Command: " + ' '.join(r_cmd))
+        logger.info("=========================================================================")
 
-        subprocess.call(r_cmd)
+        with subprocess.Popen(r_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as p:
+            with ThreadPoolExecutor(2) as pool:
+                r1 = pool.submit(utils.log_popen_pipe, p, p.stdout, logger)
+                r2 = pool.submit(utils.log_popen_pipe, p, p.stderr, logger)
+                #logger.info(r1.result())
+                #logger.error(r2.result())
+
+
     except OSError as error:
         logger.info(error)
     except:
-        logger.info("Unexpected error: %s", sys.exc_info()[0])
+        logger.info("Unexpected error: %s", sys.exc_info())
         raise
     else:
         logger.info("Successfully executed %s", os.path.realpath(__file__))
 
+    logger.info("=========================================================================")
     logger.info("Duration: %s seconds", utils.secondsToStr(time.time() - start))
+    logger.info("=========================================================================")

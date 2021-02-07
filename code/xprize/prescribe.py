@@ -8,8 +8,9 @@ import logging
 import time
 import json
 import re
+import BackgroundPopen
 
-sys.path.append(os.path.expanduser("~/work/logger"))
+sys.path.append(os.path.expanduser("logger"))
 import utils
 
 ##########################################################################################
@@ -18,10 +19,12 @@ subprocess_timeout = 19800 # 5.5 hours in seconds
 
 ##########################################################################################
 
-bin_path = os.path.join('usr', 'bin')
-opt_conda_path = os.path.join('opt', 'conda', 'bin')
-os.environ["PATH"] += os.pathsep + opt_conda_path + os.pathsep + bin_path
+#bin_path = os.path.join('usr', 'bin')
+#opt_conda_path = os.path.join('opt', 'conda', 'bin')
+#os.environ["PATH"] += os.pathsep + opt_conda_path + os.pathsep + bin_path
 
+# workdir = "~/work"
+workdir="."
 
 def zeroOutput(start_date_str: str,
                end_date_str: str,
@@ -123,11 +126,13 @@ if __name__ == '__main__':
                         help="The path to an intervention plan .csv file")
     args = parser.parse_args()
 
-    os.chdir(os.path.expanduser('~/work'))
+    workdir = os.path.expanduser(workdir)
+
+    os.chdir(workdir)
 
 
     try:
-        output_prescriptions_dir = os.path.expanduser('~/work/prescriptions')
+        output_prescriptions_dir = os.path.join(workdir, 'prescriptions')
         os.makedirs(output_prescriptions_dir, exist_ok=True)
     except OSError:
         logger.info(f'Creation of the directory {output_prescriptions_dir} failed')
@@ -183,9 +188,9 @@ if __name__ == '__main__':
                 'python', prescription_script,
                 '--start_date', args.start_date,
                 '--end_date', args.end_date,
-                '--interventions_past', os.path.expanduser(args.prior_ips_file),
-                '--intervention_costs', os.path.expanduser(args.cost_file),
-                '--output_file', os.path.expanduser(prescription_output_file)
+                '--interventions_past', os.path.realpath(os.path.expanduser(args.prior_ips_file)),
+                '--intervention_costs', os.path.realpath(os.path.expanduser(args.cost_file)),
+                '--output_file', os.path.realpath(os.path.expanduser(prescription_output_file))
             ]
 
             logger.info("Command: " + ' '.join(execute_cmd))
@@ -194,9 +199,9 @@ if __name__ == '__main__':
 
             procs[p] = subprocess.Popen(
                 execute_cmd,
-                cwd=os.path.realpath(os.path.expanduser(prescription_dir)),
                 stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
+                stderr=subprocess.PIPE,
+                cwd=os.path.realpath(os.path.expanduser(prescription_dir))
             )
 
         except subprocess.CalledProcessError as err:
@@ -249,32 +254,32 @@ if __name__ == '__main__':
                 logger.info("")
                 logger.info("---------------------------------------------------------------------------------------")
                 logger.info(f'Prescriptor: {pkey} - exitcode: {procs[pkey].returncode}')
-                logger.info("")
-                logger.info("=== stdout ============================================================================")
-                logger.info(stdout.decode())
-                logger.info("")
-                logger.info("=== stderr ============================================================================")
-                logger.info(stderr.decode())
-                logger.info("")
+                #logger.info("")
+                #logger.info("=== stdout ============================================================================")
+                #logger.info(stdout.decode())
+                #logger.info("")
+                #logger.info("=== stderr ============================================================================")
+                #logger.info(stderr.decode())
+                #logger.info("")
                 logger.info("---------------------------------------------------------------------------------------")
-                logger.info("")
-                logger.info("")
+                #logger.info("")
+                #logger.info("")
 
                 #if procs[pkey].returncode:
                 #    del output_files[pkey]
 
+    if output_files:
+        # filter for outputs that cannot be read
+        outputs_to_combine = list(output_files.keys())
+        for pkey in outputs_to_combine:
+            if not os.path.isfile(output_files[pkey]):
+                del output_files[pkey]
 
-    # filter for outputs that cannot be read
-    outputs_to_combine = list(output_files.keys())
-    for pkey in outputs_to_combine:
-        if not os.path.isfile(output_files[pkey]):
-            del output_files[pkey]
+        # concatenate csv files
+        combined_csv = pd.concat([pd.read_csv(f) for f in output_files.values()])
 
-    # concatenate csv files
-    combined_csv = pd.concat([pd.read_csv(f) for f in output_files.values()])
-
-    # combined_csv.to_csv( args.output_file, index=False, encoding='utf-8-sig')
-    combined_csv.to_csv(args.output_file, encoding='utf-8-sig')
+        # combined_csv.to_csv( args.output_file, index=False, encoding='utf-8-sig')
+        combined_csv.to_csv(args.output_file, encoding='utf-8-sig')
 
     # prescribe(args.start_date, args.end_date, args.prior_ips_file, args.cost_file, args.output_file)
     logger.info('#######   COMPLETED CORONASURVEYS MULTI-PRESCRIPTOR RUNNER  #####################################')

@@ -5,9 +5,22 @@ from time import time, strftime, localtime
 from datetime import datetime, timedelta
 
 
-def named_log(loggerName):
+def log_popen_pipe(p, stdfile, logger):
 
-    logdir = os.path.expanduser('~/work/logs')
+    while p.poll() is None:
+        line = stdfile.readline().rstrip()
+        if line:
+            logger.info(line)
+
+    rest = stdfile.read().rstrip()
+    if rest:
+        logger.info(rest)
+
+
+def named_log(loggerName, logfile="coronasurveys"):
+
+    logdir = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "logs"))
+
     try:
         os.makedirs(logdir, exist_ok=True)
     except OSError:
@@ -15,7 +28,7 @@ def named_log(loggerName):
     #else:
     #    print(f'CoronaSurveys log directory {logdir}')
 
-    datefile = 'coronasurveys-{:%Y-%m-%d}.log'.format(datetime.now())
+    datefile = '{}-{:%Y-%m-%d}.log'.format(logfile, datetime.now())
 
     logging.basicConfig(
         filename=os.path.join(logdir, datefile),

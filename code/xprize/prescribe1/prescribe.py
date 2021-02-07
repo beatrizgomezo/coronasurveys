@@ -18,7 +18,7 @@ root_path = os.path.dirname(os.path.realpath(__file__)) + ups
 sys.path.append(root_path)
 from standard_predictor.xprize_predictor import XPrizePredictor
 
-sys.path.append(os.path.expanduser("~/work/logger"))
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
 import utils
 
 ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
@@ -135,7 +135,7 @@ if __name__ == '__main__':
     if len(matches) > 0:
         log_name = matches[0]
 
-    logger = utils.named_log(str(log_name))
+    logger = utils.named_log(str(log_name), log_name)
 
     print(f"Generating prescriptions from {args.start_date} to {args.end_date}...")
 
