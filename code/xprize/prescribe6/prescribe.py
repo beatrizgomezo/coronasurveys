@@ -7,7 +7,7 @@ import re
 import time
 
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
-import utils
+import coronasurveys_utils
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     if len(matches) > 0:
         log_name = matches[0]
 
-    logger = utils.named_log(str(log_name), log_name)
+    logger = coronasurveys_utils.named_log(str(log_name), log_name)
 
     rScriptFile, ext = os.path.splitext(sys.argv[0])
     rScriptFile += ".R"
@@ -76,8 +76,8 @@ if __name__ == '__main__':
 
         with subprocess.Popen(r_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as p:
             with ThreadPoolExecutor(2) as pool:
-                r1 = pool.submit(utils.log_popen_pipe, p, p.stdout, logger)
-                r2 = pool.submit(utils.log_popen_pipe, p, p.stderr, logger)
+                r1 = pool.submit(coronasurveys_utils.log_popen_pipe, p, p.stdout, logger)
+                r2 = pool.submit(coronasurveys_utils.log_popen_pipe, p, p.stderr, logger)
                 #logger.info(r1.result())
                 #logger.error(r2.result())
 
@@ -91,5 +91,5 @@ if __name__ == '__main__':
         logger.info("Successfully executed %s", os.path.realpath(__file__))
 
     logger.info("=========================================================================")
-    logger.info("Duration: %s seconds", utils.secondsToStr(time.time() - start))
+    logger.info("Duration: %s seconds", coronasurveys_utils.secondsToStr(time.time() - start))
     logger.info("=========================================================================")

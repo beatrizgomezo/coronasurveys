@@ -19,6 +19,9 @@ def log_popen_pipe(p, stdfile, logger):
 
 def named_log(loggerName, logfile="coronasurveys"):
 
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+
     logdir = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "logs"))
 
     try:

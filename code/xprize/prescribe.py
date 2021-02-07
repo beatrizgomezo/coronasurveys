@@ -8,10 +8,9 @@ import logging
 import time
 import json
 import re
-import BackgroundPopen
 
 sys.path.append(os.path.expanduser("logger"))
-import utils
+import coronasurveys_utils
 
 ##########################################################################################
 
@@ -89,7 +88,7 @@ def zeroOutput(start_date_str: str,
 
 if __name__ == '__main__':
 
-    logger = utils.named_log("main")
+    logger = coronasurveys_utils.named_log("main")
 
     logger.info('')
     logger.info('')

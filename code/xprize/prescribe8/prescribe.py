@@ -1,10 +1,14 @@
 # Copyright 2020 (c) Cognizant Digital Business, Evolutionary AI. All rights reserved. Issued under the Apache 2.0 License.
 
-import os
-import sys
 import argparse
 import numpy as np
 import pandas as pd
+
+import os
+import sys
+
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
+import coronasurveys_utils
 
 from pathlib import Path
 
@@ -18,9 +22,6 @@ from standard_predictor.xprize_predictor import XPrizePredictor
 
 import re
 import time
-
-sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
-import utils
 
 
 ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
@@ -96,8 +97,6 @@ def prescribe(start_date_str: str,
     # Save to a csv file
     prescription_df.to_csv(output_file_path, index=False)
 
-    return
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -137,10 +136,9 @@ if __name__ == '__main__':
     if len(matches) > 0:
         log_name = matches[0]
 
-    logger = utils.named_log(str(log_name), log_name)
+    logger = coronasurveys_utils.named_log(str(log_name), log_name)
 
-    print(f"Generating prescriptions from {args.start_date} to {args.end_date}...")
-
+    logger.info(f"Generating prescriptions from {args.start_date} to {args.end_date}...")
 
     try:
         prescribe(args.start_date, args.end_date, args.prior_ips_file, args.cost_file, args.output_file)
@@ -154,4 +152,4 @@ if __name__ == '__main__':
         logger.info("Successfully executed %s", os.path.realpath(__file__))
 
     print("Done!")
-    logger.info("Duration: %s seconds", utils.secondsToStr(time.time() - start))
+    logger.info("Duration: %s seconds", coronasurveys_utils.secondsToStr(time.time() - start))

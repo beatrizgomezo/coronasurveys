@@ -19,7 +19,7 @@ sys.path.append(root_path)
 from standard_predictor.xprize_predictor import XPrizePredictor
 
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
-import utils
+import coronasurveys_utils
 
 ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
 MODEL_WEIGHTS_FILE = os.path.join(ROOT_DIR, "../standard_predictor/models", "trained_model_weights.h5")
@@ -135,9 +135,9 @@ if __name__ == '__main__':
     if len(matches) > 0:
         log_name = matches[0]
 
-    logger = utils.named_log(str(log_name), log_name)
+    logger = coronasurveys_utils.named_log(str(log_name), log_name)
 
-    print(f"Generating prescriptions from {args.start_date} to {args.end_date}...")
+    logger.info(f"Generating prescriptions from {args.start_date} to {args.end_date}...")
 
 
     try:
@@ -152,4 +152,4 @@ if __name__ == '__main__':
         logger.info("Successfully executed %s", os.path.realpath(__file__))
 
     print("Done!")
-    logger.info("Duration: %s seconds", utils.secondsToStr(time.time() - start))
+    logger.info("Duration: %s seconds", coronasurveys_utils.secondsToStr(time.time() - start))

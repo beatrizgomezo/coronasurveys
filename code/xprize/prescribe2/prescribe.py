@@ -13,8 +13,8 @@ import subprocess
 import re
 import time
 
-sys.path.append(os.path.expanduser("~/work/logger"))
-import utils
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "logger")))
+import coronasurveys_utils
 
 IP_COLS = ['C1_School closing',
            'C2_Workplace closing',
@@ -271,7 +271,7 @@ if __name__ == '__main__':
     if len(matches) > 0:
         log_name = matches[0]
 
-    logger = utils.named_log(str(log_name))
+    logger = coronasurveys_utils.named_log(str(log_name))
 
     print(f"Generating prescriptions from {args.start_date} to {args.end_date}...")
 
@@ -288,4 +288,4 @@ if __name__ == '__main__':
         logger.info("Successfully executed %s", os.path.realpath(__file__))
 
     print("Done!")
-    logger.info("Duration: %s seconds", utils.secondsToStr(time.time() - start))
+    logger.info("Duration: %s seconds", coronasurveys_utils.secondsToStr(time.time() - start))
