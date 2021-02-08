@@ -1,15 +1,15 @@
 #/bin/bash
 
-startdate="2020-01-01"
+startdate="2021-01-01"
 today=`date +%Y-%m-%d`
 enddate="2021-02-28"
 
 # Generate the IPS file from the Oxford repository, propagating the last IP until enddate
 
 echo --- Downloading and completing IPS file
-echo Rscript complete-IPS.R "$enddate"
+echo Rscript complete-IPS.R "$startdate" "$enddate"
 
-Rscript complete-IPS.R "$enddate"
+Rscript complete-IPS.R "$startdate" "$enddate"
 
 # Run the prescriptor from today to enddate
 
@@ -32,10 +32,18 @@ do
 
    
   echo --- Running predictor $i
-  echo python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/fixed_equal_costs-${i}.csv -o ../../data/xprize/estimate-${i}.csv
+  echo python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/fixed_equal_costs-${i}.csv -o ./predictions/fixed_equal_costs-${i}.csv
 
-  python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/fixed_equal_costs-${i}.csv -o ../../data/xprize/estimate-${i}.csv
 
-  #rm ./prescriptions/fixed_equal_costs-${i}.csv
+  python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/fixed_equal_costs-${i}.csv -o ./predictions/fixed_equal_costs-${i}.csv
+
+
+
+  echo -- Adding fatalities, hospital, ICU
+  echo Rscript add-deaths-hospital.R ./predictions/fixed_equal_costs-${i}.csv ../../data/xprize/estimate-${i}.csv
+
+  Rscript add-deaths-hospital.R ./predictions/fixed_equal_costs-${i}.csv ../../data/xprize/fixed_equal_costs-${i}.csv
+
+  #rm ./prescriptions/fixed_equal_costs-${i}.csv ./predictions/fixed_equal_costs-${i}.csv
 done
 

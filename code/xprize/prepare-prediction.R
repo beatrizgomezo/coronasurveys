@@ -22,13 +22,13 @@ df <- read.csv(path_to_ips_file, stringsAsFactors=FALSE) #, check.names = FALSE)
 df$Date <- as.Date(df$Date)
 
 df <- df[df$Date >= start_date,]
-df <- df[df$Date <= change_date,]
+df <- df[df$Date < change_date,]
 
 dfd <- read.csv(path_to_prescriptions, stringsAsFactors=FALSE) #, check.names = FALSE)
 dfd$Date <- as.Date(dfd$Date)
 
 dfd <- dfd[dfd$PrescriptionIndex == prescription_number,]
-dfd <- dfd[dfd$Date > change_date,]
+dfd <- dfd[dfd$Date >= change_date,]
 dfd <- dfd[dfd$Date <= end_date,]
 dfd <- dfd %>% 
   select(CountryName, RegionName, Date, C1_School.closing,	C2_Workplace.closing,

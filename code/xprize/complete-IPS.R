@@ -9,17 +9,18 @@ country_region_list <- "https://raw.githubusercontent.com/GCGImdea/xprize/main/d
 # ips_file <- "https://raw.githubusercontent.com/GCGImdea/xprize/main/work/IPS-latest.csv"
 output_file <- "./data/IPS-latest-full.csv"
 
-start_date <- ymd("2020-01-01")
+# start_date <- ymd("2020-01-01")
 # end_date <- ymd("2021-05-31")
 args <- commandArgs(trailingOnly = T)
-end_date <- as.Date(args[1])
+start_date <- as.Date(args[1])
+end_date <- as.Date(args[2])
 
 process_country_region <- function(regiondf, df) {
   
   country <- regiondf$CountryName[1]
   region <- regiondf$RegionName[1]
   
-  cat("Working on ", country, region, "\n")
+  # cat("Working on ", country, region, "\n")
   
   dfd <- df[(df$CountryName == country) & (df$RegionName == region),]
   
@@ -72,7 +73,7 @@ process_country_region <- function(regiondf, df) {
 cat("*** Creating IPS file...\n")
 
 data_ox <- read.csv(DATA_URL)
-cat("::- script-confirmed: Oxford data available! ::\n")
+# cat("::- script-confirmed: Oxford data available! ::\n")
 jurisdictions <- unique(data_ox$Jurisdiction)
 if (length(jurisdictions) != 2) {
   cat("Something wrong with jurisdictions", jurisdictions, "\n")
@@ -100,6 +101,8 @@ df <- data_ox # Instead of renaming I just make a copy
 # df <- read.csv(ips_file) #, check.names = FALSE)
 df$Date <- as.Date(df$Date)
 df$RegionName[is.na(df$RegionName)] <- ""
+
+df <- df[df$Date >= start_date,]
 
 regiondf <- read.csv(country_region_list)
 n <- nrow(regiondf)
