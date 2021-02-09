@@ -3,7 +3,7 @@
 starthistory="2020-11-01" # Date from which the IPS files start
 startdate="2021-01-01" # Date from which predictions start
 today=`date +%Y-%m-%d` # Date from which prescriptions start
-enddate="2021-02-28"  # Last date considered
+enddate="2021-04-30"  # Last date considered
 
 # Generate the IPS file from the Oxford repository, propagating the last IP until enddate
 
