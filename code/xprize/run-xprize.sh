@@ -1,9 +1,9 @@
 #/bin/bash
 
-starthistory="2020-11-01"
-startdate="2021-01-01"
-today=`date +%Y-%m-%d`
-enddate="2021-02-28"
+starthistory="2020-11-01" # Date from which the IPS files start
+startdate="2021-01-01" # Date from which predictions start
+today=`date +%Y-%m-%d` # Date from which prescriptions start
+enddate="2021-02-28"  # Last date considered
 
 # Generate the IPS file from the Oxford repository, propagating the last IP until enddate
 
@@ -15,22 +15,25 @@ Rscript complete-IPS.R "$starthistory" "$enddate"
 
 # Run predictor with real IPS
 echo --- Running predictor with real IPS
-echo --- python standard_predictor/predict.py -s "$startdate" -e "$enddate" -ip ./data/IPS-latest-full.csv -o ../../data/xprize/cs-tasks/real-IPS-predictions.csv
+echo --- python standard_predictor/predict.py -s "$startdate" -e "$enddate" -ip ./data/IPS-latest-full.csv -o ./predictions/real-IPS-predictions.csv
 
-python standard_predictor/predict.py -s "$startdate" -e "$enddate" -ip ./data/IPS-latest-full.csv -o ../../data/xprize/cs-tasks/real-IPS-predictions.csv
+time python standard_predictor/predict.py -s "$startdate" -e "$enddate" -ip ./data/IPS-latest-full.csv -o ./predictions/real-IPS-predictions.csv
 
+echo -- Adding fatalities, hospital, ICU to real IPS predictions
+echo -- Rscript add-deaths-hospital.R ./predictions/real-IPS-predictions.csv ../../data/xprize/cs-tasks/real-IPS-predictions.csv
 
+Rscript add-deaths-hospital.R ./predictions/real-IPS-predictions.csv ../../data/xprize/cs-tasks/real-IPS-predictions.csv
 
 # Run our prescriptor from today to enddate
 
 echo --- Running prescriptor
 echo --- python prescribe.py -s $today -e "$enddate" -ip ./data/IPS-latest-full.csv -c ./data/fixed_equal_costs.csv -o ./prescriptions/fixed_equal_costs.csv
 
-python prescribe.py -s $today -e "$enddate" -ip ./data/IPS-latest-full.csv -c ./data/fixed_equal_costs.csv -o ./prescriptions/fixed_equal_costs.csv
+time python prescribe.py -s $today -e "$enddate" -ip ./data/IPS-latest-full.csv -c ./data/fixed_equal_costs.csv -o ./prescriptions/fixed_equal_costs.csv
 
 echo --- python prescribe.py -s $today -e "$enddate" -ip ./data/IPS-latest-full.csv -c ./data/uniform_random_costs.csv -o ./prescriptions/uniform_random_costs.csv
 
-python prescribe.py -s $today -e "$enddate" -ip ./data/IPS-latest-full.csv -c ./data/uniform_random_costs.csv -o ./prescriptions/uniform_random_costs.csv
+time python prescribe.py -s $today -e "$enddate" -ip ./data/IPS-latest-full.csv -c ./data/uniform_random_costs.csv -o ./prescriptions/uniform_random_costs.csv
 
 
 # Run the predictions for each prescriptor
