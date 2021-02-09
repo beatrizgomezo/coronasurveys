@@ -56,13 +56,13 @@ do
 
    
   echo --- Running predictor $i
-  echo --- python standard_predictor/predict.py -s "$startdate" -e "$enddate" -ip ./prescriptions/fixed_equal_costs-${i}.csv -o ./predictions/fixed_equal_costs-${i}.csv
+  echo --- python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/fixed_equal_costs-${i}.csv -o ./predictions/fixed_equal_costs-${i}.csv
 
-  python standard_predictor/predict.py -s "$startdate" -e "$enddate" -ip ./prescriptions/fixed_equal_costs-${i}.csv -o ./predictions/fixed_equal_costs-${i}.csv
+  python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/fixed_equal_costs-${i}.csv -o ./predictions/fixed_equal_costs-${i}.csv
 
-  echo --- python standard_predictor/predict.py -s "$startdate" -e "$enddate" -ip ./prescriptions/uniform_random_costs-${i}.csv -o ./predictions/uniform_random_costs-${i}.csv
+  echo --- python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/uniform_random_costs-${i}.csv -o ./predictions/uniform_random_costs-${i}.csv
 
-  python standard_predictor/predict.py -s "$startdate" -e "$enddate" -ip ./prescriptions/uniform_random_costs-${i}.csv -o ./predictions/uniform_random_costs-${i}.csv
+  python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/uniform_random_costs-${i}.csv -o ./predictions/uniform_random_costs-${i}.csv
 
 
   echo -- Adding fatalities, hospital, ICU
