@@ -68,5 +68,5 @@ if (n>1) {
   }
 }
 
-df2 <- df2[order(df2$CountryName,df2$RegionName,df2$Date),]
+df2 <- df2[order(df2$CountryName,df2$RegionName),]  #,df2$PrescriptionIndex,df2$Date),]
 write.csv(df2, output_file, row.names = F)
