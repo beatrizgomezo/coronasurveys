@@ -27,8 +27,11 @@ process_country_region <- function(regiondf, df) {
 
   df$Sum.Cases <- sum(df$PredictedDailyNewCases)
   df$Sum.Cost <- sum(df$Cost)
+  df$Avg.Cases <- mean(df$PredictedDailyNewCases)
+  df$Avg.Cost <- mean(df$Cost)
   
-  return(as.data.frame(df[1,c("CountryName", "RegionName", "Sum.Cases", "Sum.Cost")]))
+  
+  return(as.data.frame(df[1,c("CountryName", "RegionName", "Sum.Cases", "Sum.Cost", "Avg.Cases", "Avg.Cost")]))
 }
 
 # ---------------------- main 
