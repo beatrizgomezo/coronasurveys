@@ -43,7 +43,7 @@ process_country_region <- function(regiondf, ratios, dfdance, costs) {
   
   # Computes the cost of the vectors
   for (i in 1:nrow(dfratios)) {
-    dfratios[i, "Cost"] <- as.matrix(dfratios[i, 6:17]) %*% t(as.matrix(dfcost[1, 3:14]))
+    dfratios[i, "Cost"] <- as.matrix(dfratios[i, 4:15]) %*% t(as.matrix(dfcost[1, 3:14]))
   }
 
   # Select the vector with lowest ratio, breaking ties by cost

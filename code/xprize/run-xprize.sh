@@ -66,16 +66,19 @@ do
   python standard_predictor/predict.py -s "$today" -e "$enddate" -ip ./prescriptions/uniform_random_costs-${i}.csv -o ./predictions/uniform_random_costs-${i}.csv
 
 
-  echo -- Adding fatalities, hospital, ICU
-  echo -- Rscript add-deaths-hospital.R ./predictions/fixed_equal_costs-${i}.csv ../../data/xprize/cs-tasks/fixed_equal_costs-${i}.csv
+  echo -- Adding fatalities, hospital, ICU, Cost
+  echo -- Rscript add-deaths-hospital-cost.R ./predictions/fixed_equal_costs-${i}.csv ../../data/xprize/cs-tasks/fixed_equal_costs-${i}.csv \
+    $i ./prescriptions/fixed_equal_costs.csv ./data/fixed_equal_costs.csv 
 
-  Rscript add-deaths-hospital.R ./predictions/fixed_equal_costs-${i}.csv ../../data/xprize/cs-tasks/fixed_equal_costs-${i}.csv
+  Rscript add-deaths-hospital-cost.R ./predictions/fixed_equal_costs-${i}.csv ../../data/xprize/cs-tasks/fixed_equal_costs-${i}.csv \
+    $i ./prescriptions/fixed_equal_costs.csv ./data/fixed_equal_costs.csv
 
-  echo -- Rscript add-deaths-hospital.R ./predictions/uniform_random_costs-${i}.csv ../../data/xprize/cs-tasks/uniform_random_costs-${i}.csv
+  echo -- Rscript add-deaths-hospital-cost.R ./predictions/uniform_random_costs-${i}.csv ../../data/xprize/cs-tasks/uniform_random_costs-${i}.csv \
+    $i ./prescriptions/uniform_random_costs.csv ./data/uniform_random_costs.csv 
 
-  Rscript add-deaths-hospital.R ./predictions/uniform_random_costs-${i}.csv ../../data/xprize/cs-tasks/uniform_random_costs-${i}.csv
 
+  Rscript add-deaths-hospital-cost.R ./predictions/uniform_random_costs-${i}.csv ../../data/xprize/cs-tasks/uniform_random_costs-${i}.csv \
+    $i ./prescriptions/uniform_random_costs.csv ./data/uniform_random_costs.csv 
 
-  #rm ./prescriptions/fixed_equal_costs-${i}.csv ./predictions/fixed_equal_costs-${i}.csv
 done
 

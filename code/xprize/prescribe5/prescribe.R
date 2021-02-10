@@ -43,7 +43,7 @@ process_country_region <- function(regiondf, ratios, dfdance, costs) {
   
   # Computes the cost of the vectors
   for (i in 1:nrow(dfr)) {
-    dfr[i, "Cost"] <- as.matrix(dfr[i, 6:17]) %*% t(as.matrix(dfcost[1, 3:14]))
+    dfr[i, "Cost"] <- as.matrix(dfr[i, 4:15]) %*% t(as.matrix(dfcost[1, 3:14]))
   }
   
   # cat("\n Cost computation \n")

@@ -7,10 +7,13 @@ library(data.table)
 args <- commandArgs(trailingOnly = T)
 
 print(args)
-cat("usage: command cases_file output_file\n")
+cat("usage: command cases_file output_file prescription_number iplan_file cost_file\n")
 
 cases_file <- args[1]
 output_file <- args[2]
+prescription_number <- as.integer(args[3])
+iplan_file <- args[4]
+cost_file <- args[5]
 
 country_region_list <- "./data/countries_regions.csv"
 
@@ -21,7 +24,7 @@ hospital_in_icu <- 0.30 # CDC web site <50: 23.8%, 50-64: 36.1%, >64: 35.3%
 IFR <- 0.01 # 1% IFR
 
 
-process_country_region <- function(regiondf, df) {
+process_country_region <- function(regiondf, df, iplan, costs) {
   
   country <- regiondf$CountryName[1]
   region <- regiondf$RegionName[1]
@@ -30,6 +33,11 @@ process_country_region <- function(regiondf, df) {
   
   df <- df[(df$CountryName == country) & 
                   (df$RegionName == region),]
+  iplan <- iplan[(iplan$CountryName == country) & 
+             (iplan$RegionName == region),]
+  dfcost <- costs[(costs$CountryName == country) & 
+                    (costs$RegionName == region),]
+  
   
   df$PredictedDailyNewDeaths <- NA
   df$PredictedDailyNewHospital <- NA
@@ -47,10 +55,28 @@ process_country_region <- function(regiondf, df) {
   
   df$PredictedDailyNewICU <- df$PredictedDailyNewHospital * hospital_in_icu
   
+  # Computes the cost of the vectors
+  for (i in 1:nrow(df)) {
+    df[i, "Cost"] <- as.matrix(iplan[i, c("C1_School.closing","C2_Workplace.closing",
+                                       "C3_Cancel.public.events","C4_Restrictions.on.gatherings",
+                                       "C5_Close.public.transport","C6_Stay.at.home.requirements",
+                                       "C7_Restrictions.on.internal.movement","C8_International.travel.controls",
+                                       "H1_Public.information.campaigns","H2_Testing.policy",
+                                       "H3_Contact.tracing","H6_Facial.Coverings")]) %*% t(as.matrix(dfcost[1, 3:14]))
+  }
+  
   return(df)
 }
 
 # ---------------------- main 
+
+costs <- read.csv(cost_file, stringsAsFactors=FALSE) #, check.names = FALSE
+costs$RegionName[is.na(costs$RegionName)] <- ""
+
+iplan <- read.csv(iplan_file, stringsAsFactors=FALSE) #, check.names = FALSE
+iplan$RegionName[is.na(iplan$RegionName)] <- ""
+iplan$Date <- as.Date(iplan$Date)
+iplan <- iplan[iplan$PrescriptionIndex == prescription_number,]
 
 dfc <- read.csv(cases_file, stringsAsFactors=FALSE) #, check.names = FALSE)
 dfc$Date <- as.Date(dfc$Date)
@@ -62,11 +88,11 @@ n <- nrow(regiondf)
 
 # print(n)
 
-df2 <- process_country_region(as.data.frame(regiondf[1,]), dfc)
+df2 <- process_country_region(as.data.frame(regiondf[1,]), dfc, iplan, costs)
 
 if (n>1) {
   for (i in 2:n) {
-    df2 <- bind_rows(df2, process_country_region(as.data.frame(regiondf[i,]), dfc))
+    df2 <- bind_rows(df2, process_country_region(as.data.frame(regiondf[i,]), dfc, iplan, costs))
   }
 }
 
