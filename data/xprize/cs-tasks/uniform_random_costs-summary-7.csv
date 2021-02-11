@@ -1,4 +1,4 @@
-"CountryName","RegionName","Sum.Cases","Sum.Cost","Avg.Cases","Avg.Cost","PrescriptionIndex"
+"CountryName","RegionName","SumCases","SumCost","AvgCases","AvgCost","PrescriptionIndex"
 "Afghanistan","",7683150.42371035,31.2,85368.3380412262,0.346666666666667,7
 "Albania","",358151.2986342,47.4,3979.45887371333,0.526666666666667,7
 "Algeria","",5083992.43100393,1451.25,56488.8047889326,16.125,7

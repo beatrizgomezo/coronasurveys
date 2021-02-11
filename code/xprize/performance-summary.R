@@ -25,13 +25,13 @@ process_country_region <- function(regiondf, df) {
   df <- df[(df$CountryName == country) & 
                   (df$RegionName == region),]
 
-  df$Sum.Cases <- sum(df$PredictedDailyNewCases)
-  df$Sum.Cost <- sum(df$Cost)
-  df$Avg.Cases <- mean(df$PredictedDailyNewCases)
-  df$Avg.Cost <- mean(df$Cost)
+  df$SumCases <- sum(df$PredictedDailyNewCases)
+  df$SumCost <- sum(df$Cost)
+  df$AvgCases <- mean(df$PredictedDailyNewCases)
+  df$AvgCost <- mean(df$Cost)
   
   
-  return(as.data.frame(df[1,c("CountryName", "RegionName", "Sum.Cases", "Sum.Cost", "Avg.Cases", "Avg.Cost")]))
+  return(as.data.frame(df[1,c("CountryName", "RegionName", "SumCases", "SumCost", "AvgCases", "AvgCost")]))
 }
 
 # ---------------------- main 
