@@ -10,6 +10,7 @@ import json
 import re
 
 sys.path.append(os.path.expanduser("logger"))
+print("adding path ",os.path.expanduser("logger"))
 import coronasurveys_utils
 
 ##########################################################################################
