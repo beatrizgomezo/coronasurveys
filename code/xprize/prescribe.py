@@ -9,7 +9,7 @@ import time
 import json
 import re
 
-sys.path.append(os.path.expanduser("logger"))
+sys.path.append(os.path.expanduser("coronasurveys/code/xprize/logger"))
 print("adding path ",os.path.expanduser("logger"))
 import coronasurveys_utils
 
