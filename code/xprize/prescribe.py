@@ -24,7 +24,7 @@ subprocess_timeout = 19800 # 5.5 hours in seconds
 #os.environ["PATH"] += os.pathsep + opt_conda_path + os.pathsep + bin_path
 
 # workdir = "~/work"
-workdir="."
+workdir="~/coronasurveys/code/xprize"
 
 def zeroOutput(start_date_str: str,
                end_date_str: str,
