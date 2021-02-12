@@ -19,13 +19,20 @@ echo --- Running predictor with real IPS
 echo --- python standard_predictor/predict.py -s "$startdate" -e "$enddate" \
   -ip ./data/IPS-latest-full.csv -o ./predictions/real-IPS-predictions.csv
 
-time python standard_predictor/predict.py -s "$startdate" -e "$enddate" \
+python standard_predictor/predict.py -s "$startdate" -e "$enddate" \
   -ip ./data/IPS-latest-full.csv -o ./predictions/real-IPS-predictions.csv
 
-echo -- Adding fatalities, hospital, ICU to real IPS predictions
-echo -- Rscript add-deaths-hospital.R ./predictions/real-IPS-predictions.csv ../../data/xprize/cs-tasks/real-IPS-predictions.csv
 
-Rscript add-deaths-hospital.R ./predictions/real-IPS-predictions.csv ../../data/xprize/cs-tasks/real-IPS-predictions.csv
+echo -- Adding fatalities, hospital, ICU, cost, and interventions to real IPS predictions
+
+Rscript add-deaths-hospital-cost-IPS.R "$startdate" "$enddate" \
+  ./predictions/real-IPS-predictions.csv ../../data/xprize/cs-tasks/real-IPS-predictions-fixed_equal_costs.csv \
+  ./data/IPS-latest-full.csv ./data/fixed_equal_costs.csv
+
+Rscript add-deaths-hospital-cost-IPS.R "$startdate" "$enddate" \
+  ./predictions/real-IPS-predictions.csv ../../data/xprize/cs-tasks/real-IPS-predictions-uniform_random_costs.csv \
+  ./data/IPS-latest-full.csv ./data/uniform_random_costs.csv
+
 
 # Run our prescriptor from today to enddate
 
