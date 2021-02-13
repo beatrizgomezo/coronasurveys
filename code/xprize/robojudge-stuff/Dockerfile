@@ -45,7 +45,7 @@ RUN su - xprize -c "git clone git@github.com:leaf-ai/covid-xprize-robotasks.git 
 
 RUN su - xprize -c "mkdir -p ~/work/prescriptions"
 
-
+RUN su - xprize -c "cd coronasurveys/code/xprize;  patch  prescribe.py -i patch-prescribe.patch ; cd"
 
 
 
@@ -57,6 +57,8 @@ RUN touch /tmp/cron.log && chown xprize:xprize /tmp/cron.log
 #CMD $HOME_DIR/tasks/entrypoint.sh && cron && su --login xprize
 
 EXPOSE 22
+
+RUN su - xprize -c "cd coronasurveys/code/xprize;  patch  prescribe.py -i patch-prescribe.patch ; cd"
 
 CMD cd $HOME_DIR/coronasurveys/code/xprize/robojudge-stuff; ./generate_prescriptions.sh ~/covid-xprize-robotasks-main/ ~/coronasurveys > out.txt 2>&1
 # ["R"]
