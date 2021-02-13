@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 RUN cd /usr/bin ; ln -s python3 python; ln -s pip3 pip; cd $HOME_DIR
 
 
-RUN pip3 install pandas tensorflow keras
 
 RUN Rscript -e "install.packages('pacman')"
 RUN Rscript -e "pacman::p_load(dplyr,ggplot2,httr,jsonlite,stringr,data.table,lubridate,tidyverse,reticulate)"
@@ -47,7 +46,7 @@ RUN su - xprize -c "cd ; ln -s  ~/coronasurveys/code/xprize work"
 
 #RUN su - xprize -c "cd coronasurveys/code/xprize;  patch  prescribe.py -i patch-prescribe.patch ; cd"
 
-
+RUN su - xprize -c "cd coronasurveys/code/xprize; pip3 install -r requirements.txt"
 
 
 # Create the log file to be able to run tail
