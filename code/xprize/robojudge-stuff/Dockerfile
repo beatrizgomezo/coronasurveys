@@ -60,5 +60,5 @@ EXPOSE 22
 
 #RUN su - xprize -c "cd coronasurveys/code/xprize;  patch  prescribe.py -i patch-prescribe.patch ; cd"
 
-CMD su - xprize -c "cd $HOME_DIR/coronasurveys/code/xprize/robojudge-stuff; ./generate_prescriptions.sh ~/covid-xprize-robotasks-main/ ~/coronasurveys > out.txt 2>&1"
+CMD su - xprize -c "cd $HOME_DIR/coronasurveys/code/xprize; ./robojudge-stuff/generate_prescriptions.sh ~/covid-xprize-robotasks-main/ ~/coronasurveys > out.txt 2>&1"
 # ["R"]
