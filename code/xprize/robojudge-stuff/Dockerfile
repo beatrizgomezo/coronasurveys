@@ -56,5 +56,7 @@ RUN touch /tmp/cron.log && chown xprize:xprize /tmp/cron.log
 # /tasks is mounted at run time. Set up cron job, run cron, then drop down to unprivileged user 'xprize'
 #CMD $HOME_DIR/tasks/entrypoint.sh && cron && su --login xprize
 
-CMD cd $HOME_DIR/coronasurveys/code/xprize/robojudge-stuff/generate_prescriptions.sh ~/covid-xprize-robotasks-main/ ~/coronasurveys > out.txt 2>&1
+EXPOSE 22
+
+CMD cd $HOME_DIR/coronasurveys/code/xprize/robojudge-stuff; ./generate_prescriptions.sh ~/covid-xprize-robotasks-main/ ~/coronasurveys > out.txt 2>&1
 # ["R"]

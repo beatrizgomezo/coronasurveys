@@ -9,8 +9,7 @@ import time
 import json
 import re
 
-sys.path.append(os.path.expanduser("~/coronasurveys/code/xprize/logger"))
-print("adding path ",os.path.expanduser("~/coronasurveys/code/xprize/logger"))
+sys.path.append(os.path.expanduser("logger"))
 import coronasurveys_utils
 
 ##########################################################################################
@@ -24,7 +23,7 @@ subprocess_timeout = 19800 # 5.5 hours in seconds
 #os.environ["PATH"] += os.pathsep + opt_conda_path + os.pathsep + bin_path
 
 # workdir = "~/work"
-workdir="~/coronasurveys/code/xprize"
+workdir="."
 
 def zeroOutput(start_date_str: str,
                end_date_str: str,
